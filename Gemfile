@@ -8,9 +8,16 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'jquery-rails', '2.2.1'
 gem 'uglifier', '2.1.1'
 gem 'turbolinks', '1.1.1'
+gem 'bootstrap-sass-rails', '3.0.0.3'
 
 # Annotated models
 gem 'annotate', '>= 2.5.0'
+
+# Database
+gem 'pg', '0.17.0'
+
+# Performance monitoring
+gem 'newrelic_rpm', '~> 3.6.8.168'
 
 group :development, :test do
   gem 'pry', '0.9.12.2'
