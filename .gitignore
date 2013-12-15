@@ -14,3 +14,17 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore other unneeded files.
+doc/
+*.swp
+*~
+.project
+.DS_Store
+.secret
+
+# User should edit their database.yml
+config/database.yml
+
+# Set up a file for environment variables
+config/initializers/environment_variables.rb
