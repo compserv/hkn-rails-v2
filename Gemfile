@@ -12,6 +12,7 @@ gem 'bootstrap-sass-rails', '3.0.0.3'
 
 # User authentication
 gem 'devise', '3.2.2'
+gem 'rolify', '~> 3.3.0.rc4'
 
 # Annotated models
 gem 'annotate', '>= 2.5.0'
