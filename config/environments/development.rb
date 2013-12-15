@@ -35,4 +35,8 @@ HknRails::Application.configure do
     Bullet.airbrake = true
     Bullet.add_footer = true
   end
+
+  # Localhost mailer
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
 end
