@@ -10,6 +10,9 @@ gem 'uglifier', '2.1.1'
 gem 'turbolinks', '1.1.1'
 gem 'bootstrap-sass-rails', '3.0.0.3'
 
+# User authentication
+gem 'devise', '3.2.2'
+
 # Annotated models
 gem 'annotate', '>= 2.5.0'
 
@@ -29,7 +32,6 @@ group :development, :test do
   gem 'debugger', '1.6.3'
   gem 'hirb', '0.7.1'
   gem 'airbrake', '3.1.14'
-
   gem 'rails_best_practices', '1.14.4'
 end
 
@@ -40,7 +42,6 @@ group :test do
   gem 'capybara', '2.1.0'
   gem 'database_cleaner', github: 'bmabey/database_cleaner'
 end
-
 
 group :doc do
   gem 'sdoc', '0.3.20', require: false
