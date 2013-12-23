@@ -18,6 +18,10 @@ Next, you're going to have to create a file for storing development environment 
 
     touch config/initializers/environment_variables.rb
 
+Now, create the database by running:
+
+    createdb hkn_rails_development
+
 Don't worry, this file is not commmitted to git so you can add whatever keys you want to this file. It will remain active in devleopment mode only. Then run:
 
     rake db:migrate
