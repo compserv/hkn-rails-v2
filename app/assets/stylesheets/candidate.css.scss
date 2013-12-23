@@ -1,0 +1,19 @@
+// Place all the styles related to the Candidate controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.event_status
+{
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  position:relative;
+  top: 4px;
+  background-size: 100%;
+}
+
+.event_notdone
+{
+  background:url('/images/unchecked.jpg');
+}

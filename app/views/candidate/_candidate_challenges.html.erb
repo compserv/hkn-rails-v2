@@ -1,0 +1,42 @@
+<% flash.each do |name, msg| %>
+  <% if msg.is_a?(String) %>
+    <div class="alert alert-<%= name == :notice ? "success" : "danger" %>">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= content_tag :div, msg, :id => "flash_#{name}" %>
+    </div>
+  <% end %>
+<% end %>
+
+<h1>Current Challenges</h1>
+
+<% if @challenges.length > 0 %>
+  <% @challenges.each do |challenge| %>
+    <li id='list'>
+      <span class="challenge_name"><%= challenge.name %></span> - <%= 'kacasey' %>
+      <span class="<%= "event_status " + (challenge.confirmed ? 'event_done' : 'event_notdone') %>"></span>
+    </li>
+  <% end %>
+<% else %>
+  No challenges requested
+<% end %>
+
+<h1>Request a Challenge</h1>
+
+<%= form_for(@challenge) do |f| %>
+
+  <div class="field">
+    <%= label_tag "Find Officer" %><br>
+    <%= text_field_tag "officer", nil %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= text_field_tag "name", nil %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= text_area_tag "description", nil %>
+  </div>
+  <div class="actions">
+    <%= f.submit :class => 'btn btn-primary' %>
+  </div>
+<% end %>
