@@ -12,8 +12,10 @@
 <% if @challenges.length > 0 %>
   <% @challenges.each do |challenge| %>
     <li id='list'>
-      <span class="challenge_name"><%= challenge.name %></span> - <%= 'kacasey' %>
-      <span class="<%= "event_status " + (challenge.confirmed ? 'event_done' : 'event_notdone') %>"></span>
+      <span class="challenge_name"><%= challenge.name %></span> - <%= User.find_by_id(challenge.requester_id).username %>
+      <span class="<%= "event_status " + 
+          (challenge.confirmed ? 'event_done' : 'event_notdone') + 
+          (challenge.rejected ? ' rejected' : '') %>"></span>
     </li>
   <% end %>
 <% else %>
@@ -22,7 +24,7 @@
 
 <h1>Request a Challenge</h1>
 
-<%= form_for(@challenge) do |f| %>
+<%= form_for(Challenge.new) do |f| %>
 
   <div class="field">
     <%= label_tag "Find Officer" %><br>

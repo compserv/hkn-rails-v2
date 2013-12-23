@@ -11,8 +11,7 @@ class ChallengesController < ApplicationController
 
   # POST /challenges
   def create
-    debugger
-    #params[:requester_id] = User.find_by_name(params[:officer])
+    params[:requester_id] = User.find_by_username(params[:officer]).id
     #params[:candidate_id] = current_user.id
     @challenge = Challenge.new(challenge_params)
 
