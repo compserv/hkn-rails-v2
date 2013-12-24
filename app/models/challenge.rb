@@ -16,5 +16,5 @@
 class Challenge < ActiveRecord::Base
   validates :name, presence: true
   validates :requester_id, presence: true
-  validates :candidate_id, presence: true
+  #validates :candidate_id, presence: true
 end

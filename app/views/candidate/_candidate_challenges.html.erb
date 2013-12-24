@@ -6,7 +6,8 @@
       <span class="<%= "event_status " +
           (challenge.confirmed ? 'event_done' : 'event_notdone') +
           (challenge.rejected ? ' rejected' : '') %>"></span>
-      <span class="challenge_name"><%= challenge.name %></span> - <%= User.find_by_id(challenge.requester_id).username %>
+      <strong><%= challenge.name %></strong> 
+      - <%= User.find_by_id(challenge.requester_id).username %>
     </li>
   <% end %>
 <% else %>
