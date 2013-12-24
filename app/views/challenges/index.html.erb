@@ -1,8 +1,10 @@
 <h1>Pending Challenges</h1>
 <% @pending.each do |challenge| %>
   <li id='list'>
-    <%= link_to "Confirm", challenge_path(:id => challenge.id, :confirmed => true, :rejected => false), :method => 'put', :class => 'btn btn-success' %>
-    <%= link_to "Reject", challenge_path(:id => challenge.id, :rejected => true, :confirmed => false), :method => 'put', :class => 'btn btn-danger' %>
+    <%= link_to "Confirm", challenge_path(:id => challenge.id, :confirmed => true, :rejected => false), 
+        :method => 'put', :class => 'btn btn-success' %>
+    <%= link_to "Reject", challenge_path(:id => challenge.id, :rejected => true, :confirmed => false), 
+        :method => 'put', :class => 'btn btn-danger' %>
     <span class="challenge_name"><%= challenge.name %></span> (requested by <%= 'kacasey' %>)
     <span> <%= challenge.description %></span>
   </li>
@@ -11,7 +13,8 @@
 <h1>Confirmed Challenges</h1>
 <% @confirmed.each do |challenge| %>
   <li id='list'>
-    <%= link_to "Reject instead?", challenge_path(:id => challenge.id, :rejected => true, :confirmed => false), :method => 'put', :class => 'btn btn-danger' %>
+    <%= link_to "Reject instead?", challenge_path(:id => challenge.id, :rejected => true, :confirmed => false), 
+        :method => 'put', :class => 'btn btn-danger' %>
     <span class="challenge_name"><%= challenge.name %></span> (requested by <%= 'kacasey' %>)
     <span> <%= challenge.description %></span>
   </li>
@@ -20,7 +23,8 @@
 <h1>Rejected Challenges</h1>
 <% @rejected.each do |challenge| %>
   <li id='list'>
-    <%= link_to "Confirm instead?", challenge_path(:id => challenge.id, :confirmed => true, :rejected => false), :method => 'put', :class => 'btn btn-success' %>
+    <%= link_to "Confirm instead?", challenge_path(:id => challenge.id, :confirmed => true, :rejected => false), 
+        :method => 'put', :class => 'btn btn-success' %>
     <span class="challenge_name"><%= challenge.name %></span> (requested by <%= 'kacasey' %>)
     <span> <%= challenge.description %></span>
   </li>
