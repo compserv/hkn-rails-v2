@@ -27,6 +27,24 @@ ActiveRecord::Schema.define(version: 20131225090427) do
     t.datetime "updated_at"
   end
 
+  create_table "course_semesters", force: true do |t|
+    t.string   "season"
+    t.integer  "year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "courses", force: true do |t|
+    t.string   "department"
+    t.integer  "course_number"
+    t.string   "course_prefix"
+    t.string   "course_suffix"
+    t.string   "name"
+    t.integer  "units"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "events", force: true do |t|
     t.string   "title"
     t.string   "description"
