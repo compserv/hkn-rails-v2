@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 20131223204009) do
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "rsvps", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "event_id"
+    t.integer  "user_id" => "users"
+    t.integer  "event_id" => "events"
     t.boolean  "confirmed"
     t.integer  "confirmed_by"
     t.datetime "confirmed_at"
