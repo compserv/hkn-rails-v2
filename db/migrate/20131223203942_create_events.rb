@@ -6,7 +6,7 @@ class CreateEvents < ActiveRecord::Migration
       t.integer :rsvp_count
       t.datetime :created_at
       t.datetime :updated_at
-      t.integer :created_by
+      t.integer :owner_id
 
       t.timestamps
     end
