@@ -15,5 +15,6 @@ class Event < ActiveRecord::Base
   has_many :rsvps
   has_many :users, through: :rsvps
 
-  validates :title, presence: true
+  validates :title, presence: true, length: { maximum: 80 }
+  validates :description, length: { maximum: 1000 }
 end
