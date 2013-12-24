@@ -4,8 +4,8 @@
   <% @challenges.each do |challenge| %>
     <li id='list'>
       <span class="challenge_name"><%= challenge.name %></span> - <%= User.find_by_id(challenge.requester_id).username %>
-      <span class="<%= "event_status " + 
-          (challenge.confirmed ? 'event_done' : 'event_notdone') + 
+      <span class="<%= "event_status " +
+          (challenge.confirmed ? 'event_done' : 'event_notdone') +
           (challenge.rejected ? ' rejected' : '') %>"></span>
     </li>
   <% end %>
