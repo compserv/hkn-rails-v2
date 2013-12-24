@@ -31,4 +31,11 @@ class User < ActiveRecord::Base
   def rsvp!(event_id)
     rsvps.create!(event_id: event_id)
   end
+
+  def is_active_member?
+    # TODO(mark): This should be true for all officers and committee members.
+    # Will add functionality when semesters + roles are working.
+    true
+  end
+
 end
