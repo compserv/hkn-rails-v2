@@ -9,6 +9,7 @@ gem 'jquery-rails', '2.2.1'
 gem 'uglifier', '2.1.1'
 gem 'turbolinks', '1.1.1'
 gem 'bootstrap-sass-rails', '3.0.0.3'
+gem 'jquery-ui-rails'
 
 # User authentication
 gem 'devise', '3.2.2'
