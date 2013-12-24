@@ -8,12 +8,8 @@ class CandidateController < ApplicationController
     if params[:term]
       @users = User.where('username LIKE ?', "#{params[:term]}%")
     else
-      @users = User.all
+      @users = User.limit(10)
     end
-    array = []
-    @users.each do |user|
-      array << user.username
-    end
-    render :json => array.to_json
+    render :json => @users.pluck(:username).to_json
   end
 end
