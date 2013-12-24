@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 20131223204009) do
     t.string   "comment"
   end
 
+  add_index "rsvps", ["user_id", "event_id"], name: "index_rsvps_on_user_id_and_event_id", using: :btree
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false

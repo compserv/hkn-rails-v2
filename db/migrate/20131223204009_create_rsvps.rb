@@ -12,5 +12,6 @@ class CreateRsvps < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :rsvps, [:user_id, :event_id]
   end
 end
