@@ -1,0 +1,134 @@
+<div class="submenu services_submenu">
+  <ul class="plain">
+    <li><a href="/tutor/">Tutoring Hours</a></li>
+    <li><a href="/tutor/calendar">Review Sessions</a></li>
+    <li><a href="/exams/">Exam Archive</a></li>
+  </ul>
+  <ul class="plain">
+    <li><%= link_to "Course Surveys", "/" %></li>
+    <li><%= link_to "Course Guide", "/" %></li>
+    <li><%= link_to "Department Tours", "/" %></li>
+  </ul>
+</div>
+
+<div class="submenu indrel_submenu">
+  <ul class="plain">
+    <li><%= link_to "Why HKN?", "/" %></li>
+    <li><%= link_to "Resume Books", "/" %></li>
+    <li><%= link_to "Infosessions", "/" %></li>
+  </ul>
+  <ul class="plain">
+    <li><%= link_to "Career Fair", "/" %></li>
+    <li><%= link_to "Contact Us", "/" %></li>
+  </ul>
+</div>
+
+<% if user_signed_in? %>
+  <div class="submenu people_submenu">
+    <ul class="plain">
+      <li><%= link_to "Officers",          people_list_path("officers") %></li>
+      <li><%= link_to "Committee Members", people_list_path("cmembers") %></li>
+      <li><%= link_to "Members",           people_list_path("members") %></li>
+    </ul>
+    <ul class="plain">
+      <li><%= link_to "Candidates",        people_list_path("candidates") %></li>
+      <li><%= link_to 'Election Details', admin_election_details_path, :class => "navigation_sublevel_item" %></li>
+      <% if current_member.is_active_member? %>
+        <li><%= link_to 'Contact Card', contact_card_path, :class => 'navigation_sublevel_item'  %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="submenu events_submenu">
+  <ul class="plain">
+    <li><%= link_to "Events Calendar", "/" %></li>
+    <li><%= link_to "Upcoming Events", "/" %></li>
+    <li><%= link_to "Past Events", "/" %></li>
+  </ul>
+  <% if user_signed_in? %>
+    <ul class="plain">
+      <li><%= link_to "My RSVPs", my_rsvps_path %></li>
+    <% if user_signed_in? && current_user.is_active_member? %>
+      <li><%= link_to "New Event", new_event_path %></li>
+      <li><%= link_to "Leaderboard", leaderboard_path %></li>
+    <% end %>
+    </ul>
+  <% end %>
+</div>
+
+<div class="submenu alumni_submenu">
+  <ul class="plain">
+    <% unless user_signed_in? && current_user.is_alumni? %>
+      <li><%= link_to "Alumni Contact Information", "/" %></li>
+    <% else %>
+      <%= link_to "View My Alumni Information", "/" %>
+    <% end %>
+  </ul>
+</div>
+
+<div class="submenu about_submenu">
+  <ul class="plain">
+    <li><a href="/about/contact/" class="navigation_sublevel_item">Contact Information</a></li>
+    <li><%= link_to "Photo Gallery", "/gallery3/", :class=>"navigation_sublevel_item" %></li>
+    <li><%= link_to "Yearbooks",     "/about/yearbook/",            :class=>"navigation_sublevel_item" %></li>
+  </ul>
+  <ul class="plain">
+    <li><a href="/about/slideshow/" class="navigation_sublevel_item">Slideshows</a></li>
+    <li><%= link_to "Current Officers", "/about/officers/", :class=>"navigation_sublevel_item" %></li>
+    <li><%= link_to "Current Committee Members", "/about/cmembers/", :class=>"navigation_sublevel_item" %></li>
+  </ul>
+</div>
+
+<% if user_signed_in? && current_user.is_candidate? %>
+  <div class="submenu cand_submenu">
+    <ul class="plain">
+      <li><a href="/cand/portal/" class="navigation_sublevel_item">Portal Home</a></li>
+      <li><a href="/cand/application/" class="navigation_sublevel_item">Application Form</a></li>
+      <li><a href="/~vp" class="navigation_sublevel_item">Candidate Information</a></li>
+    </ul>
+  </div>
+<% end %>
+
+<% if user_signed_in? && current_user.is_active_member? %>
+  <div class="submenu admin_submenu">
+    <ul class="plain">
+      <li><a href="/admin/tutor/signup_slots/" class="navigation_sublevel_item">Tutor Slot Signup</a></li>
+      <li><a href="/admin/tutor/signup_courses/" class="navigation_sublevel_item">Tutor Course Signup</a></li>
+      <li><a href="/admin/tutor/edit_schedule/" class="navigation_sublevel_item">View Tutor Signups</a></li>
+    </ul>
+    <ul class="plain">
+      <li><a href="/admin/general/confirm_challenges/" class="navigation_sublevel_item">Confirm Challenges</a></li>
+      <% if current_user.is_studrel? %>
+        <li><a href="/admin/studrel/" class="navigation_sublevel_item">Studrel Admin</a></li>
+      <% end %>
+      <% if current_user.is_tutoring? %>
+        <li><a href="/admin/tutor/" class="navigation_sublevel_item">Tutor Admin</a></li>
+      <% end %>
+      <% if current_user.is_csec? %>
+        <li><a href="/admin/csec" class="navigation_sublevel_item">Csec Admin</a></li>
+      <% end %>
+      <% if current_user.is_rsec? %>
+        <li><%= link_to 'Rsec Admin', admin_rsec_path, :class => 'navigation_sublevel_item'  %></li>
+      <% end %>
+      <% if current_user.is_deprel? %>
+        <li><a href="/admin/deprel" class="navigation_sublevel_item">Deprel Admin [<%= controller.num_deprel_requests %>]</a></li>
+      <% end %>
+      <% if current_user.is_indrel? %>
+        <li><a href="/admin/indrel/" class="navigation_sublevel_item">Indrel Admin</a></li>
+      <% end %>
+      <% if current_user.is_bridge? %>
+        <li><%= link_to 'Bridge Admin', admin_bridge_index_path, :class => 'navigation_sublevel_item'  %></li>
+      <% end %>
+      <% if current_user.is_vp? %>
+        <li><%= link_to "VP Admin", admin_vp_path, :class => "navigation_sublevel_item" %></li>
+      <% end %>
+      <% if current_user.is_pres? %>
+        <li><%= link_to "Pres Admin", admin_pres_path, :class => "navigation_sublevel_item" %></li>
+      <% end %>
+      <% if current_user.is_alumrel? %>
+        <li><%= link_to "Alumrel Admin", alumnis_path, :class => "navigation_sublevel_item" %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
