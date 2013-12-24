@@ -24,6 +24,9 @@ gem 'pg', '0.17.0'
 # Performance monitoring
 gem 'newrelic_rpm', '~> 3.6.8.168'
 
+# File uploading
+gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+
 group :development, :test do
   gem 'pry', '0.9.12.2'
   gem 'pry-rails', '0.3.2'

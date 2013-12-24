@@ -43,6 +43,19 @@ ActiveRecord::Schema.define(version: 20131224210759) do
     t.datetime "updated_at"
   end
 
+  create_table "exams", force: true do |t|
+    t.integer  "course_id"
+    t.string   "exam_type"
+    t.integer  "number"
+    t.boolean  "is_solution"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+  end
+
   create_table "roles", force: true do |t|
     t.string   "name"
     t.integer  "resource_id"

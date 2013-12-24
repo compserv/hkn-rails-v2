@@ -1,0 +1,33 @@
+<h1>Listing exams</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Course</th>
+      <th>Exam type</th>
+      <th>Number</th>
+      <th>Is solution</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @exams.each do |exam| %>
+      <tr>
+        <td><%= exam.course_id %></td>
+        <td><%= exam.exam_type %></td>
+        <td><%= exam.number %></td>
+        <td><%= exam.is_solution %></td>
+        <td><%= link_to 'Show', exam %></td>
+        <td><%= link_to 'Edit', edit_exam_path(exam) %></td>
+        <td><%= link_to 'Destroy', exam, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Exam', new_exam_path %>

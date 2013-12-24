@@ -1,0 +1,24 @@
+<%= link_to '[pdf]', @exam.file.url %>
+
+<p>
+  <strong>Course:</strong>
+  <%= @exam.course_id %>
+</p>
+
+<p>
+  <strong>Exam type:</strong>
+  <%= @exam.exam_type %>
+</p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @exam.number %>
+</p>
+
+<p>
+  <strong>Is solution:</strong>
+  <%= @exam.is_solution %>
+</p>
+
+<%= link_to 'Edit', edit_exam_path(@exam) %> |
+<%= link_to 'Back', exams_path %>
