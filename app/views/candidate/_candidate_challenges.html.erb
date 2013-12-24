@@ -1,0 +1,42 @@
+<h1>Current Challenges</h1>
+
+<% if @challenges.length > 0 %>
+  <% @challenges.each do |challenge| %>
+    <li id='list'>
+      <span class="<%= "event_status " +
+          (challenge.confirmed ? 'event_done' : 'event_notdone') +
+          (challenge.rejected ? ' rejected' : '') %>"></span>
+      <strong><%= challenge.name %></strong> 
+      - <%= User.find_by_id(challenge.requester_id).username %>
+    </li>
+  <% end %>
+<% else %>
+  No challenges requested
+<% end %>
+
+<h1>Request a Challenge</h1>
+
+<%= form_for(Challenge.new) do |f| %>
+  <div class="field">
+    <%= label_tag "Find Officer" %><br>
+    <%= text_field_tag "officer", nil, :id => 'officer_field' %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= text_field_tag "name", nil %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= text_area_tag "description", nil %>
+  </div>
+  <div class="actions">
+    <%= f.submit :class => 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $('#officer_field').autocomplete({
+    minLength: 1,
+    source: '<%= autocomplete_officer_name_path %>'
+  });
+</script>
