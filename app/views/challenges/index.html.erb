@@ -1,13 +1,3 @@
-<% if !flash.empty? %>
-  <div id="flash">
-    <% flash.keys.each do |k| %>
-        <div class="alert alert-warning">
-            <%= flash[k] %>
-        </div>
-    <% end %>
-  </div>
-<% end %>
-
 <h1>Pending Challenges</h1>
 <% @pending.each do |challenge| %>
   <li id='list'>

@@ -11,7 +11,9 @@ class ChallengesController < ApplicationController
 
   # POST /challenges
   def create
-    params[:requester_id] = User.find_by_username(params[:officer]).id
+    officer = User.find_by_username(params[:officer])
+    redirect_to candidate_portal_path, alert: "Please use an officer or committee member" and return unless officer
+    params[:requester_id] = officer.id
     #params[:candidate_id] = current_user.id
     @challenge = Challenge.new(challenge_params)
 
