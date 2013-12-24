@@ -2,8 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.event_status
-{
+.event_status {
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -11,20 +10,17 @@
   top: 4px;
 }
 
-.event_notdone
-{
+.event_notdone {
   background:url('/images/unchecked.jpg');
   background-size: 100%;
 }
 
-.rejected
-{
+.rejected {
   background:url('/images/crossed_out.jpg');
   background-size: 100%;
 }
 
-.event_done
-{
+.event_done {
   background:url('/images/checkbox.png');
   background-size: 100%;
 }
