@@ -8,13 +8,10 @@
 #  rsvp_count             :integer
 #  created_at             :datetime
 #  updated_at             :datetime
-#
-#  # should this be called owner?
 #  created_by             :integer
-#
-#  Also need to set up permissions somehow, based on role
 #
 
 class Event < ActiveRecord::Base
-  has_many :rsvps
+  has_many :roles # Is this a good way to store permissions?
+  has_and_belongs_to_many :rsvps
 end
