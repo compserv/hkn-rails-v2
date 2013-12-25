@@ -46,10 +46,7 @@ ActiveRecord::Schema.define(version: 20131225090427) do
 
   create_table "courses", force: true do |t|
     t.string   "department"
-    t.integer  "course_number"
-    t.string   "course_prefix"
-    t.string   "course_suffix"
-    t.string   "name"
+    t.string   "course_name"
     t.integer  "units"
     t.datetime "created_at"
     t.datetime "updated_at"
