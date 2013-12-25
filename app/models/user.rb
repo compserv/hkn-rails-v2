@@ -30,6 +30,8 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :member_semesters
 
+  scope :current_officers
+
   def rsvp!(event_id)
     rsvps.create!(event_id: event_id)
   end
@@ -51,6 +53,10 @@ class User < ActiveRecord::Base
 
   def has_role_for_semester?(role, semester)
     has_role? role, semester
+  end
+
+  def has_role_for_current_semester?(role)
+    has_role_for_semester? role, MemberSemester.current
   end
 
   def has_ever_had_role?(role)
