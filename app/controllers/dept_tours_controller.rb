@@ -1,5 +1,5 @@
 class DeptToursController < ApplicationController
-  before_action :set_dept_tour, only: [:show, :edit, :update, :destroy]
+  before_action :set_dept_tour, only: [:show, :edit, :update, :destroy, :respond_to_tour]
 
   # GET /dept_tours
   def index
@@ -71,6 +71,12 @@ class DeptToursController < ApplicationController
 
     --#{'@current_user.first_name'}
     "
+  end
+
+  def respond_to_tour
+    @dept_tour.responded = true
+    @dept_tour.save!
+    redirect_to dept_tour_path(@dept_tour), notice: 'Successfully responded'
   end
 
   private

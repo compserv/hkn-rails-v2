@@ -24,6 +24,14 @@
     <%= f.label :comments %><br>
     <%= f.text_area :comments %>
   </div>
+  <% if @dept_tour %>
+    <div class="control-group">
+      <%= f.label :responded %>
+      <div class="controls">
+        <%= f.check_box :responded, :class => 'check_box', :checked => @dept_tour.responded ? true : false %>
+      </div>
+    </div>
+  <% end %>
   <div class="actions">
     <%= f.submit %>
   </div>
