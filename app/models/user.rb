@@ -63,4 +63,13 @@ class User < ActiveRecord::Base
     has_role? role
   end
 
+  def is_officer_for_semester?(semester)
+    roles_for_semester(semester).each do |role|
+      if role.is_officer?
+        return true
+      end
+    end
+    return false
+  end
+
 end
