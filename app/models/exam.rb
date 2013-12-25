@@ -23,13 +23,16 @@ class Exam < ActiveRecord::Base
   validates :exam_type, presence: true
   validates :year, presence: true
   validates :semester, inclusion: { in: %w(sp su fa), 
-    message: "%{value} is not a valid semester" }
+      message: "%{value} is not a valid semester" }
   validates :exam_type, inclusion: { in: %w(q mt f), 
-    message: "%{value} is not a valid exam type" }
+      message: "%{value} is not a valid exam type" }
+  validates_uniqueness_of :exam_type, 
+      :scope => [:semester, :number, :is_solution, :year, :course_id], 
+      :message => "This exam appears to be in the database already"
 
   has_attached_file :file, :default_url => '/exams',
-    :path => ":rails_root/public/examfiles/:normalized_file_name.:extension",
-    :url => "/examfiles/:normalized_file_name.:extension"
+      :path => ":rails_root/public/examfiles/:normalized_file_name.:extension",
+      :url => "/examfiles/:normalized_file_name.:extension"
 
   validates_attachment_presence :file
 
@@ -39,7 +42,7 @@ class Exam < ActiveRecord::Base
 
   def normalized_file_name
     # TODO make course_id an abbreviations when courses are added.
-    "#{self.course_id}_#{self.semester}#{self.year % 1000}_" +
+    "#{self.course_id}_#{self.semester}#{self.year}_" +
         "#{self.exam_type}#{self.number}/#{self.is_solution ? '' : '_sol'}"
   end
 end

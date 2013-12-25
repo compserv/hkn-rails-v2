@@ -20,7 +20,7 @@
         <td><%= exam.exam_type %></td>
         <td><%= exam.number %></td>
         <td><%= exam.is_solution %></td>
-        <td><%= link_to 'Show', exam %></td>
+        <td><%= link_to "[#{exam.is_solution ? 'sol' : 'pdf'}]", exam.file.url %></td>
         <td><%= link_to 'Edit', edit_exam_path(exam) %></td>
         <td><%= link_to 'Destroy', exam, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

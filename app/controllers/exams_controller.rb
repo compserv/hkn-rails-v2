@@ -1,6 +1,6 @@
 class ExamsController < ApplicationController
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
-  # before_action authorize_stud_rel, only: [:create, :edit, :update, :destroy]
+  # before_action authorize_studrel, only: [:create, :edit, :update, :destroy]
 
   # GET /exams
   def index
