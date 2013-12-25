@@ -6,7 +6,7 @@ class CreateSemesterRoles < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index :semester_roles, :member_semester_id, unique: true
-    add_index :semester_roles, :role_id, unique: true
+    add_index :semester_roles, :member_semester_id
+    add_index :semester_roles, :role_id
   end
 end

@@ -4,7 +4,7 @@ class CreateMemberSemestersUsers < ActiveRecord::Migration
       t.belongs_to :member_semester
       t.belongs_to :user
     end
-    add_index :member_semesters_users, :member_semester_id, unique: true
-    add_index :member_semesters_users, :user_id, unique: true
+    add_index :member_semesters_users, :member_semester_id
+    add_index :member_semesters_users, :user_id
   end
 end
