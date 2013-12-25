@@ -22,13 +22,12 @@ class ExamsController < ApplicationController
 
   # POST /exams
   def create
-    debugger
     @exam = Exam.new(exam_params)
 
     if @exam.save
       redirect_to @exam, notice: 'Exam was successfully created.'
     else
-      render action: 'new'
+      redirect_to new_exam_path, alert: "#{@exam.errors.messages}"
     end
   end
 
@@ -37,7 +36,7 @@ class ExamsController < ApplicationController
     if @exam.update(exam_params)
       redirect_to @exam, notice: 'Exam was successfully updated.'
     else
-      render action: 'edit'
+      render action: 'edit', alert: "#{@exam.errors.messages}"
     end
   end
 
