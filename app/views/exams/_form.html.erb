@@ -1,0 +1,40 @@
+<%= form_for(@exam) do |f| %>
+
+  <div class="field">
+    <%= f.label :course_id %><br>
+    <%= f.number_field :course_id %>
+  </div>
+  <div id="field">
+    <%= label_tag "Enter the year:" %>
+    <%= f.number_field :year %>
+  </div>
+  <div class="field">
+    <%= label_tag "Choose a semester:" %>
+    <%= radio_button :exam, :semester, 'sp', :checked => true %> Spring
+    <%= radio_button :exam, :semester, 'su' %> Summer
+    <%= radio_button :exam, :semester, 'fa' %> Fall
+  </div>
+  <div id="field">
+    <%= label_tag "What kind of exam is this?" %>
+    <%= radio_button :exam, :exam_type, 'q' %> Quiz
+    <%= radio_button :exam, :exam_type, 'mt', :checked => true %> Midterm
+    <%= radio_button :exam, :exam_type, 'f' %> Final
+  </div>
+  <div class="field">
+    <%= label_tag "Which exam is it? (ie. midterm #2)
+                     Enter in a number.  If it is the only
+                     exam of its type, leave this field blank." %>
+    <%= f.number_field :number %>
+  </div>
+  <div class="field">
+    <%= label_tag "Is this a solution?" %>
+    <%= radio_button :exam, :is_solution, true %> Yes
+    <%= radio_button :exam, :is_solution, false, :checked => true %> No
+  </div>
+  <div class="field">
+    <%= f.file_field :file %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

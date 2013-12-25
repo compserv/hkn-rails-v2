@@ -1,0 +1,34 @@
+<%= link_to "[#{@exam.is_solution ? 'sol' : 'pdf'}]", @exam.file.url %>
+
+<p>
+  <strong>Course:</strong>
+  <%= @exam.course_id %>
+</p>
+
+<p>
+  <strong>Exam type:</strong>
+  <%= @exam.exam_type %>
+</p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @exam.number %>
+</p>
+
+<p>
+  <strong>Is solution:</strong>
+  <%= @exam.is_solution %>
+</p>
+
+<p>
+  <strong>Semester:</strong>
+  <%= @exam.semester %>
+</p>
+
+<p>
+  <strong>Year:</strong>
+  <%= @exam.year %>
+</p>
+
+<%= link_to 'Edit', edit_exam_path(@exam) %> |
+<%= link_to 'Back', exams_path %>
