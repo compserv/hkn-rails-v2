@@ -1,9 +1,16 @@
+# == Schema Information
 #
-# department :string
-# course_name: string
-# units: integer
-# created_at :datetime
-# updated_at :datetime
+# Table name: courses
+#
+#  id            :integer          not null, primary key
+#  department    :string(255)
+#  course_number :integer
+#  course_prefix :string(255)
+#  course_suffix :string(255)
+#  name          :string(255)
+#  units         :integer
+#  created_at    :datetime
+#  updated_at    :datetime
 #
 
 class Course < ActiveRecord::Base
