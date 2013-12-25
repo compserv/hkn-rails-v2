@@ -10,6 +10,6 @@
 #
 
 class Course < ActiveRecord::Base
-  has_many :klass
-  has_many :course_semester, through: :klass
+  has_many :course_offering
+  has_many :course_semester, through: :course_offering
 end
