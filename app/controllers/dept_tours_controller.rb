@@ -14,6 +14,7 @@ class DeptToursController < ApplicationController
 
   # GET /dept_tours/1
   def show
+    @default_response_text = get_default_response_text(@dept_tour)
   end
 
   # GET /dept_tours/new
@@ -30,7 +31,7 @@ class DeptToursController < ApplicationController
     unless params[:email_confirmation] == params[:dept_tour][:email]
       redirect_to new_dept_tour_path, alert: 'email_confirmation does not match' and return 
     end
-    params[:dept_tour][:responded] = true
+    params[:dept_tour][:responded] = false
     params[:dept_tour][:submitted] = Time.now
     @dept_tour = DeptTour.new(dept_tour_params)
 
@@ -57,6 +58,19 @@ class DeptToursController < ApplicationController
   end
 
   def success
+  end
+
+  def get_default_response_text(dept_tour_request)
+    "Hello #{dept_tour_request.name},
+
+    This email is a confirmation of your requested department tour on #{dept_tour_request.date.strftime("%A, %B %d, at %I:%M %p")}.
+
+    Please meet me, or one of our other officers, at 345 Soda Hall at that time.
+
+    Looking forward to seeing you!
+
+    --#{'@current_user.first_name'}
+    "
   end
 
   private
