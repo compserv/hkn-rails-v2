@@ -15,5 +15,5 @@ class Course < ActiveRecord::Base
   has_many :course_semester, through: :course_offering
 
   validates :department, presence: true
-  validates :name, presence: true
+  validates :course_name, presence: true
 end
