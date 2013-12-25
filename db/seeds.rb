@@ -26,13 +26,16 @@ users.each do |user_info|
 end
 
 # Roles
-officer_roles = [
+execs = [
   "pres",
   "vp",
   "treas",
   "rsec",
   "csec",
   "deprel",
+]
+
+committees = [
   "bridge",
   "act",
   "compserv",
@@ -42,19 +45,28 @@ officer_roles = [
   "alumrel",
 ]
 
-officer_roles.each do |role|
-  new_role = Role.create(name: role, resource_type: "officer")
-  puts "Created new role: #{new_role.name}."
+officer_roles = execs + committees
+
+MemberSemester.all.each do |semester|
+  officer_roles.each do |role|
+    new_role = Role.create(name: role, role_type: "officer", resource_type: MemberSemester.to_s, resource_id: semester.id)
+    puts "Created new officer role: #{new_role.name} for semester: #{semester.name}."
+  end
+
+  committees.each do |role|
+    new_role = Role.create(name: role, role_type: "committee_member", resource_type: MemberSemester.to_s, resource_id: semester.id)
+    puts "Created new committee member role: #{new_role.name} for semester: #{semester.name}."
+  end
 end
 
 officer_to_position = [
-  [User.find(1), :compserv],
-  [User.find(2), :tutoring],
-  [User.find(3), :pres],
+  [User.find(1), Role.current(:compserv)],
+  [User.find(2), Role.current(:tutoring)],
+  [User.find(3), Role.current(:pres)],
 ]
 
 officer_to_position.each do |user, role|
-  semester = current_member_semester
-  user.add_role_for_semester(role, semester)
-  puts "Added role: #{role} to user: #{user.username} for semester: #{semester.name}."
+  semester = MemberSemester.find(role.resource_id)
+  user.add_role_for_semester(role.name, semester)
+  puts "Added role: #{role.name} to user: #{user.username} for semester: #{semester.name}."
 end
