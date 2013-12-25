@@ -22,7 +22,24 @@ class Exam < ActiveRecord::Base
   # has_many staff
   validates :exam_type, presence: true
   validates :year, presence: true
-  validates :semester, inclusion: { in: %w(Summer Spring Winter),
+  validates :semester, inclusion: { in: %w(sp su fa), 
     message: "%{value} is not a valid semester" }
-  has_attached_file :file, :default_url => '/exams'
+  validates :exam_type, inclusion: { in: %w(q mt f), 
+    message: "%{value} is not a valid exam type" }
+
+  has_attached_file :file, :default_url => '/exams',
+    :path => ":rails_root/public/examfiles/:normalized_file_name.:extension",
+    :url => "/examfiles/:normalized_file_name.:extension"
+
+  validates_attachment_presence :file
+
+  Paperclip.interpolates :normalized_file_name do |attachment, style|
+    attachment.instance.normalized_file_name
+  end
+
+  def normalized_file_name
+    # TODO make course_id an abbreviations when courses are added.
+    "#{self.course_id}_#{self.semester}#{self.year % 1000}_" +
+        "#{self.exam_type}#{self.number}/#{self.is_solution ? '' : '_sol'}"
+  end
 end

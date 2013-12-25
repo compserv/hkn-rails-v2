@@ -30,4 +30,4 @@ config/database.yml
 config/initializers/environment_variables.rb
 
 # Don't push files saved on server
-/public/system/
+/public/examfiles/

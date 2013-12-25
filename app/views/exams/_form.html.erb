@@ -10,15 +10,15 @@
   </div>
   <div class="field">
     <%= label_tag "Choose a semester:" %>
-    <%= radio_button :exam, :semester, 'Spring', :checked => true %> Spring
-    <%= radio_button :exam, :semester, 'Summer' %> Summer
-    <%= radio_button :exam, :semester, 'Fall' %> Fall
+    <%= radio_button :exam, :semester, 'sp', :checked => true %> Spring
+    <%= radio_button :exam, :semester, 'su' %> Summer
+    <%= radio_button :exam, :semester, 'fa' %> Fall
   </div>
   <div id="field">
     <%= label_tag "What kind of exam is this?" %>
-    <%= radio_button :exam, :exam_type, 'Quiz' %> Quiz
-    <%= radio_button :exam, :exam_type, 'Midterm', :checked => true %> Midterm
-    <%= radio_button :exam, :exam_type, 'Final' %> Final
+    <%= radio_button :exam, :exam_type, 'q' %> Quiz
+    <%= radio_button :exam, :exam_type, 'mt', :checked => true %> Midterm
+    <%= radio_button :exam, :exam_type, 'f' %> Final
   </div>
   <div class="field">
     <%= label_tag "Which exam is it? (ie. midterm #2)
