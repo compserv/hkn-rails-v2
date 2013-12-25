@@ -1,19 +1,23 @@
 <%= form_for(@dept_tour) do |f| %>
 
   <div class="field">
-    <%= f.label :name %><br>
+    <%= f.label :name, :class => 'required-field' %><br>
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :date %><br>
+    <%= f.label :date, "Desired date & time", :class => 'required-field' %><br>
     <%= f.datetime_select :date %>
   </div>
   <div class="field">
-    <%= f.label :email %><br>
+    <%= f.label :email, :class => 'required-field' %><br>
     <%= f.text_field :email %>
   </div>
   <div class="field">
-    <%= f.label :phone %><br>
+    <%= label_tag :email_confirmation, "Re-type email", :class => 'required-field' %>
+    <%= text_field_tag :email_confirmation %>
+  </div>
+  <div class="field">
+    <%= f.label :phone, :class => 'required-field' %><br>
     <%= f.text_field :phone %>
   </div>
   <div class="field">
