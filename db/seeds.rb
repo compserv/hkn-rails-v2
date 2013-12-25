@@ -14,9 +14,9 @@ current_member_semester = MemberSemester.last
 
 # Users
 users = [
+  ["mark", "mark@mark.com"],
   ["kacasey", "kacasey@berkeley.edu"],
   ["kevintesterbot", "hazedkasey@gmail.com"],
-  ["mark", "mark@mark.com"]
 ]
 
 users.each do |user_info|
@@ -27,22 +27,34 @@ end
 
 # Roles
 officer_roles = [
-  "Pres",
-  "VP",
-  "Treas",
-  "Rsec",
-  "Csec",
-  "Deprel",
-  "Bridge",
-  "Act",
-  "Compserv",
-  "Studrel",
-  "Tutoring",
-  "Serv",
-  "Alumrel",
+  "pres",
+  "vp",
+  "treas",
+  "rsec",
+  "csec",
+  "deprel",
+  "bridge",
+  "act",
+  "compserv",
+  "studrel",
+  "tutoring",
+  "serv",
+  "alumrel",
 ]
 
 officer_roles.each do |role|
   new_role = Role.create(name: role, resource_type: "officer")
   puts "Created new role: #{new_role.name}."
+end
+
+officer_to_position = [
+  [User.find(1), :compserv],
+  [User.find(2), :tutoring],
+  [User.find(3), :pres],
+]
+
+officer_to_position.each do |user, role|
+  semester = current_member_semester
+  user.add_role_for_semester(role, semester)
+  puts "Added role: #{role} to user: #{user.username} for semester: #{semester.name}."
 end
