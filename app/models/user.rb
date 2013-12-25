@@ -29,8 +29,6 @@ class User < ActiveRecord::Base
   has_many :events, through: :rsvps
 
   has_and_belongs_to_many :member_semesters
-  has_many :semester_roles, through: :member_semesters
-  has_many :roles, through: :semester_roles
 
   def rsvp!(event_id)
     rsvps.create!(event_id: event_id)
