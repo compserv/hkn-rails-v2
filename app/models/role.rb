@@ -16,6 +16,11 @@ class Role < ActiveRecord::Base
 
   scopify
 
+  scope :all_current, -> { where(resource_id: MemberSemester.current.id) }
+  scope :officers, -> { where(role_type: "officer") }
+  scope :committee_members, -> { where(role_type: "committee_member") }
+  scope :candidates, -> { where(role_type: "candidate") }
+
   class << self
     def current(position)
       find_by_name_and_resource_id(position, MemberSemester.current.id)
@@ -23,6 +28,22 @@ class Role < ActiveRecord::Base
 
     def position_for_semester(position, semester)
       find_by_name_and_resource_id(position, semester.id)
+    end
+
+    def all_users
+      all.collect { |role| role.users }.flatten
+    end
+
+    def current_officers
+      all_current.officers.all_users
+    end
+
+    def current_committee_members
+      all_current.committee_members.all_users
+    end
+
+    def current_candidates
+      all_current.candidates.all_users
     end
   end
 

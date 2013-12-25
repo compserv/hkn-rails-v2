@@ -30,8 +30,6 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :member_semesters
 
-  scope :current_officers
-
   def rsvp!(event_id)
     rsvps.create!(event_id: event_id)
   end
@@ -64,12 +62,7 @@ class User < ActiveRecord::Base
   end
 
   def is_officer_for_semester?(semester)
-    roles_for_semester(semester).each do |role|
-      if role.is_officer?
-        return true
-      end
-    end
-    return false
+    roles_for_semester(semester).where(role_type: "officer").count > 0
   end
 
 end
