@@ -22,12 +22,12 @@ class Exam < ActiveRecord::Base
   # has_many staff
   validates :exam_type, presence: true
   validates :year, presence: true
-  validates :semester, inclusion: { in: %w(sp su fa), 
+  validates :semester, inclusion: { in: %w(sp su fa),
       message: "%{value} is not a valid semester" }
-  validates :exam_type, inclusion: { in: %w(q mt f), 
+  validates :exam_type, inclusion: { in: %w(q mt f),
       message: "%{value} is not a valid exam type" }
-  validates_uniqueness_of :exam_type, 
-      :scope => [:semester, :number, :is_solution, :year, :course_id], 
+  validates_uniqueness_of :exam_type,
+      :scope => [:semester, :number, :is_solution, :year, :course_id],
       :message => "This exam appears to be in the database already"
 
   has_attached_file :file, :default_url => '/exams',
