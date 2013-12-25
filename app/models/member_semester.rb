@@ -10,4 +10,9 @@
 #
 
 class MemberSemester < ActiveRecord::Base
+
+  def name
+    "#{season} #{year}"
+  end
+
 end
