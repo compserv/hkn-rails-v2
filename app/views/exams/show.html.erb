@@ -20,5 +20,15 @@
   <%= @exam.is_solution %>
 </p>
 
+<p>
+  <strong>Semester:</strong>
+  <%= @exam.semester %>
+</p>
+
+<p>
+  <strong>Year:</strong>
+  <%= @exam.year %>
+</p>
+
 <%= link_to 'Edit', edit_exam_path(@exam) %> |
 <%= link_to 'Back', exams_path %>

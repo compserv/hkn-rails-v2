@@ -1,3 +1,5 @@
 class Exam < ActiveRecord::Base
-  has_attached_file :file, :styles => { :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
+  # TODO belongs_to course
+  # has_many staff
+  has_attached_file :file, :default_url => "/public/images/crossed_out.png"
 end

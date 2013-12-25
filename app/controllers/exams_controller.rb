@@ -1,5 +1,6 @@
 class ExamsController < ApplicationController
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
+  # before_action authorize_stud_rel, only: [:create, :edit, :update, :destroy]
 
   # GET /exams
   def index
@@ -21,6 +22,7 @@ class ExamsController < ApplicationController
 
   # POST /exams
   def create
+    debugger
     @exam = Exam.new(exam_params)
 
     if @exam.save
@@ -53,6 +55,6 @@ class ExamsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def exam_params
-      params.require(:exam).permit(:course_id, :exam_type, :number, :is_solution, :file)
+      params.require(:exam).permit(:course_id, :exam_type, :number, :is_solution, :file, :year, :semester)
     end
 end

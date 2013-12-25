@@ -28,3 +28,6 @@ config/database.yml
 
 # Set up a file for environment variables
 config/initializers/environment_variables.rb
+
+# Don't push files saved on server
+/public/system/
