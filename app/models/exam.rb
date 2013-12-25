@@ -36,6 +36,10 @@ class Exam < ActiveRecord::Base
 
   validates_attachment_presence :file
 
+  validates_attachment_content_type :file,
+      :content_type => { :content_type => ["image/jpg", "image/gif", "image/png", 'application/pdf'] }, 
+      :message => "Oops, please use a jpg/gif/png/pdf"
+
   Paperclip.interpolates :normalized_file_name do |attachment, style|
     attachment.instance.normalized_file_name
   end
@@ -43,6 +47,6 @@ class Exam < ActiveRecord::Base
   def normalized_file_name
     # TODO make course_id an abbreviations when courses are added.
     "#{self.course_id}_#{self.semester}#{self.year}_" +
-        "#{self.exam_type}#{self.number}/#{self.is_solution ? '' : '_sol'}"
+        "#{self.exam_type}#{self.number}#{self.is_solution ? '' : '_sol'}"
   end
 end
