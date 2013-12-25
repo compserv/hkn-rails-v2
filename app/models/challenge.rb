@@ -1,16 +1,16 @@
 # == Schema Information
 #
-# Table name: events
+# Table name: challenges
 #
-#  id                     :integer       not null, primary key
-#  requester_id           :integer       not null
-#  candidate_id           :integer       not null
-#  confirmed              :boolean
-#  rejected               :boolean
-#  name                   :string        not null
-#  description            :text
-#  created_at             :datetime
-#  updated_at             :datetime
+#  id           :integer          not null, primary key
+#  requester_id :integer
+#  candidate_id :integer
+#  confirmed    :boolean
+#  rejected     :boolean
+#  name         :string(255)
+#  description  :text
+#  created_at   :datetime
+#  updated_at   :datetime
 #
 
 class Challenge < ActiveRecord::Base
