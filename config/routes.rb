@@ -1,4 +1,5 @@
 HknRails::Application.routes.draw do
+  get 'dept_tours/success' => 'dept_tours#success', as: 'dept_tours_success'
   resources :dept_tours
 
   resources :exams

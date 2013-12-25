@@ -6,7 +6,7 @@
   </div>
   <div class="field">
     <%= f.label :date, "Desired date & time", :class => 'required-field' %><br>
-    <%= f.datetime_select :date %>
+    <%= f.datetime_select :date, ampm: true, default: Time.now %>
   </div>
   <div class="field">
     <%= f.label :email, :class => 'required-field' %><br>

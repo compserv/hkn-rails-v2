@@ -3,7 +3,13 @@ class DeptToursController < ApplicationController
 
   # GET /dept_tours
   def index
-    @dept_tours = DeptTour.all
+    @dept_tours = DeptTour.order(:responded)
+    @dept_tours_requests_length = DeptTour.where(:responded => true).count
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @dept_tours }
+    end
   end
 
   # GET /dept_tours/1
@@ -24,12 +30,12 @@ class DeptToursController < ApplicationController
     unless params[:email_confirmation] == params[:dept_tour][:email]
       redirect_to new_dept_tour_path, alert: 'email_confirmation does not match' and return 
     end
-    params[:dept_tour][:responded] = false
+    params[:dept_tour][:responded] = true
     params[:dept_tour][:submitted] = Time.now
     @dept_tour = DeptTour.new(dept_tour_params)
 
     if @dept_tour.save
-      redirect_to @dept_tour, notice: 'Dept tour was successfully created.'
+      redirect_to dept_tours_success_path
     else
       redirect_to new_dept_tour_path, alert: "#{@dept_tour.errors.messages}"
     end
@@ -48,6 +54,9 @@ class DeptToursController < ApplicationController
   def destroy
     @dept_tour.destroy
     redirect_to dept_tours_url, notice: 'Dept tour was successfully destroyed.'
+  end
+
+  def success
   end
 
   private

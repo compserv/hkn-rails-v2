@@ -1,4 +1,8 @@
-<h1>Listing dept_tours</h1>
+<h1>
+  There <%= if @dept_tours_requests_length == 1 then 'is' else 'are' end %> 
+  <%= @dept_tours_requests_length %> outstanding or pending department tour 
+  request<%= if @dept_tours_requests_length == 1 then '' else 's' end%>.
+</h1>
 
 <table>
   <thead>

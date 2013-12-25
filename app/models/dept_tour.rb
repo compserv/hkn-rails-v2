@@ -20,4 +20,14 @@ class DeptTour < ActiveRecord::Base
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates_inclusion_of :responded, :in =>[true,false]
   validates_presence_of :submitted
+  validate :valid_date?
+
+  def valid_date?
+    unless (10..17).include?(date.hour) && date > Time.now
+        errors.add(:date, "Refer to our open hours")
+    end 
+    unless date > Time.now
+        errors.add(:date, "Can't be in the past")
+    end
+  end
 end
