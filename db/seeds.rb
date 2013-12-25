@@ -6,6 +6,37 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-User.create(:username => 'kacasey', :email => 'kacasey@berkeley.edu', :password => '12345678', :password_confirmation => '12345678')
-User.create(:username => 'kevintesterbot', :email => 'hazedcasey@gmail.com', :password => '12345678', :password_confirmation => '12345678')
-Role.create(:name => 'compserve', :resource_type => 'officer')
+# Users
+users = [
+  ["kacasey", "kacasey@berkeley.edu"],
+  ["kevintesterbot", "hazedkasey@gmail.com"],
+  ["mark", "mark@mark.com"]
+]
+
+users.each do |user_info|
+  user = User.create(username: user_info[0], email: user_info[1], password: "password", password_confirmation: "password")
+  puts "Created user #{user.id} with username: #{user.username} and email: #{user.email}."
+end
+
+# Roles
+officer_roles = [
+  "Pres",
+  "VP",
+  "Treas",
+  "Rsec",
+  "Csec",
+  "Deprel",
+  "Bridge",
+  "Act",
+  "Compserv",
+  "Studrel",
+  "Tutoring",
+  "Serv",
+  "Alumrel",
+]
+
+officer_roles.each do |role|
+  new_role = Role.create(name: role, resource_type: "officer")
+  puts "Created new role: #{new_role.name}."
+end
+
