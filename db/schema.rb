@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(version: 20131225090427) do
   create_table "course_offerings", force: true do |t|
     t.integer  "course_id"
     t.integer  "course_semester_id"
-    t.integer  "lecture_number"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
