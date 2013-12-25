@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @dept_tour.name %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @dept_tour.date %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @dept_tour.email %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= @dept_tour.phone %>
+</p>
+
+<p>
+  <strong>Submitted:</strong>
+  <%= @dept_tour.submitted %>
+</p>
+
+<p>
+  <strong>Comments:</strong>
+  <%= @dept_tour.comments %>
+</p>
+
+<p>
+  <strong>Responded:</strong>
+  <%= @dept_tour.responded %>
+</p>
+
+<%= link_to 'Edit', edit_dept_tour_path(@dept_tour) %> |
+<%= link_to 'Back', dept_tours_path %>

@@ -36,7 +36,7 @@ class ExamsController < ApplicationController
     if @exam.update(exam_params)
       redirect_to @exam, notice: 'Exam was successfully updated.'
     else
-      render action: 'edit', alert: "#{@exam.errors.messages}"
+      redirect_to edit_exam_path(@exam), alert: "#{@exam.errors.messages}"
     end
   end
 

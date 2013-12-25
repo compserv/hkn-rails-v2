@@ -1,0 +1,2 @@
+module DeptToursHelper
+end
