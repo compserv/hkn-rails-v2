@@ -1,10 +1,11 @@
 class DeptToursController < ApplicationController
   before_action :set_dept_tour, only: [:show, :edit, :update, :destroy, :respond_to_tour]
+  # before_action :authorize_indrel, only: [:show, :edit, :update, :destroy, :respond_to_tour]
 
   # GET /dept_tours
   def index
     @dept_tours = DeptTour.order(:responded)
-    @dept_tours_requests_length = DeptTour.where(:responded => true).count
+    @dept_tours_requests_length = DeptTour.where(:responded => false).count
 
     respond_to do |format|
       format.html # index.html.erb
@@ -79,6 +80,8 @@ class DeptToursController < ApplicationController
   def respond_to_tour
     @dept_tour.responded = true
     @dept_tour.save!
+    mail = DeptTourMailer.dept_tour_response_email(@dept_tour, params[:response], params[:from], params[:ccs])
+    mail.deliver
     redirect_to dept_tour_path(@dept_tour), notice: 'Successfully responded'
   end
 
