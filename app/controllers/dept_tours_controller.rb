@@ -30,14 +30,14 @@ class DeptToursController < ApplicationController
   # POST /dept_tours
   def create
     unless params[:email_confirmation] == params[:dept_tour][:email]
-      redirect_to new_dept_tour_path, alert: 'email_confirmation does not match' and return 
+      redirect_to new_dept_tour_path, alert: 'email_confirmation does not match' and return
     end
     params[:dept_tour][:responded] = false
     params[:dept_tour][:submitted] = Time.now
     @dept_tour = DeptTour.new(dept_tour_params)
 
     if @dept_tour.save
-      mail = DeptTourMailer.dept_tour_email dept_tour_params[:name], @dept_tour.date, dept_tour_params[:email], 
+      mail = DeptTourMailer.dept_tour_email dept_tour_params[:name], @dept_tour.date, dept_tour_params[:email],
           dept_tour_params[:phone], dept_tour_params[:comments]
       mail.deliver
       redirect_to dept_tours_success_path
