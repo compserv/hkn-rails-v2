@@ -26,7 +26,7 @@ class DeptTour < ActiveRecord::Base
     debugger
     unless (10..17).include?(date.hour)
         errors.add(:date, "Refer to our open hours")
-    end 
+    end
     unless date > Time.zone.now
         errors.add(:date, "Can't be in the past")
     end
