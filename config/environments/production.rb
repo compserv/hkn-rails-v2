@@ -75,6 +75,9 @@ HknRails::Application.configure do
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
 
+  # HACK for hkn-rails on hkn.eecs: with tls, it complains about hostname
+  config.action_mailer.smtp_settings = {:enable_starttls_auto => false}
+
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 end
