@@ -1,9 +1,10 @@
 class ResumesController < ApplicationController
   before_action :set_resume, only: [:show, :edit, :update, :destroy]
+  # before_filter :authorize_indrel, :only => [:index, :resume_books, :upload_for, :include, :exclude, :status_list]
 
   # GET /resumes
   def index
-    @resumes = Resume.all
+    @resumes = Resume.includes(:user)
   end
 
   # GET /resumes/1
@@ -21,7 +22,8 @@ class ResumesController < ApplicationController
 
   # POST /resumes
   def create
-    debugger
+    params[:resume][:user_id] = User.first.id # TODO reflect current_user.
+    params[:resume][:included] = false
     @resume = Resume.new(resume_params)
 
     if @resume.save
@@ -54,6 +56,6 @@ class ResumesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def resume_params
-      params.require(:resume).permit(:overall_gpa, :major_gpa, :resume_text, :graduation_year, :graduation_semester, :user_id, :included)
+      params.require(:resume).permit(:overall_gpa, :major_gpa, :resume_text, :graduation_year, :graduation_semester, :user_id, :included, :file)
     end
 end

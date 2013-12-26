@@ -23,7 +23,26 @@ class Resume < ActiveRecord::Base
   validates :overall_gpa, presence: true
   validates :resume_text, :presence => true
   validates :graduation_year, :numericality => true
-  validates :graduation_semester, inclusion: { in: %w(sp fa),
+  validates :graduation_semester, inclusion: { in: %w(Spring Fall),
       message: "%{value} is not a valid semester" }
   validates :included, :inclusion => [true,false]
+
+  has_attached_file :file, :default_url => '/resumes/new',
+      :path => ":rails_root/public/resumes/:normalized_file_name.:extension",
+      :url => "/resumes/:normalized_file_name.:extension"
+
+  validates_attachment_presence :file
+
+  validates_attachment_content_type :file,
+      :content_type => "application/pdf",
+      :message => "Oops, please use a pdf"
+
+
+  Paperclip.interpolates :normalized_file_name do |attachment, style|
+    attachment.instance.normalized_file_name
+  end
+
+  def normalized_file_name
+    "#{self.user.username}/#{self.created_at}"
+  end
 end

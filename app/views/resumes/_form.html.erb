@@ -32,6 +32,10 @@
     <%= f.label :graduation_semester %>
     <%= select :resume, :graduation_semester, options_for_select(%w{ Spring Fall }), :prefix => 'resume' %>
   </div>
+  <div class="field">
+    <%= f.file_field :file %>
+    Please provide a PDF of your résumé. You should contact <a href="mailto:indrel@hkn.eecs.berkeley.edu">indrel@hkn.eecs.berkeley.edu</a> if you can't generate a PDF file.
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

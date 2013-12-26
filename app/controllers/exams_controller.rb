@@ -27,6 +27,7 @@ class ExamsController < ApplicationController
     if @exam.save
       redirect_to @exam, notice: 'Exam was successfully created.'
     else
+      debugger
       redirect_to new_exam_path, alert: "#{@exam.errors.messages}"
     end
   end

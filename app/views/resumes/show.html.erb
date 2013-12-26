@@ -1,5 +1,7 @@
 <p id="notice"><%= notice %></p>
 
+<%= link_to "[resume]", @resume.file.url %>
+
 <p>
   <strong>Overall gpa:</strong>
   <%= @resume.overall_gpa %>
@@ -27,7 +29,7 @@
 
 <p>
   <strong>User:</strong>
-  <%= @resume.user_id %>
+  <%= @resume.user.username %>
 </p>
 
 <p>
