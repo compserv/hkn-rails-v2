@@ -25,8 +25,8 @@ input[type=submit]{
   -webkit-box-shadow: 0 1px 5px #ccc;
   text-shadow: 0 -1px 1px #444;
   border: 1px solid #787878;
-  border-radius: 8px; 
-  -moz-border-radius: 8px; 
+  border-radius: 8px;
+  -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
   position: relative;
   cursor: pointer;
@@ -34,7 +34,7 @@ input[type=submit]{
 input[type=submit]:hover{
   background-color: #777;
   text-shadow: 0 -1px 1px #222;
-  
+
 }
 input.short { width: 100px;}
 input.long  { width: 200px; }
@@ -68,7 +68,7 @@ table { border-collapse: collapse; width: 100%; }
 th, td { padding: 4px; vertical-align: top; text-align: left; }
 th {
   border: 1px solid #ddd;
-  background-color: #403f3f; 
+  background-color: #403f3f;
   color: white;
 }
 th a{
@@ -84,8 +84,12 @@ td { border: 1px dashed #ddd; padding: 2px 4px; }
 .two-column { width: 45%; float: left; }
 .right-column { float: right; }
 ul.plain { list-style: none; margin-top: 0; margin-left: 0; padding-left: 1em; text-indent: -1em; }
-.center { text-align: center; }
-.clear{
+
+.center {
+  text-align: center;
+}
+
+.clear {
   clear:both;
 }
 
@@ -97,18 +101,21 @@ ul.plain { list-style: none; margin-top: 0; margin-left: 0; padding-left: 1em; t
   line-height: 0;
   height: 0;
 }
+
 .clearfix {
   display: inline-block;
 }
+
 html[xmlns] .clearfix {
   display: block;
 }
+
 * html .clearfix {
   height: 1%;
 }
 
 /*** Main Layout ***/
-body{
+body {
   background: url(<%= asset_path 'back_gray.png' %>);
   font-family: "Puritan", "Lucinda Grande", Helvetica, Arial, serif;
   font-size: 0.9em;
@@ -116,37 +123,37 @@ body{
   color: #403f3f;
 }
 
-h1{
+h1 {
   font-size: 1.4em;
   text-shadow: white 0px -2px 0px;
 }
 
-h2{
+h2 {
   font-size: 1.2em;
   text-shadow: white 0px -2px 0px;
   margin-bottom: 0.1em;
 }
 
-h3{
+h3 {
   font-size: 1.1em;
   text-shadow: white 0px -2px 0px;
   margin-bottom: 0.1em;
 }
 
-h4{
+h4 {
   font-size: 1em;
   text-shadow: white 0px -2px 0px;
   margin-bottom: 0.1em;
 }
 
-#wrapper{
+#wrapper {
   min-height: 100%;
   height: auto !important;
   height: 100%;
   margin: 0 auto -30px; /* the bottom margin is the negative value of the footer's height */
 }
 /* Header */
-#navigation{
+#navigation {
   width: 100%;
   background: #403f3f url(<%= asset_path 'back_dark.png' %>);
   color: white;
@@ -154,13 +161,12 @@ h4{
   font-size: 1.2em;
 }
 
-#navigation ul{
+#navigation ul {
   margin: 0px;
   padding: 8px 50px;
 }
 
-#navigation li{
-  
+#navigation li {
   list-style-type: none;
   display: inline-block;
   padding-right: 1em;

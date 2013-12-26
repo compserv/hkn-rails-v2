@@ -29,7 +29,7 @@ HknRails::Application.configure do
     user_name:            'hazedcasey@gmail.com',
     password:             'yuyulol123',
     authentication:       'plain',
-    enable_starttls_auto: true  
+    enable_starttls_auto: true
   }
 =end
 

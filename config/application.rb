@@ -20,7 +20,7 @@ module HknRails
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.time_zone = 'Pacific Time (US & Canada)'
-    
+
     config.generators do |g|
       g.test_framework  :rspec, fixture: false
       g.view_specs      false

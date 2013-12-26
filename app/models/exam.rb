@@ -37,7 +37,7 @@ class Exam < ActiveRecord::Base
   validates_attachment_presence :file
 
   validates_attachment_content_type :file,
-      :content_type => { :content_type => ["image/jpg", "image/gif", "image/png", 'application/pdf'] }, 
+      :content_type => { :content_type => ["image/jpg", "image/gif", "image/png", 'application/pdf'] },
       :message => "Oops, please use a jpg/gif/png/pdf"
 
   Paperclip.interpolates :normalized_file_name do |attachment, style|
