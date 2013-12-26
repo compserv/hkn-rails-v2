@@ -23,10 +23,10 @@ class DeptTour < ActiveRecord::Base
   validate :valid_date?
 
   def valid_date?
-    unless (10..17).include?(date.hour) && date > Time.now
+    unless (10..17).include?(date.hour)
         errors.add(:date, "Refer to our open hours")
     end 
-    unless date > Time.now
+    unless date > Time.zone.now
         errors.add(:date, "Can't be in the past")
     end
   end

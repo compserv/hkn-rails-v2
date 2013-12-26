@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Department Tour Request by <%= @name %></h1>
+    <p>
+      Hello committeepersons, a department tour has been requested by <%= @name %> on <%= @date %>.
+
+    </p>
+	<% if not @comments.empty? %>
+	<p>They had the following special comments:</p>
+    <p>
+      <%= @comments %>
+    </p>
+	<% end %>
+	
+	<p>You can reach them at <a href="mailto:<%= @email_address %>"><%= @email_address %></a> <% if not @phone.empty? %> or call them at <%= @phone %><% end %>.</p>
+  </body>
+</html>

@@ -36,6 +36,9 @@ class DeptToursController < ApplicationController
     @dept_tour = DeptTour.new(dept_tour_params)
 
     if @dept_tour.save
+      mail = DeptTourMailer.dept_tour_email dept_tour_params[:name], @dept_tour.date, dept_tour_params[:email], 
+          dept_tour_params[:phone], dept_tour_params[:comments]
+      mail.deliver
       redirect_to dept_tours_success_path
     else
       redirect_to new_dept_tour_path, alert: "#{@dept_tour.errors.messages}"
