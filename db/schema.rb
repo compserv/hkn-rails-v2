@@ -115,16 +115,6 @@ ActiveRecord::Schema.define(version: 20131225090427) do
 
   add_index "rsvps", ["user_id", "event_id"], name: "index_rsvps_on_user_id_and_event_id", using: :btree
 
-  create_table "semester_roles", force: true do |t|
-    t.integer  "member_semester_id"
-    t.integer  "role_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "semester_roles", ["member_semester_id"], name: "index_semester_roles_on_member_semester_id", using: :btree
-  add_index "semester_roles", ["role_id"], name: "index_semester_roles_on_role_id", using: :btree
-
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
