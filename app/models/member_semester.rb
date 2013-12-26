@@ -10,4 +10,17 @@
 #
 
 class MemberSemester < ActiveRecord::Base
+  has_and_belongs_to_many :users
+
+  class << self
+    def current
+      # TODO(mark): This isn't always the case, but works for now.
+      last
+    end
+  end
+
+  def name
+    "#{season} #{year}"
+  end
+
 end

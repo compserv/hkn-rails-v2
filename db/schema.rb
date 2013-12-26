@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131225001713) do
+ActiveRecord::Schema.define(version: 20131225090427) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,12 +58,21 @@ ActiveRecord::Schema.define(version: 20131225001713) do
     t.datetime "updated_at"
   end
 
+  create_table "member_semesters_users", force: true do |t|
+    t.integer "member_semester_id"
+    t.integer "user_id"
+  end
+
+  add_index "member_semesters_users", ["member_semester_id"], name: "index_member_semesters_users_on_member_semester_id", using: :btree
+  add_index "member_semesters_users", ["user_id"], name: "index_member_semesters_users_on_user_id", using: :btree
+
   create_table "roles", force: true do |t|
     t.string   "name"
     t.integer  "resource_id"
     t.string   "resource_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "role_type"
   end
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
@@ -81,6 +90,16 @@ ActiveRecord::Schema.define(version: 20131225001713) do
   end
 
   add_index "rsvps", ["user_id", "event_id"], name: "index_rsvps_on_user_id_and_event_id", using: :btree
+
+  create_table "semester_roles", force: true do |t|
+    t.integer  "member_semester_id"
+    t.integer  "role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "semester_roles", ["member_semester_id"], name: "index_semester_roles_on_member_semester_id", using: :btree
+  add_index "semester_roles", ["role_id"], name: "index_semester_roles_on_role_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
