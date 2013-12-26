@@ -27,6 +27,30 @@ ActiveRecord::Schema.define(version: 20131225090427) do
     t.datetime "updated_at"
   end
 
+  create_table "course_offerings", force: true do |t|
+    t.integer  "course_id"
+    t.integer  "course_semester_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "course_offerings", ["course_id", "course_semester_id"], name: "index_course_offerings_on_course_id_and_course_semester_id", using: :btree
+
+  create_table "course_semesters", force: true do |t|
+    t.string   "season"
+    t.integer  "year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "courses", force: true do |t|
+    t.string   "department"
+    t.string   "course_name"
+    t.integer  "units"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "events", force: true do |t|
     t.string   "title"
     t.string   "description"
