@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
 
   has_many :rsvps
   has_many :events, through: :rsvps
+  has_many :resumes
 
   has_and_belongs_to_many :member_semesters
 

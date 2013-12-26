@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Overall gpa:</strong>
+  <%= @resume.overall_gpa %>
+</p>
+
+<p>
+  <strong>Major gpa:</strong>
+  <%= @resume.major_gpa %>
+</p>
+
+<p>
+  <strong>Resume text:</strong>
+  <%= @resume.resume_text %>
+</p>
+
+<p>
+  <strong>Graduation year:</strong>
+  <%= @resume.graduation_year %>
+</p>
+
+<p>
+  <strong>Graduation semester:</strong>
+  <%= @resume.graduation_semester %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @resume.user_id %>
+</p>
+
+<p>
+  <strong>Included:</strong>
+  <%= @resume.included %>
+</p>
+
+<%= link_to 'Edit', edit_resume_path(@resume) %> |
+<%= link_to 'Back', resumes_path %>
