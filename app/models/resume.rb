@@ -20,7 +20,8 @@
 
 class Resume < ActiveRecord::Base
   belongs_to :user
-  validates :overall_gpa, presence: true
+  validates :overall_gpa, :presence => true, :numericality => true
+  validates :overall_gpa, :numericality => true
   validates :resume_text, :presence => true
   validates :graduation_year, :numericality => true
   validates :graduation_semester, inclusion: { in: %w(Spring Fall),
@@ -37,6 +38,11 @@ class Resume < ActiveRecord::Base
       :content_type => "application/pdf",
       :message => "Oops, please use a pdf"
 
+  validate :valid_gpas?
+
+  default_scope :order => 'resumes.created_at DESC'
+  # so we can just pick out the 'first' of the resumes to get the most recent
+
 
   Paperclip.interpolates :normalized_file_name do |attachment, style|
     attachment.instance.normalized_file_name
@@ -44,5 +50,17 @@ class Resume < ActiveRecord::Base
 
   def normalized_file_name
     "#{self.user.username}/#{self.created_at}"
+  end
+
+  def valid_gpas?
+    unless overall_gpa >= 0 && overall_gpa <= 4
+      errors.add(:overall_gpa, "Please use a valid gpa")
+    end
+    unless graduation_year >= 1915 && graduation_year <= 2037
+      errors.add(:graduation_year, "Please use a valid graduation_year")
+    end
+    if major_gpa && (major_gpa < 0.0 || major_gpa > 4.0)
+      errors.add(:major_gpa, "If included please use a valid gpa")
+    end
   end
 end
