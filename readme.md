@@ -6,7 +6,11 @@ You will need Ruby 2.0.0 and Rails 4.0. Once you have both of those installed, y
 
     bundle install
 
-If you do not yet have it installed and configured, you will also need postgresql. On Ubuntu, run:
+If you do not yet have it installed and configured, you will also need postgresql.
+
+#### Extra Instuctions for Ubuntu
+
+Run the following:
 
     sudo apt-get install postgresql
 
@@ -26,8 +30,7 @@ If you have created an account for yourself, also run
 
     \password [login]
 
-to set your own password.j
-
+to set your own password.
 
 ### Setting up your database
 
@@ -45,7 +48,7 @@ Now, create the database by running:
 
     createdb hkn_rails_development
 
-If it doesn't work under your login, you can try it under the postgres login:
+If you're running Ubuntu and it doesn't work under your login, you can try it under the postgres login:
 
     sudo -u postgres createdb hkn_rails_development
 
@@ -53,7 +56,7 @@ Don't worry, this file is not commmitted to git so you can add whatever keys you
 
     rake db:migrate
 
-You also may need to run
+You also may need to run the following if you're on Ubuntu:
 
     rake db:migrate RAILS_ENV=development
 
