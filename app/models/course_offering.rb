@@ -12,6 +12,7 @@
 class CourseOffering < ActiveRecord::Base
   belongs_to :course
   belongs_to :course_semester
+  has_many :course_staff_member
 
   validates :course_id, presence: true
   validates :course_semester_id, presence: true

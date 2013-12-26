@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131226180833) do
+ActiveRecord::Schema.define(version: 20131226220426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,16 @@ ActiveRecord::Schema.define(version: 20131226180833) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "course_staff_members", force: true do |t|
+    t.integer  "course_offering_id"
+    t.integer  "staff_member_id"
+    t.string   "staff_role"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "course_staff_members", ["course_offering_id", "staff_member_id"], name: "index_course_staff_on_course_offering_and_staff_member_ids", using: :btree
 
   create_table "courses", force: true do |t|
     t.string   "department"
@@ -144,6 +154,13 @@ ActiveRecord::Schema.define(version: 20131226180833) do
   end
 
   add_index "rsvps", ["user_id", "event_id"], name: "index_rsvps_on_user_id_and_event_id", using: :btree
+
+  create_table "staff_members", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
