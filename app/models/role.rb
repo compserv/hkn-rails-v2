@@ -8,6 +8,7 @@
 #  resource_type :string(255)
 #  created_at    :datetime
 #  updated_at    :datetime
+#  role_type     :string(255)
 #
 
 class Role < ActiveRecord::Base

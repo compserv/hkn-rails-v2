@@ -1,0 +1,43 @@
+<h1>
+  There <%= if @dept_tours_requests_length == 1 then 'is' else 'are' end %> 
+  <%= @dept_tours_requests_length %> outstanding or pending department tour 
+  request<%= if @dept_tours_requests_length == 1 then '' else 's' end%>.
+</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Submitted</th>
+      <th>Comments</th>
+      <th>Responded</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dept_tours.each do |dept_tour| %>
+      <tr>
+        <td><%= dept_tour.name %></td>
+        <td><%= dept_tour.date %></td>
+        <td><%= dept_tour.email %></td>
+        <td><%= dept_tour.phone %></td>
+        <td><%= dept_tour.submitted %></td>
+        <td><%= dept_tour.comments %></td>
+        <td><%= dept_tour.responded %></td>
+        <td><%= link_to dept_tour.responded ? 'Show' : 'Show and Respond', dept_tour %></td>
+        <td><%= link_to 'Edit', edit_dept_tour_path(dept_tour) %></td>
+        <td><%= link_to 'Destroy', dept_tour, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Dept tour', new_dept_tour_path %>

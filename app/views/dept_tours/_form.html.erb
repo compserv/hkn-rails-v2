@@ -1,0 +1,38 @@
+<%= form_for(@dept_tour) do |f| %>
+
+  <div class="field">
+    <%= f.label :name, :class => 'required-field' %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :date, "Desired date & time", :class => 'required-field' %><br>
+    <%= f.datetime_select :date, ampm: true, default: Time.now %>
+  </div>
+  <div class="field">
+    <%= f.label :email, :class => 'required-field' %><br>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= label_tag :email_confirmation, "Re-type email", :class => 'required-field' %>
+    <%= text_field_tag :email_confirmation %>
+  </div>
+  <div class="field">
+    <%= f.label :phone, :class => 'required-field' %><br>
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label :comments %><br>
+    <%= f.text_area :comments %>
+  </div>
+  <% if @dept_tour.id %>
+    <div class="control-group">
+      <%= f.label :responded %>
+      <div class="controls">
+        <%= f.check_box :responded, :class => 'check_box', :checked => @dept_tour.responded ? true : false %>
+      </div>
+    </div>
+  <% end %>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
