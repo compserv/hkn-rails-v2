@@ -15,5 +15,5 @@ HknRails::Application.routes.draw do
   get 'candidate/autocomplete_officer_name' => 'candidate#autocomplete_officer_name', as: 'autocomplete_officer_name'
 
   root to: "pages#home"
-  get 'about/contact' => 'static#contact'
+  get 'about/contact' => 'pages#contact'
 end
