@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131227005932) do
+ActiveRecord::Schema.define(version: 20131227024753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,8 @@ ActiveRecord::Schema.define(version: 20131227005932) do
     t.integer  "number_responses"
     t.datetime "survey_time"
   end
+
+  add_index "course_surveys", ["course_offering_id"], name: "index_course_surveys_on_course_offering_id", using: :btree
 
   create_table "courses", force: true do |t|
     t.string   "department"
@@ -147,6 +149,8 @@ ActiveRecord::Schema.define(version: 20131227005932) do
     t.datetime "updated_at"
   end
 
+  add_index "survey_question_responses", ["survey_question_id"], name: "index_survey_question_responses_on_survey_question_id", using: :btree
+
   create_table "survey_questions", force: true do |t|
     t.integer  "course_survey_id"
     t.string   "question_text"
@@ -155,6 +159,8 @@ ActiveRecord::Schema.define(version: 20131227005932) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "survey_questions", ["course_survey_id"], name: "index_survey_questions_on_course_survey_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
