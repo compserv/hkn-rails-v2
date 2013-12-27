@@ -5,12 +5,12 @@
 #  id                 :integer          not null, primary key
 #  max_surveyors      :integer
 #  status             :string(255)
-#  time               :string(255)
 #  staff_id           :integer
 #  course_offering_id :integer
 #  created_at         :datetime
 #  updated_at         :datetime
 #  number_responses   :integer
+#  survey_time        :datetime
 #
 
 require 'spec_helper'

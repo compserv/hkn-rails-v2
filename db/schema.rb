@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131227000935) do
+ActiveRecord::Schema.define(version: 20131227005932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,12 +46,12 @@ ActiveRecord::Schema.define(version: 20131227000935) do
   create_table "course_surveys", force: true do |t|
     t.integer  "max_surveyors"
     t.string   "status"
-    t.string   "time"
     t.integer  "staff_id"
     t.integer  "course_offering_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "number_responses"
+    t.datetime "survey_time"
   end
 
   create_table "courses", force: true do |t|
@@ -151,7 +151,7 @@ ActiveRecord::Schema.define(version: 20131227000935) do
     t.integer  "course_survey_id"
     t.string   "question_text"
     t.string   "keyword"
-    t.integer  "mean_score"
+    t.float    "mean_score"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

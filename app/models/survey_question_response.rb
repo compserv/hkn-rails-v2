@@ -13,5 +13,5 @@ class SurveyQuestionResponse < ActiveRecord::Base
   belongs_to :survey_question
 
   validates :survey_question_id, presence: true
-  validates :rating
+  validates :rating, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 7 }
 end

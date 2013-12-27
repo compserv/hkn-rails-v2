@@ -6,7 +6,7 @@
 #  course_survey_id :integer
 #  question_text    :string(255)
 #  keyword          :string(255)
-#  mean_score       :integer
+#  mean_score       :float
 #  created_at       :datetime
 #  updated_at       :datetime
 #
