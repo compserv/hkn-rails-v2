@@ -18,6 +18,9 @@ class CourseStaffMember < ActiveRecord::Base
   has_many :course_surveys
 
   validates :staff_role, presence: true
+  validates :course_id, presence: true
+  validates :course_offering_id, presence: true
+  validates :course_semester_id, presence: true
 
   def add_survey
     course_surveys.create!(staff_member_id: staff_member_id,
