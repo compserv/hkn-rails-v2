@@ -20,10 +20,10 @@
 
 class Resume < ActiveRecord::Base
   belongs_to :user
-  validates :overall_gpa, :presence => true, :numericality => true
-  validates :overall_gpa, :numericality => true
+  validates :overall_gpa, :presence => true, :numericality => { greater_than_or_equal_to: 0, less_than_or_equal_to: 4 }
+  validates :major_gpa, :numericality => { greater_than_or_equal_to: 0, less_than_or_equal_to: 4 }
   validates :resume_text, :presence => true
-  validates :graduation_year, :numericality => true
+  validates :graduation_year, :numericality => { greater_than_or_equal_to: 1915, less_than_or_equal_to: 2037 }
   validates :graduation_semester, inclusion: { in: %w(Spring Fall),
       message: "%{value} is not a valid semester" }
   validates :included, :inclusion => [true,false]
@@ -38,8 +38,6 @@ class Resume < ActiveRecord::Base
       :content_type => "application/pdf",
       :message => "Oops, please use a pdf"
 
-  validate :valid_gpas?
-
   default_scope :order => 'resumes.created_at DESC'
   # so we can just pick out the 'first' of the resumes to get the most recent
 
@@ -50,17 +48,5 @@ class Resume < ActiveRecord::Base
 
   def normalized_file_name
     "#{self.user.username}/#{self.created_at}"
-  end
-
-  def valid_gpas?
-    unless overall_gpa >= 0 && overall_gpa <= 4
-      errors.add(:overall_gpa, "Please use a valid gpa")
-    end
-    unless graduation_year >= 1915 && graduation_year <= 2037
-      errors.add(:graduation_year, "Please use a valid graduation_year")
-    end
-    if major_gpa && (major_gpa < 0.0 || major_gpa > 4.0)
-      errors.add(:major_gpa, "If included please use a valid gpa")
-    end
   end
 end
