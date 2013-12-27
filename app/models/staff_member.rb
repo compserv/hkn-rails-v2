@@ -10,10 +10,16 @@
 #
 
 class StaffMember < ActiveRecord::Base
-  has_many :course_staff_member
-  has_many :course_survey, through: :course_staff_member
+  has_many :course_staff_members
+  has_many :course_surveys, through: :course_staff_members
+
+  after_initialize :init
 
   def find_surveys_by_semester(course_semester)
-    return course_survey.where("course_surveys.course_semester_id = #{course_semester.id}")
+    return course_surveys.where("course_surveys.course_semester_id = #{course_semester.id}")
+  end
+
+  def init
+    self.release_ta_surveys = false
   end
 end

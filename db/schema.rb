@@ -175,6 +175,7 @@ ActiveRecord::Schema.define(version: 20131227030959) do
   create_table "staff_members", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
+    t.boolean  "release_ta_surveys"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

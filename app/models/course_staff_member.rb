@@ -15,12 +15,12 @@
 class CourseStaffMember < ActiveRecord::Base
   belongs_to :course_offering
   belongs_to :staff_member
-  has_many :course_survey
+  has_many :course_surveys
 
   validates :staff_role, presence: true
 
   def add_survey
-    course_survey.create!(staff_member_id: staff_member_id,
+    course_surveys.create!(staff_member_id: staff_member_id,
                           course_offering_id: course_offering.id,
                           course_id: course_id,
                           course_semester_id: course_semester_id)
