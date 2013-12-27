@@ -3,6 +3,8 @@ class CreateCourseStaffMembers < ActiveRecord::Migration
     create_table :course_staff_members do |t|
       t.integer :course_offering_id
       t.integer :staff_member_id
+      t.integer :course_semester_id
+      t.integer :course_id
       t.string :staff_role
 
       t.timestamps

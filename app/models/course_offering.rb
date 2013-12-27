@@ -13,7 +13,16 @@ class CourseOffering < ActiveRecord::Base
   belongs_to :course
   belongs_to :course_semester
   has_many :course_staff_member
+  has_many :course_survey, through: :course_staff_member
 
   validates :course_id, presence: true
   validates :course_semester_id, presence: true
+
+  def add_instructor(staff_member, staff_role)
+    course_staff_member.create!(staff_member_id: staff_member.id,
+                                course_id: course_id,
+                                course_semester_id: course_semester_id,
+                                course_offering_id: id,
+                                staff_role: staff_role)
+  end
 end

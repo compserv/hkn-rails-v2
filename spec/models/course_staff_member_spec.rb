@@ -2,12 +2,14 @@
 #
 # Table name: course_staff_members
 #
-#  id                   :integer          not null, primary key
-#  course_offering_id   :integer
-#  staff_member_user_id :integer
-#  staff_role           :string(255)
-#  created_at           :datetime
-#  updated_at           :datetime
+#  id                 :integer          not null, primary key
+#  course_offering_id :integer
+#  staff_member_id    :integer
+#  course_semester_id :integer
+#  course_id          :integer
+#  staff_role         :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
 #
 
 require 'spec_helper'
