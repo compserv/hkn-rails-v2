@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131226094049) do
+ActiveRecord::Schema.define(version: 20131227024753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,19 @@ ActiveRecord::Schema.define(version: 20131226094049) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "course_surveys", force: true do |t|
+    t.integer  "max_surveyors"
+    t.string   "status"
+    t.integer  "staff_id"
+    t.integer  "course_offering_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "number_responses"
+    t.datetime "survey_time"
+  end
+
+  add_index "course_surveys", ["course_offering_id"], name: "index_course_surveys_on_course_offering_id", using: :btree
 
   create_table "courses", force: true do |t|
     t.string   "department"
@@ -128,6 +141,26 @@ ActiveRecord::Schema.define(version: 20131226094049) do
   end
 
   add_index "rsvps", ["user_id", "event_id"], name: "index_rsvps_on_user_id_and_event_id", using: :btree
+
+  create_table "survey_question_responses", force: true do |t|
+    t.integer  "survey_question_id"
+    t.integer  "rating"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "survey_question_responses", ["survey_question_id"], name: "index_survey_question_responses_on_survey_question_id", using: :btree
+
+  create_table "survey_questions", force: true do |t|
+    t.integer  "course_survey_id"
+    t.string   "question_text"
+    t.string   "keyword"
+    t.float    "mean_score"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "survey_questions", ["course_survey_id"], name: "index_survey_questions_on_course_survey_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
