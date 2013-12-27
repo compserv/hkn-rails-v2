@@ -1,12 +1,12 @@
 <%= form_for(@exam) do |f| %>
 
   <div class="field">
-    <%= f.label :course_id %><br>
+    <%= f.label :course_id %>
     <%= f.number_field :course_id %>
   </div>
   <div id="field">
     <%= label_tag "Enter the year:" %>
-    <%= f.number_field :year %>
+    <%= select_year Date.today, :field_name => :year, :prefix => 'exam', :end_year => 1915, :start_year => Date.today.year %>
   </div>
   <div class="field">
     <%= label_tag "Choose a semester:" %>
@@ -21,10 +21,9 @@
     <%= radio_button :exam, :exam_type, 'f' %> Final
   </div>
   <div class="field">
-    <%= label_tag "Which exam is it? (ie. midterm #2)
-                     Enter in a number.  If it is the only
-                     exam of its type, leave this field blank." %>
-    <%= f.number_field :number %>
+    <%= label_tag "Which exam is it?" %>
+    <%= f.number_field :number %> (ie. midterm #2) Enter in a number.  If it is the only
+                     exam of its type, leave this field blank."
   </div>
   <div class="field">
     <%= label_tag "Is this a solution?" %>

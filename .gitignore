@@ -31,3 +31,4 @@ config/initializers/environment_variables.rb
 
 # Don't push files saved on server
 /public/examfiles/
+/public/resumes/

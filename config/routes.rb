@@ -1,4 +1,6 @@
 HknRails::Application.routes.draw do
+  resources :resumes
+
   get 'dept_tours/success' => 'dept_tours#success', as: 'dept_tours_success'
   post 'dept_tours/:id' => 'dept_tours#respond_to_tour'
   resources :dept_tours

@@ -23,7 +23,6 @@ class DeptTour < ActiveRecord::Base
   validate :valid_date?
 
   def valid_date?
-    debugger
     unless (10..17).include?(date.hour)
         errors.add(:date, "Refer to our open hours")
     end

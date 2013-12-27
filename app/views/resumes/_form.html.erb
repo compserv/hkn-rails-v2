@@ -1,0 +1,42 @@
+<%= form_for(@resume) do |f| %>
+  <% if @resume.errors.any? %>
+    <div id="errorExplanation">
+      <h2><%= pluralize(@resume.errors.count, "error") %> prohibited this resume from being saved:</h2>
+
+      <ul>
+      <% @resume.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :overall_gpa %>
+    <%= f.text_field :overall_gpa %>
+  </div>
+  <div class="field">
+    <%= f.label :major_gpa %>
+    <%= f.text_field :major_gpa %>(optional)
+  </div>
+  <div class="field">
+    <%= f.label :resume_text %>
+    <%= f.text_area :resume_text %>
+    Paste the contents of your résumé (used for searching).
+  </div>
+  <div class="field">
+    <%= f.label :graduation_year %>
+    <%= select_year 1.year.from_now, :field_name => 'graduation_year', :prefix => 'resume' %>
+  </div>
+  <div class="field">
+    <%= f.label :graduation_semester %>
+    <%= select :resume, :graduation_semester, options_for_select(%w{ Spring Fall }), :prefix => 'resume' %>
+  </div>
+  <div class="field">
+    <%= f.file_field :file %>
+    Please provide a PDF of your résumé. You should contact <a href="mailto:indrel@hkn.eecs.berkeley.edu">indrel@hkn.eecs.berkeley.edu</a> if you can't generate a PDF file.
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

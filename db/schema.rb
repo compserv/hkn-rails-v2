@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131226094049) do
+ActiveRecord::Schema.define(version: 20131226180833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,22 @@ ActiveRecord::Schema.define(version: 20131226094049) do
 
   add_index "member_semesters_users", ["member_semester_id"], name: "index_member_semesters_users_on_member_semester_id", using: :btree
   add_index "member_semesters_users", ["user_id"], name: "index_member_semesters_users_on_user_id", using: :btree
+
+  create_table "resumes", force: true do |t|
+    t.decimal  "overall_gpa"
+    t.decimal  "major_gpa"
+    t.text     "resume_text"
+    t.integer  "graduation_year"
+    t.string   "graduation_semester"
+    t.integer  "user_id"
+    t.boolean  "included"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+  end
 
   create_table "roles", force: true do |t|
     t.string   "name"
