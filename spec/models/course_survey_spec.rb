@@ -31,12 +31,12 @@ describe CourseSurvey do
   it { should be_valid }
 
   describe "when negative responses" do
-    before { course_survey.number_responses = -1 }
+    before { @course_survey.number_responses = -1 }
     it { should_not be_valid }
   end
 
   describe "when no ID" do
-    before { course_survey.course_offering_id = nil }
+    before { @course_survey.course_offering_id = nil }
     it { should_not be_valid }
   end
 
