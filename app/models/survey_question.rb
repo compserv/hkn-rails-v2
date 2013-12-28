@@ -12,7 +12,7 @@
 #
 
 class SurveyQuestion < ActiveRecord::Base
-  has_many :survey_question_response
+  has_many :survey_question_responses
   belongs_to :course_survey
 
   validates :course_survey_id, presence:true
