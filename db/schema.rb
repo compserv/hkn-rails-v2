@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131228134017) do
+ActiveRecord::Schema.define(version: 20131228142331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,8 @@ ActiveRecord::Schema.define(version: 20131228134017) do
     t.datetime "updated_at"
   end
 
+  add_index "elections", ["member_semester_id"], name: "index_elections_on_member_semester_id", using: :btree
+
   create_table "events", force: true do |t|
     t.string   "title"
     t.string   "description"
@@ -153,11 +155,17 @@ ActiveRecord::Schema.define(version: 20131228134017) do
     t.datetime "updated_at"
   end
 
+  add_index "position_users", ["position_id"], name: "index_position_users_on_position_id", using: :btree
+  add_index "position_users", ["user_id"], name: "index_position_users_on_user_id", using: :btree
+
   create_table "positions", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "election_id"
   end
+
+  add_index "positions", ["election_id"], name: "index_positions_on_election_id", using: :btree
 
   create_table "resumes", force: true do |t|
     t.decimal  "overall_gpa"
