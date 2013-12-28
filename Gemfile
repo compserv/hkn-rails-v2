@@ -38,12 +38,13 @@ group :development, :test do
   gem 'hirb', '0.7.1'
   gem 'airbrake', '3.1.14'
   gem 'rails_best_practices', '1.14.4'
+  gem 'rspec-rails', '2.13.1'
 end
 
 group :test do
   gem 'rspec-rails', '2.13.1'
   gem 'factory_girl_rails', '4.2.0'
-  gem 'selenium-webdriver', '2.0.0'
+  gem 'selenium-webdriver', '~> 2.35.1'
   gem 'capybara', '2.1.0'
   gem 'database_cleaner', github: 'bmabey/database_cleaner'
 end

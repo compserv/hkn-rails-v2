@@ -14,5 +14,18 @@
 require 'spec_helper'
 
 describe SurveyQuestion do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before do
+    @question = SurveyQuestion.new(question_text:"Rate the overall teaching effectiveness of this instructor",
+                                   keyword: "prof_eff", mean_score: 5.6, course_survey_id: 1)
+  end
+
+  subject { @question }
+
+  it { should respond_to(:question_text) }
+  it { should respond_to(:keyword) }
+  it { should respond_to(:mean_score) }
+  it { should respond_to(:course_survey_id) }
+  it { should be_valid }
+
+  #TODO: Make sure keywords are within a certain set, yet TBD.
 end
