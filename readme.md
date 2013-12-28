@@ -73,3 +73,11 @@ To run all the tests, simply run:
 To run a specific test, just run:
 
     rspec path/to/spec/file.rb
+
+You may need to set up your test database, to do so, run:
+
+    createdb hkn_rails_test
+
+Then run the migrations:
+
+    rake db:migrate RAILS_ENV=test
