@@ -15,6 +15,7 @@
 
 class CourseSurvey < ActiveRecord::Base
   belongs_to :course_staff_member
+  has_many :survey_questions
 
   validates :course_id, presence: true
   validates :course_offering_id, presence: true
