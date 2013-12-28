@@ -10,8 +10,11 @@
 #  course_semester_id     :integer
 #  created_at             :datetime
 #  updated_at             :datetime
+#  survey_time            :datetime
+#  status                 :string(255)
+#  max_surveyors          :integer
+#  number_responses       :integer
 #
-
 
 class CourseSurvey < ActiveRecord::Base
   belongs_to :course_staff_member
@@ -22,4 +25,5 @@ class CourseSurvey < ActiveRecord::Base
   validates :course_semester_id, presence: true
   validates :staff_member_id, presence: true
   validates :course_staff_member_id, presence: true
+  validates :number_responses, numericality: { greater_than_or_equal_to: 0 }
 end

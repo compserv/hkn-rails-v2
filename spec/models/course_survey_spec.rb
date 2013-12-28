@@ -10,14 +10,19 @@
 #  course_semester_id     :integer
 #  created_at             :datetime
 #  updated_at             :datetime
+#  survey_time            :datetime
+#  status                 :string(255)
+#  max_surveyors          :integer
+#  number_responses       :integer
 #
 
 require 'spec_helper'
 
 describe CourseSurvey do
   before do
-    @course_survey = CourseSurvey.new(max_surveyors: 1, status: "Done", survey_time = DateTime.now,
-                                      course_staff_member_id: 1, course_offering_id: 1, number_responses: 1)
+    @course_survey = CourseSurvey.new(max_surveyors: 1, status: "Done", survey_time: DateTime.now,
+                                      course_staff_member_id: 1, course_offering_id: 1, number_responses: 1,
+                                      course_id: 1, course_semester_id: 1, staff_member_id: 1)
   end
 
   subject { @course_survey }
@@ -36,6 +41,11 @@ describe CourseSurvey do
 
   describe "when no ID" do
     before { @course_survey.course_offering_id = nil }
+    it { should_not be_valid }
+  end
+
+  describe "when no instructor" do
+    before { @course_survey.course_staff_member_id = nil }
     it { should_not be_valid }
   end
 
