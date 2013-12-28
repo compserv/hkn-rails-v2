@@ -274,7 +274,7 @@ html[xmlns] .clearfix {
 
 /*** Main Layout ***/
 body {
-  background: url(<%= asset_path 'back_gray.png' %>);
+  background: image-url('back_gray.png');
   font-family: "Puritan", "Lucinda Grande", Helvetica, Arial, serif;
   font-size: 0.9em;
   line-height: 1.3em;
@@ -314,7 +314,7 @@ h4 {
 /* Header */
 #navigation {
   width: 100%;
-  background: #403f3f url(<%= asset_path 'back_dark.png' %>);
+  background: #403f3f image-url('back_dark.png');
   color: white;
   font-family: "Cuprum";
   font-size: 1.2em;
@@ -368,7 +368,7 @@ h4 {
   position: absolute;
   right: 50px;
   top: 30px;
-  background: #403f3f url(<%= asset_path 'back_dark.png' %>);
+  background: #403f3f image-url('back_dark.png');
   padding: 0px;
 }
 
@@ -388,11 +388,11 @@ h4 {
 }
 
 #settings {
-  background: url(<%= asset_path 'icons/cog.png' %>) no-repeat;
+  background: image-url('icons/cog.png') no-repeat;
 }
 
 #logout {
-  background: url(<%= asset_path 'icons/shutdown.png' %>) no-repeat;
+  background: image-url('icons/shutdown.png') no-repeat;
   top: 6px;
 }
 
@@ -535,7 +535,7 @@ h4 {
 #footer {
   clear: both;
   height: 30px;
-  background: #403f3f url(<%= asset_path 'back_dark.png' %>);
+  background: #403f3f image-url('back_dark.png');
   color: #FFFFFF;
   font-size: 12px;
   padding: 5px 10px;
@@ -629,11 +629,11 @@ h4 {
 }
 
 #chat {
-  background: url(<%= asset_path 'icons/chat.png' %>);
+  background: image-url('icons/chat.png');
 }
 
 #user {
-  background: url(<%= asset_path 'icons/user.png' %>) no-repeat;
+  background: image-url('icons/user.png') no-repeat;
   position:relative;
   left: 3px;
 }
@@ -657,7 +657,7 @@ h4 {
 .hbar {
   height: 2px;
   width: 100%;
-  background: url(<%= asset_path 'hbar.png' %>) repeat-x;
+  background: image-url("/images/hbar.png") repeat-x;
   margin-top: 1em;
 }
 
