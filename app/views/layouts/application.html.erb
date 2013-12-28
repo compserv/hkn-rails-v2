@@ -79,13 +79,6 @@
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <%= content_tag :div, msg, :id => "flash_#{name}" %>
             </div>
-          <% elsif msg.is_a?(ActiveModel::Errors) %>
-            <% msg.each_pair do |field, msg| %>
-              <div class="alert alert-<%= name == :notice ? "success" : "danger" %>">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <%= content_tag :div, msg, :id => "flash_#{name}" %>
-              </div>
-            <% end %>
           <% end %>
         <% end %>
         <%= yield %>
