@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131227030959) do
+ActiveRecord::Schema.define(version: 20131228134017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,12 @@ ActiveRecord::Schema.define(version: 20131227030959) do
     t.datetime "updated_at"
   end
 
+  create_table "elections", force: true do |t|
+    t.integer  "member_semester_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "events", force: true do |t|
     t.string   "title"
     t.string   "description"
@@ -130,6 +136,28 @@ ActiveRecord::Schema.define(version: 20131227030959) do
 
   add_index "member_semesters_users", ["member_semester_id"], name: "index_member_semesters_users_on_member_semester_id", using: :btree
   add_index "member_semesters_users", ["user_id"], name: "index_member_semesters_users_on_user_id", using: :btree
+
+  create_table "position_users", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "position_id"
+    t.boolean  "nominated"
+    t.boolean  "elected"
+    t.integer  "sid"
+    t.integer  "keycard"
+    t.boolean  "midnight_meeting"
+    t.boolean  "txt"
+    t.datetime "elected_time"
+    t.string   "non_hkn_email"
+    t.string   "desired_username"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "positions", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "resumes", force: true do |t|
     t.decimal  "overall_gpa"
