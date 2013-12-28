@@ -42,7 +42,7 @@ class DeptToursController < ApplicationController
       mail.deliver
       redirect_to dept_tours_success_path
     else
-      redirect_to new_dept_tour_path, alert: "#{@dept_tour.errors.messages}"
+      redirect_to new_dept_tour_path(@dept_tour), alert: "#{@dept_tour.errors.full_messages.join(', ')}"
     end
   end
 
@@ -51,7 +51,7 @@ class DeptToursController < ApplicationController
     if @dept_tour.update(dept_tour_params)
       redirect_to @dept_tour, notice: 'Dept tour was successfully updated.'
     else
-      redirect_to edit_dept_tour_path(@dept_tour), alert: "#{@dept_tour.errors.messages}"
+      redirect_to edit_dept_tour_path(@dept_tour), alert: "#{@dept_tour.errors.full_messages.join(', ')}"
     end
   end
 

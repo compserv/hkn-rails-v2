@@ -8,15 +8,6 @@
   <%= csrf_meta_tags %>
 
   <link href='https://fonts.googleapis.com/css?family=Puritan|Cuprum' rel='stylesheet' type='text/css' />
-
-  <% flash.each do |name, msg| %>
-    <% if msg.is_a?(String) %>
-      <div class="alert alert-<%= name == :notice ? "success" : "danger" %>">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <%= content_tag :div, msg, :id => "flash_#{name}" %>
-      </div>
-    <% end %>
-  <% end %>
 </head>
 
 <body>
@@ -82,6 +73,21 @@
 
     <div id="content">
       <div id="container">
+        <% flash.each do |name, msg| %>
+          <% if msg.is_a?(String) %>
+            <div class="alert alert-<%= name == :notice ? "success" : "danger" %>">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <%= content_tag :div, msg, :id => "flash_#{name}" %>
+            </div>
+          <% elsif msg.is_a?(ActiveModel::Errors) %>
+            <% msg.each_pair do |field, msg| %>
+              <div class="alert alert-<%= name == :notice ? "success" : "danger" %>">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <%= content_tag :div, msg, :id => "flash_#{name}" %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
         <%= yield %>
       </div>
     </div>
