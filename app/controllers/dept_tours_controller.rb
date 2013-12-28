@@ -35,14 +35,14 @@ class DeptToursController < ApplicationController
     params[:dept_tour][:responded] = false
     params[:dept_tour][:submitted] = Time.now
     @dept_tour = DeptTour.new(dept_tour_params)
-
-    if @dept_tour.save
+    if verify_recaptcha(:model => @dept_tour, :message => "oops recaptcha failed!") && @dept_tour.save
       mail = DeptTourMailer.dept_tour_email dept_tour_params[:name], @dept_tour.date, dept_tour_params[:email],
           dept_tour_params[:phone], dept_tour_params[:comments]
       mail.deliver
       redirect_to dept_tours_success_path
     else
-      redirect_to new_dept_tour_path, alert: "#{@dept_tour.errors.messages}"
+      flash.delete(:recaptcha_error)
+      redirect_to new_dept_tour_path(@dept_tour), alert: "#{@dept_tour.errors.full_messages.join(', ')}"
     end
   end
 
@@ -51,7 +51,7 @@ class DeptToursController < ApplicationController
     if @dept_tour.update(dept_tour_params)
       redirect_to @dept_tour, notice: 'Dept tour was successfully updated.'
     else
-      redirect_to edit_dept_tour_path(@dept_tour), alert: "#{@dept_tour.errors.messages}"
+      redirect_to edit_dept_tour_path(@dept_tour), alert: "#{@dept_tour.errors.full_messages.join(', ')}"
     end
   end
 

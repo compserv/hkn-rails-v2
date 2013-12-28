@@ -15,6 +15,9 @@ gem 'jquery-ui-rails'
 gem 'devise', '3.2.2'
 gem 'rolify', '~> 3.3.0.rc4'
 
+# spam stopper
+gem "recaptcha", :require => "recaptcha/rails"
+
 # Annotated models
 gem 'annotate', '>= 2.5.0'
 
