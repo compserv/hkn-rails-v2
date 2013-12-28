@@ -11,4 +11,5 @@
 class Election < ActiveRecord::Base
   belongs_to :member_semester
   has_many :positions
+  has_many :positionUsers, through: :position
 end

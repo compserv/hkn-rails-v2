@@ -19,8 +19,8 @@
 #
 
 class PositionUser < ActiveRecord::Base
-  validates_presence_of :user_id
-  validates_presence_of :position_id
+  belongs_to :user
+  belongs_to :position
   validates_uniqueness_of :user_id, :scope => [:position_id, :semester]
   validates :keycard, :numericality => {
     :greater_than_or_equal_to => 10000,
@@ -30,4 +30,11 @@ class PositionUser < ActiveRecord::Base
   }
   validates :sid, :numericality => { :allow_nil => true }
 
+  before_validation :set_current
+
+private
+
+  def set_current
+    self.elected_time ||= Time.now # elected_time becomes the same as created_at
+  end
 end

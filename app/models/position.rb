@@ -2,11 +2,12 @@
 #
 # Table name: positions
 #
-#  id          :integer          not null, primary key
-#  name        :string(255)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  election_id :integer
+#  id                 :integer          not null, primary key
+#  name               :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  election_id        :integer
+#  number_of_position :integer
 #
 
 class Position < ActiveRecord::Base
