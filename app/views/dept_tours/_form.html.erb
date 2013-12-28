@@ -29,9 +29,16 @@
       <%= f.label :responded %>
       <%= f.check_box :responded, :class => 'check_box', :checked => @dept_tour.responded ? true : false %>
     </div>
+  <% else %>
+    <div class="field">
+      <br />
+      <%# dirty hack to get captcha to align properly %>
+      <label>&nbsp;</label>
+      <%= recaptcha_tags :ssl=>true, :display=>{:theme=>'clean'} %>
+    </div>
   <% end %>
   <div class="field-submit">
-    <%= f.submit %>
+    <%= f.submit "Submit request" %>
   </div>
 <% end %>
 

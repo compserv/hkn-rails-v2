@@ -14,6 +14,8 @@ gem 'jquery-ui-rails'
 # User authentication
 gem 'devise', '3.2.2'
 gem 'rolify', '~> 3.3.0.rc4'
+gem "recaptcha", :require => "recaptcha/rails"
+#gem 'recaptcha', :require => ['recaptcha', File.join('recaptcha', 'rails')]
 
 # Annotated models
 gem 'annotate', '>= 2.5.0'
