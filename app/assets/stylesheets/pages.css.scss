@@ -59,7 +59,7 @@
   position: relative;
   top: 3px;
   display: inline-block;
-  background: url('icons/pdf.png');
+  background: image-url('icons/pdf.png');
 }
 
 /*Officers*/
@@ -76,7 +76,7 @@ div.photo{
 }
 
 div.no-photo{
-  background: url('person_placeholder.png');
+  background: image-url('person_placeholder.png');
 }
 
 span.label{

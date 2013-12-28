@@ -1,8 +1,33 @@
-// Place all the styles related to the Candidate controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#checklist{
+  background: white;
+  padding: 1em;
+  -webkit-box-shadow: 0px 5px 20px #eee;
+}
 
-.event_status {
+#sidebar, #announcements{
+  margin: 1em 0px;
+}
+ul.semi-plain{
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  padding-left: 1em;
+}
+.req_status{
+  display: inline-block;
+  width: 16px;
+  height: 13px;
+  position:relative;
+  top:2px;
+}
+.status_done{
+  background: image-url('icons/check.png');
+}
+.status_notdone{
+  background: image-url('icons/uncheck.png');
+}
+
+.event_status{
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -10,17 +35,38 @@
   top: 4px;
 }
 
-.event_notdone {
-  background:url('/images/unchecked.jpg');
-  background-size: 100%;
+.event_done{
+  background: image-url('icons/bullet_green.png');
 }
 
-.rejected {
-  background:url('/images/crossed_out.jpg');
-  background-size: 100%;
+.event_notdone{
+  background: image-url('icons/bullet_red.png');
 }
 
-.event_done {
-  background:url('/images/checkbox.png');
-  background-size: 100%;
+.rejected{
+  background: image-url('icons/crossed_out.jpg');
+}
+
+.announcement {
+  padding: 0.5em;
+  margin: 5px;
+  text-indent: 0px;
+}
+
+.announcement .title{
+  font-weight: bold;
+}
+
+.announcement .body{
+  display: block;
+}
+
+#upcoming_events, #announcements ul{
+  padding-left: 0px;
+  text-indent: 0px;
+}
+
+#description {
+    width: 178px;
+    height: 50px;
 }
