@@ -10,8 +10,8 @@
 #
 
 class CourseSemester < ActiveRecord::Base
-  has_many :course_offering
-  has_many :course, through: :course_offering
+  has_many :course_offerings
+  has_many :courses, through: :course_offerings
 
   validates :season, presence: true
   validates :year, presence: true

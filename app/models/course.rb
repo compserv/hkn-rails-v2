@@ -11,9 +11,14 @@
 #
 
 class Course < ActiveRecord::Base
-  has_many :course_offering
-  has_many :course_semester, through: :course_offering
+  has_many :course_offerings
+  has_many :course_semesters, through: :course_offerings
+  has_many :course_surveys, through: :course_offerings
 
   validates :department, presence: true
   validates :course_name, presence: true
+
+  def add_offering(course_semester)
+    course_offerings.create!(course_semester_id: course_semester.id)
+  end
 end
