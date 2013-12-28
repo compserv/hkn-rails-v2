@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131228193028) do
+ActiveRecord::Schema.define(version: 20131228195520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,7 +53,9 @@ ActiveRecord::Schema.define(version: 20131228193028) do
     t.datetime "updated_at"
   end
 
+  add_index "course_staff_members", ["course_id"], name: "index_course_staff_members_on_course_id", using: :btree
   add_index "course_staff_members", ["course_offering_id", "staff_member_id"], name: "index_course_staff_on_course_offering_and_staff_member_ids", using: :btree
+  add_index "course_staff_members", ["course_semester_id"], name: "index_course_staff_members_on_course_semester_id", using: :btree
 
   create_table "course_surveys", force: true do |t|
     t.integer  "staff_member_id"
@@ -63,9 +65,15 @@ ActiveRecord::Schema.define(version: 20131228193028) do
     t.integer  "course_semester_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "survey_time"
+    t.string   "status"
+    t.integer  "max_surveyors"
+    t.integer  "number_responses"
   end
 
   add_index "course_surveys", ["course_id"], name: "index_course_surveys_on_course_id", using: :btree
+  add_index "course_surveys", ["course_offering_id"], name: "index_course_surveys_on_course_offering_id", using: :btree
+  add_index "course_surveys", ["course_staff_member_id"], name: "index_course_surveys_on_course_staff_member_id", using: :btree
   add_index "course_surveys", ["staff_member_id", "course_id"], name: "index_course_surveys_on_staff_member_id_and_course_id", using: :btree
   add_index "course_surveys", ["staff_member_id", "course_semester_id"], name: "index_course_surveys_on_staff_member_id_and_course_semester_id", using: :btree
   add_index "course_surveys", ["staff_member_id"], name: "index_course_surveys_on_staff_member_id", using: :btree
@@ -184,6 +192,8 @@ ActiveRecord::Schema.define(version: 20131228193028) do
     t.datetime "file_updated_at"
   end
 
+  add_index "resumes", ["user_id"], name: "index_resumes_on_user_id", using: :btree
+
   create_table "roles", force: true do |t|
     t.string   "name"
     t.integer  "resource_id"
@@ -216,6 +226,26 @@ ActiveRecord::Schema.define(version: 20131228193028) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "survey_question_responses", force: true do |t|
+    t.integer  "survey_question_id"
+    t.integer  "rating"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "survey_question_responses", ["survey_question_id"], name: "index_survey_question_responses_on_survey_question_id", using: :btree
+
+  create_table "survey_questions", force: true do |t|
+    t.integer  "course_survey_id"
+    t.string   "question_text"
+    t.string   "keyword"
+    t.float    "mean_score"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "survey_questions", ["course_survey_id"], name: "index_survey_questions_on_course_survey_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
