@@ -63,3 +63,13 @@ You also may need to run the following if you're on Ubuntu:
 And if that goes well too, you can start the rails server!
 
     rails s
+
+### Running Tests
+
+To run all the tests, simply run:
+
+    rspec .
+
+To run a specific test, just run:
+
+    rspec path/to/spec/file.rb
