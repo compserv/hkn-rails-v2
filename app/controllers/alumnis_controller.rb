@@ -2,7 +2,7 @@ class AlumnisController < ApplicationController
   before_action :set_alumni, only: [:show, :edit, :update, :destroy]
   # some kind of filter....
   # incorporate current user
-  
+
   # GET /alumnis
   def index
     @alumnis = Alumni.all
@@ -27,9 +27,6 @@ class AlumnisController < ApplicationController
     @alumni = Alumni.new(alumni_params)
 
     if @alumni.save
-      if @alumni.mailing_list
-        @alumni.subscribe
-      end
       redirect_to @alumni, notice: 'Alumni was successfully created.'
     else
       redirect_to new_alumni_path(@dept_tour), alert: "#{@alumni.errors.full_messages.join(', ')}"

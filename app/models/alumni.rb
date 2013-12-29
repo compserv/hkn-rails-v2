@@ -19,17 +19,25 @@
 
 class Alumni < ActiveRecord::Base
   belongs_to :user
-  validates_uniqueness_of :user_id
-  validates_inclusion_of :salary, 
-      :in => 0...5000000000000000000, 
-      :message=>"must be within 0 and 5 quintillion", 
+  #validates_uniqueness_of :user_id
+  validates_inclusion_of :salary,
+      :in => 0...5000000000000000000,
+      :message=>"must be within 0 and 5 quintillion",
       :allow_nil=>true
   validates_presence_of :perm_email, :grad_semester
+  after_create :wants_emails?
+
+  def wants_emails?
+    if mailing_list
+      self.subscribe
+    end
+  end
 
   MAILING_LIST_URL = 'https://hkn.eecs.berkeley.edu/mailman/listinfo/alumni'
   SEASONS = ['Fall', 'Spring', 'Summer']
 
   def subscribe
+    debugger
     agent = Mechanize.new
     agent.get(MAILING_LIST_URL) do |page|
       page.form_with(:action => '../subscribe/alumni') do |form|
