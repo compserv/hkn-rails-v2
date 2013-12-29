@@ -1,4 +1,4 @@
-<%= form_for(@alumni) do |f| %>
+<%= form_for(@alum) do |f| %>
   <div class="field">
     <%= f.label :perm_email, 'Permanent email' %>
     <%= f.text_field :perm_email, :type => 'email' %>
@@ -8,10 +8,10 @@
     <div>You'll receive periodic news/updates about HKN, including Alumni events.</div>
     <%= f.check_box :mailing_list%>
   </div>
-  <%= hidden_field_tag(:on_mailing_list, @alumni.mailing_list) %>
+  <%= hidden_field_tag(:on_mailing_list, @alum.mailing_list) %>
   <div class="field">
     <%= label_tag :grad_semester, 'Semester graduated (from Ugrad)' %>
-    <%= select_tag :grad_season, options_for_select(Alumni::SEASONS) %>
+    <%= select_tag :grad_season, options_for_select(Alum::SEASONS) %>
     <%= select_year Date.today, :field_name => :year, :prefix => 'grad', :end_year => 1915, :start_year => Date.today.year %>
   </div>
   <div class="field">
@@ -28,7 +28,7 @@
   </div>
   <div class="field">
     <%= f.label :salary %>
-    <%= f.text_field :salary, :value=> (if @alumni.salary then pretty_salary(@alumni.salary) else "" end)%>
+    <%= f.text_field :salary, :value=> (if @alum.salary then pretty_salary(@alum.salary) else "" end)%>
   </div>
   <div class="field">
     <%= f.label :location %>

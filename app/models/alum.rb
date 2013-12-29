@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: alumnis
+# Table name: alumni
 #
 #  id            :integer          not null, primary key
 #  grad_semester :string(255)
@@ -17,7 +17,7 @@
 #  updated_at    :datetime
 #
 
-class Alumni < ActiveRecord::Base
+class Alum < ActiveRecord::Base
   belongs_to :user
   #validates_uniqueness_of :user_id
   validates_inclusion_of :salary,
