@@ -1,6 +1,8 @@
 class AlumnisController < ApplicationController
   before_action :set_alumni, only: [:show, :edit, :update, :destroy]
-
+  # some kind of filter....
+  # incorporate current user
+  
   # GET /alumnis
   def index
     @alumnis = Alumni.all
@@ -21,21 +23,26 @@ class AlumnisController < ApplicationController
 
   # POST /alumnis
   def create
+    params[:alumni][:grad_semester] = Alumni.grad_semester(params[:grad_season], params[:grad][:year])
     @alumni = Alumni.new(alumni_params)
 
     if @alumni.save
+      if @alumni.mailing_list
+        @alumni.subscribe
+      end
       redirect_to @alumni, notice: 'Alumni was successfully created.'
     else
-      render action: 'new'
+      redirect_to new_alumni_path(@dept_tour), alert: "#{@alumni.errors.full_messages.join(', ')}"
     end
   end
 
   # PATCH/PUT /alumnis/1
   def update
+    params[:alumni][:grad_semester] = Alumni.grad_semester(params[:grad_season], params[:grad][:year])
     if @alumni.update(alumni_params)
       redirect_to @alumni, notice: 'Alumni was successfully updated.'
     else
-      render action: 'edit'
+      redirect_to edit_alumni_path(@dept_tour), alert: "#{@alumni.errors.full_messages.join(', ')}"
     end
   end
 

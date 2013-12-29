@@ -1,57 +1,45 @@
 <%= form_for(@alumni) do |f| %>
-  <% if @alumni.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@alumni.errors.count, "error") %> prohibited this alumni from being saved:</h2>
-
-      <ul>
-      <% @alumni.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
   <div class="field">
-    <%= f.label :grad_semester %><br>
-    <%= f.text_field :grad_semester %>
+    <%= f.label :perm_email, 'Permanent email' %>
+    <%= f.text_field :perm_email, :type => 'email' %>
   </div>
   <div class="field">
-    <%= f.label :grad_school %><br>
+    <%= f.label :mailing_list, 'Yes, add me to the alumni mailing list!' %>
+    <div>You'll receive periodic news/updates about HKN, including Alumni events.</div>
+    <%= f.check_box :mailing_list%>
+  </div>
+  <%= hidden_field_tag(:on_mailing_list, @alumni.mailing_list) %>
+  <div class="field">
+    <%= label_tag :grad_semester, 'Semester graduated (from Ugrad)' %>
+    <%= select_tag :grad_season, options_for_select(Alumni::SEASONS) %>
+    <%= select_year Date.today, :field_name => :year, :prefix => 'grad', :end_year => 1915, :start_year => Date.today.year %>
+  </div>
+  <div class="field">
+    <%= f.label :grad_school %>
     <%= f.text_field :grad_school %>
   </div>
   <div class="field">
-    <%= f.label :job_title %><br>
+    <%= f.label :job_title %>
     <%= f.text_field :job_title %>
   </div>
   <div class="field">
-    <%= f.label :company %><br>
+    <%= f.label :company %>
     <%= f.text_field :company %>
   </div>
   <div class="field">
-    <%= f.label :salary %><br>
-    <%= f.number_field :salary %>
+    <%= f.label :salary %>
+    <%= f.text_field :salary, :value=> (if @alumni.salary then pretty_salary(@alumni.salary) else "" end)%>
   </div>
   <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :perm_email %><br>
-    <%= f.text_field :perm_email %>
-  </div>
-  <div class="field">
-    <%= f.label :location %><br>
+    <%= f.label :location %>
     <%= f.text_field :location %>
   </div>
   <div class="field">
-    <%= f.label :suggestions %><br>
-    <%= f.text_area :suggestions %>
+    <%= f.label :suggestions, 'Have any suggestions for Alumrel?' %>
+    <div>(more/different types of alumni activities, etc.)</div>
+    <%= f.text_area :suggestions %>  
   </div>
-  <div class="field">
-    <%= f.label :mailing_list %><br>
-    <%= f.check_box :mailing_list %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="field-submit">
+    <%= f.submit "Submit"%>
   </div>
 <% end %>

@@ -3,16 +3,14 @@
 <table>
   <thead>
     <tr>
+      <th>Permanenet email</th>
       <th>Grad semester</th>
       <th>Grad school</th>
       <th>Job title</th>
       <th>Company</th>
       <th>Salary</th>
-      <th>User</th>
-      <th>Perm email</th>
       <th>Location</th>
       <th>Suggestions</th>
-      <th>Mailing list</th>
       <th></th>
       <th></th>
       <th></th>
@@ -22,16 +20,14 @@
   <tbody>
     <% @alumnis.each do |alumni| %>
       <tr>
+        <td><%= alumni.perm_email %></td>
         <td><%= alumni.grad_semester %></td>
         <td><%= alumni.grad_school %></td>
         <td><%= alumni.job_title %></td>
         <td><%= alumni.company %></td>
         <td><%= alumni.salary %></td>
-        <td><%= alumni.user_id %></td>
-        <td><%= alumni.perm_email %></td>
         <td><%= alumni.location %></td>
         <td><%= alumni.suggestions %></td>
-        <td><%= alumni.mailing_list %></td>
         <td><%= link_to 'Show', alumni %></td>
         <td><%= link_to 'Edit', edit_alumni_path(alumni) %></td>
         <td><%= link_to 'Destroy', alumni, method: :delete, data: { confirm: 'Are you sure?' } %></td>
