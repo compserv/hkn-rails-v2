@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Grad semester:</strong>
+  <%= @alumni.grad_semester %>
+</p>
+
+<p>
+  <strong>Grad school:</strong>
+  <%= @alumni.grad_school %>
+</p>
+
+<p>
+  <strong>Job title:</strong>
+  <%= @alumni.job_title %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @alumni.company %>
+</p>
+
+<p>
+  <strong>Salary:</strong>
+  <%= @alumni.salary %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @alumni.user_id %>
+</p>
+
+<p>
+  <strong>Perm email:</strong>
+  <%= @alumni.perm_email %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @alumni.location %>
+</p>
+
+<p>
+  <strong>Suggestions:</strong>
+  <%= @alumni.suggestions %>
+</p>
+
+<p>
+  <strong>Mailing list:</strong>
+  <%= @alumni.mailing_list %>
+</p>
+
+<%= link_to 'Edit', edit_alumni_path(@alumni) %> |
+<%= link_to 'Back', alumnis_path %>
