@@ -1,0 +1,41 @@
+<h1>Listing alumni</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Permanenet email</th>
+      <th>Grad semester</th>
+      <th>Grad school</th>
+      <th>Job title</th>
+      <th>Company</th>
+      <th>Salary</th>
+      <th>Location</th>
+      <th>Suggestions</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @alumni.each do |alum| %>
+      <tr>
+        <td><%= alum.perm_email %></td>
+        <td><%= alum.grad_semester %></td>
+        <td><%= alum.grad_school %></td>
+        <td><%= alum.job_title %></td>
+        <td><%= alum.company %></td>
+        <td><%= alum.salary %></td>
+        <td><%= alum.location %></td>
+        <td><%= alum.suggestions %></td>
+        <td><%= link_to 'Show', alum %></td>
+        <td><%= link_to 'Edit', edit_alum_path(alum) %></td>
+        <td><%= link_to 'Destroy', alum, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Alum', new_alum_path %>
