@@ -31,21 +31,6 @@ ActiveRecord::Schema.define(version: 20131229030124) do
     t.datetime "updated_at"
   end
 
-  create_table "alumnis", force: true do |t|
-    t.string   "grad_semester"
-    t.string   "grad_school"
-    t.string   "job_title"
-    t.string   "company"
-    t.integer  "salary"
-    t.integer  "user_id"
-    t.string   "perm_email"
-    t.string   "location"
-    t.text     "suggestions"
-    t.boolean  "mailing_list"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "challenges", force: true do |t|
     t.integer  "requester_id"
     t.integer  "candidate_id"
