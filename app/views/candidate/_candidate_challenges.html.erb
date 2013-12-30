@@ -4,8 +4,8 @@
   <% @challenges.each do |challenge| %>
     <li id='list'>
       <span class="<%= "event_status " +
-          (challenge.confirmed ? 'event_done' : 'event_notdone') +
-          (challenge.rejected ? ' rejected' : '') %>"></span>
+          (challenge.confirmed ? 'event_done' : 
+          (challenge.rejected ? 'rejected' : 'event_notdone'))%>"></span>
       <strong><%= challenge.name %></strong>
       - <%= User.find_by_id(challenge.requester_id).username %>
     </li>
@@ -35,8 +35,10 @@
 <% end %>
 
 <script type="text/javascript">
-  $('#officer_field').autocomplete({
-    minLength: 1,
-    source: '<%= autocomplete_officer_name_path %>'
+  $(document).ready(function() {
+    $('#officer_field').autocomplete({
+      minLength: 2,
+      source: '<%= autocomplete_officer_name_path %>'
+    });
   });
 </script>

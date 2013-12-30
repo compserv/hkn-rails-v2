@@ -1,4 +1,12 @@
 <%= form_for(@dept_tour) do |f| %>
+  <% if @dept_tour.errors.any? %>
+    <h2><%= pluralize(@dept_tour.errors.count, "error") %> prohibited this department tour from being requested:</h2>
+    <div class="alert alert-danger">
+      <% @dept_tour.errors.full_messages.each do |msg| %>
+        <%= content_tag :li, msg %>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="field">
     <%= f.label :name, :class => 'required-field' %>
@@ -6,7 +14,7 @@
   </div>
   <div class="field">
     <%= f.label :date, "Desired date & time", :class => 'required-field' %>
-    <%= f.datetime_select :date, ampm: true, default: Time.now %>
+    <%= f.datetime_select :date, ampm: true, start_year: Time.now.year, default: Time.now %>
   </div>
   <div class="field">
     <%= f.label :email, "Contact email address", :class => 'required-field' %>

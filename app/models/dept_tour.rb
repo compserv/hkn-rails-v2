@@ -24,10 +24,13 @@ class DeptTour < ActiveRecord::Base
 
   def valid_date?
     unless (10..17).include?(date.hour)
-        errors.add(:date, "Refer to our open hours")
+      errors[:base] << "Date must be between 10 (10am) and 18 (6pm)"
     end
-    unless date > Time.zone.now
-        errors.add(:date, "Can't be in the past")
+    unless date.future?
+      errors[:base] << "Date must be in the future"
+    end
+    unless (1..5).include?(date.wday)
+      errors[:base] << "Date must be on a weekday"
     end
   end
 end
