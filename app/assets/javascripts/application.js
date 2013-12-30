@@ -15,5 +15,4 @@
 //= require turbolinks
 //= require_tree .
 //= require twitter/bootstrap
-//= require bootstrap-datetimepicker
 //= require jquery.ui.all
