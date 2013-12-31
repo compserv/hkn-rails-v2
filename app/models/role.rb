@@ -31,6 +31,7 @@ class Role < ActiveRecord::Base
       find_by_name_and_resource_id(position, semester.id)
     end
 
+    #returns array of users
     def all_users
       all.collect { |role| role.users }.flatten
     end
@@ -47,13 +48,23 @@ class Role < ActiveRecord::Base
       all_current.officers.all_users
     end
 
+    #returns array of users
     def current_committee_members
       all_current.committee_members.all_users
     end
 
+    #returns array of users
     def current_candidates
       all_current.candidates.all_users
     end
+  end
+
+  def self.position(position)
+    where(name: position)
+  end
+
+  def self.semester_filter(semester)
+    where(resource_id: semester.id)
   end
 
   def semester
