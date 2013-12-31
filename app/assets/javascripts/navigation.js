@@ -38,9 +38,7 @@ $(document).ready(function() {
     $("." + id).show();
   });
 
-  $("#userbar").toggle(function() {
-    $("#user-dropdown").slideDown(300);
-  }, function() {
-    $("#user-dropdown").slideUp(300);
+  $("#userbar").click(function() {
+    $("#user-dropdown").toggle();
   });
 });

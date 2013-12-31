@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
     roles_for_semester(semester).where(role_type: "officer").count > 0
   end
 
-  def fullname
+  def full_name
     first_name + " " + last_name
   end
 
