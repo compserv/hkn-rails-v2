@@ -1,6 +1,5 @@
 class CandidateController < ApplicationController
   def portal
-    debugger
     @challenges = Challenge.all
   end
 
