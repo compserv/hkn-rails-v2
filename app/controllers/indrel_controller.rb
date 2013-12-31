@@ -1,12 +1,12 @@
 class IndrelController < ApplicationController
   def why_hkn
-    @indrel_officers = MemberSemester.current.users.select { |user| user.has_role? "indrel", MemberSemester.current }.select { |user| user.is_officer_for_semester? MemberSemester.current }
+    @indrel_officers = User.all.select { |user| user.has_role? "indrel", MemberSemester.current }.select { |user| user.is_officer_for_semester? MemberSemester.current }
     #Don't we have the same number of officers every semester?
-    @officer_count = MemberSemester.current.users.select { |member| member.is_officer_for_semester? MemberSemester.current }.count
+    @officer_count = User.all.select { |member| member.is_officer_for_semester? MemberSemester.current }.count
   end
 
   def contact_us
-    @indrel_officers = MemberSemester.current.users.select { |user| user.has_role? "indrel", MemberSemester.current }.select { |user| user.is_officer_for_semester? MemberSemester.current }
+    @indrel_officers = User.all.select { |user| user.has_role? "indrel", MemberSemester.current }.select { |user| user.is_officer_for_semester? MemberSemester.current }
   end
 
   def infosessions

@@ -17,6 +17,7 @@ users = [
   ["mark", "mark@mark.com"],
   ["kacasey", "kacasey@berkeley.edu"],
   ["kevintesterbot", "hazedkasey@gmail.com"],
+  ["indreltesterbot", "indrel@indrel.indrel"]
 ]
 
 users.each do |user_info|
@@ -40,6 +41,7 @@ committees = [
   "act",
   "compserv",
   "studrel",
+  "indrel",
   "tutoring",
   "serv",
   "alumrel",
@@ -63,6 +65,7 @@ officer_to_position = [
   [User.find(1), Role.current(:compserv)],
   [User.find(2), Role.current(:tutoring)],
   [User.find(3), Role.current(:pres)],
+  [User.find(4), Role.current(:indrel)]
 ]
 
 officer_to_position.each do |user, role|
