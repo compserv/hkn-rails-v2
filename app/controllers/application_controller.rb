@@ -17,6 +17,6 @@ class ApplicationController < ActionController::Base
     # group_or_groups must be either a single Group name or an array of Group names
     # If user is in any of the groups, then s/he has access
     # If group_or_groups is not specified (called authorize with no arguments), then should return true if the person is logged in, false otherwise.
-    redirect_to root_path, alert: "You do not have permission(#{group_or_groups}) to access that" unless (authenticate_user! and current_user.has_ever_had_role?(group_or_groups))
+    redirect_to root_path, alert: "You do not have permission(#{group_or_groups}) to access that" unless (authenticate_user! and current_user.is_current_officer?(group_or_groups))
   end
 end

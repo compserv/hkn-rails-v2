@@ -80,8 +80,13 @@ class User < ActiveRecord::Base
     has_role_for_semester? role, MemberSemester.current
   end
 
+  #this is sort of broken.
   def has_ever_had_role?(role)
     has_role? role
+  end
+
+  def is_current_officer?(position)
+    roles_for_semester(MemberSemester.current).position(position).officers.count == 1
   end
 
   def is_officer_for_semester?(semester)
