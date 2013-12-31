@@ -97,4 +97,12 @@ class User < ActiveRecord::Base
     first_name + " " + last_name
   end
 
+  def status
+    stat = roles_for_semester(MemberSemester.current).first
+    dict = { "pres" => "President",
+             "compserv" => "Computing Services Officer",
+             "tutoring" => "Tutoring Officer"  } # not sure how to handle this yet.
+    dict[stat.name] unless !stat
+  end
+
 end

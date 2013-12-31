@@ -21,6 +21,7 @@ class Role < ActiveRecord::Base
   scope :officers, -> { where(role_type: "officer") }
   scope :committee_members, -> { where(role_type: "committee_member") }
   scope :candidates, -> { where(role_type: "candidate") }
+  scope :members, -> { where(role_type: ["committee_member", "officer"])}
 
   class << self
     def current(position)

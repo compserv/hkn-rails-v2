@@ -12,6 +12,8 @@ HknRails::Application.routes.draw do
   resources :challenges, only: [:create, :update, :index]
 
   devise_for :users
+  resources :users
+  get 'users/list/:filter' => 'users#list', as: 'users_list'
 
   get 'candidate/portal' => 'candidate#portal', as: 'candidate_portal'
   get 'candidate/autocomplete_officer_name' => 'candidate#autocomplete_officer_name', as: 'autocomplete_officer_name'
@@ -27,4 +29,5 @@ HknRails::Application.routes.draw do
     match 'infosessions', to: "indrel#infosessions", via: 'get'
     match 'resume_books', to: "indrel#resume_books", via: 'get', as: "resume_books_about"
   end
+
 end
