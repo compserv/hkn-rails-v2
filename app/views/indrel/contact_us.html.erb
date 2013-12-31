@@ -20,10 +20,6 @@
   <h2>The Industrial Relations Committee</h2>
   <% if MemberSemester.current %>
     <% @indrel_officers.each do |officer| %>
-      <%= form_for officer, :url => 'tester', :html => { :multipart => true } do |form| %>
-        <%= form.file_field :picture %>
-        <%= form.submit %>
-      <% end %>
       <div>
         <%= image_tag officer.picture.url, :class => "indrel-officer-photo" %>
         <div>
