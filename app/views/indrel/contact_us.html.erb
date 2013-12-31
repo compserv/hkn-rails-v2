@@ -19,15 +19,19 @@
 
   <h2>The Industrial Relations Committee</h2>
   <% if MemberSemester.current %>
-  <% @indrel_officers.each do |officer| %>
-    <div>
-      <%= image_tag officer.picture, :class => "indrel-officer-photo" unless officer.picture.blank? %>
+    <% @indrel_officers.each do |officer| %>
+      <%= form_for officer, :url => 'tester', :html => { :multipart => true } do |form| %>
+        <%= form.file_field :picture %>
+        <%= form.submit %>
+      <% end %>
       <div>
-        <b><%= officer.fullname %></b><br />
-        <%= officer.username %>@hkn
+        <%= image_tag officer.picture.url, :class => "indrel-officer-photo" %>
+        <div>
+          <b><%= officer.fullname %></b><br />
+          <%= officer.username %>@hkn
+        </div>
       </div>
-    </div>
-    <div class="clear"></div>
-  <% end %>
+      <div class="clear"></div>
+    <% end %>
   <% end %>
 </div>
