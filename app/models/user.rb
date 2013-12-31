@@ -16,6 +16,9 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  username               :string(255)      not null
+#  picture                :string(255)
+#  first_name             :string(255)
+#  last_name              :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -64,6 +67,10 @@ class User < ActiveRecord::Base
 
   def is_officer_for_semester?(semester)
     roles_for_semester(semester).where(role_type: "officer").count > 0
+  end
+
+  def full_name
+    first_name + " " + last_name
   end
 
 end

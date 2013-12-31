@@ -18,14 +18,16 @@
   <div class="light-hbar"></div>
 
   <h2>The Industrial Relations Committee</h2>
+  <% if MemberSemester.current %>
   <% @indrel_officers.each do |officer| %>
     <div>
-      <%= #TODO: Add to user Model: image_tag officer.picture, :class => "indrel-officer-photo" unless officer.picture.blank? %>
+      <%= image_tag officer.picture, :class => "indrel-officer-photo" unless officer.picture.blank? %>
       <div>
-        <b><%=#TODO: Add to User model: officer.fullname %></b><br />
+        <b><%= officer.fullname %></b><br />
         <%= officer.username %>@hkn
       </div>
     </div>
     <div class="clear"></div>
   <% end %>
-</div>erb</p>
+  <% end %>
+</div>
