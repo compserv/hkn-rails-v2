@@ -16,4 +16,9 @@ HknRails::Application.routes.draw do
 
   root to: "pages#home"
   get 'about/contact' => 'pages#contact'
+
+  #Indrel
+  scope 'indrel' do
+    match "contact_us", to: "indrel#contact_us", via: 'get', as: 'indrel_contact_us'
+  end
 end
