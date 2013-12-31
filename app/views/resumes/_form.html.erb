@@ -1,13 +1,10 @@
 <%= form_for(@resume) do |f| %>
   <% if @resume.errors.any? %>
-    <div id="errorExplanation">
-      <h2><%= pluralize(@resume.errors.count, "error") %> prohibited this resume from being saved:</h2>
-
-      <ul>
+    <h2><%= pluralize(@resume.errors.count, "error") %> prohibited this resume from being saved:</h2>
+    <div class="alert alert-danger">
       <% @resume.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
-      </ul>
     </div>
   <% end %>
 

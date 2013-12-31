@@ -1,4 +1,12 @@
 <%= form_for(@alum) do |f| %>
+  <% if @alum.errors.any? %>
+    <h2><%= pluralize(@alum.errors.count, "error") %> prohibited this alum from being created:</h2>
+    <div class="alert alert-danger">
+      <% @alum.errors.full_messages.each do |msg| %>
+        <%= content_tag :li, msg %>
+      <% end %>
+    </div>
+  <% end %>
   <div class="field">
     <%= f.label :perm_email, 'Permanent email' %>
     <%= f.text_field :perm_email, :type => 'email' %>

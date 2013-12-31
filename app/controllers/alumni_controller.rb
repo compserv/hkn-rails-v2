@@ -27,9 +27,9 @@ class AlumniController < ApplicationController
     @alum = Alum.new(alum_params)
 
     if @alum.save
-      redirect_to @alum, notice: 'Alum was successfully created.'
+      redirect_to alumni_path, notice: 'Alum was successfully created.'
     else
-      redirect_to new_alum_path(@alum), alert: "#{@alum.errors.full_messages.join(', ')}"
+      render :new
     end
   end
 
@@ -39,7 +39,7 @@ class AlumniController < ApplicationController
     if @alum.update(alum_params)
       redirect_to @alum, notice: 'Alum was successfully updated.'
     else
-      redirect_to edit_alum_path(@alum), alert: "#{@alum.errors.full_messages.join(', ')}"
+      render :edit
     end
   end
 
