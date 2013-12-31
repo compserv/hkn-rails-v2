@@ -60,7 +60,7 @@
 <div class="submenu alumni_submenu">
   <ul class="plain">
     <% unless user_signed_in? && current_user.is_alumni? %>
-      <li><%= link_to "Alumni Contact Information", "/" %></li>
+      <li><%= link_to "Alumni Contact Information", new_alum_path %></li>
     <% else %>
       <%= link_to "View My Alumni Information", "/" %>
     <% end %>
