@@ -1,6 +1,6 @@
 <%= form_for(@dept_tour) do |f| %>
   <% if @dept_tour.errors.any? %>
-    <h2><%= pluralize(@dept_tour.errors.count, "error") %> prohibited this department tour from being requested:</h2>
+    <h2><%= pluralize(@dept_tour.errors.count, "error") %> prohibited this exam from being created:</h2>
     <div class="alert alert-danger">
       <% @dept_tour.errors.full_messages.each do |msg| %>
         <%= content_tag :li, msg %>

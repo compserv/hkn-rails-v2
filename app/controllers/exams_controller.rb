@@ -27,7 +27,7 @@ class ExamsController < ApplicationController
     if @exam.save
       redirect_to @exam, notice: 'Exam was successfully created.'
     else
-      redirect_to new_exam_path, alert: "#{@exam.errors.messages}"
+      render :new
     end
   end
 
@@ -36,7 +36,7 @@ class ExamsController < ApplicationController
     if @exam.update(exam_params)
       redirect_to @exam, notice: 'Exam was successfully updated.'
     else
-      redirect_to edit_exam_path(@exam), alert: "#{@exam.errors.messages}"
+      render :edit
     end
   end
 
