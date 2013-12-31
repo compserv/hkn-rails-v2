@@ -16,6 +16,12 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  username               :string(255)      not null
+#  first_name             :string(255)
+#  last_name              :string(255)
+#  picture_file_name      :string(255)
+#  picture_content_type   :string(255)
+#  picture_file_size      :integer
+#  picture_updated_at     :datetime
 #
 
 class User < ActiveRecord::Base
@@ -30,6 +36,22 @@ class User < ActiveRecord::Base
   has_many :resumes, :dependent => :destroy
 
   has_and_belongs_to_many :member_semesters
+
+  has_attached_file :picture, :default_url => "/pictures/:normalized_file_name.png", #guess saved as png to work w/ old system, if this gets updated (should only have to do it for current officers) can swap this to assets/person_placeholder.png
+      :path => ":rails_root/public/pictures/:normalized_file_name.:extension",
+      :url => "/pictures/:normalized_file_name.:extension"
+
+  validates_attachment_content_type :picture, 
+      :content_type => ["image/jpeg", "image/jpg", "image/gif", "image/png", "application/pdf"],
+      :message => "Oops, please use a jpg/gif/png/pdf"
+
+  Paperclip.interpolates :normalized_file_name do |attachment, style|
+    attachment.instance.normalized_file_name
+  end
+
+  def normalized_file_name
+    self.username
+  end
 
   def rsvp!(event_id)
     rsvps.create!(event_id: event_id)
@@ -64,6 +86,10 @@ class User < ActiveRecord::Base
 
   def is_officer_for_semester?(semester)
     roles_for_semester(semester).where(role_type: "officer").count > 0
+  end
+
+  def fullname
+    first_name + " " + last_name
   end
 
 end

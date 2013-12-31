@@ -20,7 +20,7 @@ users = [
 ]
 
 users.each do |user_info|
-  user = User.create(username: user_info[0], email: user_info[1], password: "password", password_confirmation: "password")
+  user = User.create(username: user_info[0], email: user_info[1], password: "password", password_confirmation: "password", first_name: "tester", last_name: "testing")
   user.member_semesters << current_member_semester
   puts "Created user with username: #{user.username} and email: #{user.email}."
 end

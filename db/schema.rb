@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131228195520) do
+ActiveRecord::Schema.define(version: 20131231033735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alumni", force: true do |t|
+    t.string   "grad_semester"
+    t.string   "grad_school"
+    t.string   "job_title"
+    t.string   "company"
+    t.integer  "salary"
+    t.integer  "user_id"
+    t.string   "perm_email"
+    t.string   "location"
+    t.text     "suggestions"
+    t.boolean  "mailing_list"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "challenges", force: true do |t|
     t.integer  "requester_id"
@@ -261,6 +276,12 @@ ActiveRecord::Schema.define(version: 20131228195520) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username",                            null: false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
