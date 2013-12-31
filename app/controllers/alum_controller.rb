@@ -1,4 +1,4 @@
-class AlumniController < ApplicationController
+class AlumController < ApplicationController
   before_action :set_alum, only: [:show, :edit, :update, :destroy]
   # some kind of filter....
   # incorporate current user
@@ -27,7 +27,7 @@ class AlumniController < ApplicationController
     @alum = Alum.new(alum_params)
 
     if @alum.save
-      redirect_to alumni_path, notice: 'Alum was successfully created.'
+      redirect_to alum_index_path, notice: 'Alum was successfully created.'
     else
       render :new
     end
@@ -46,7 +46,7 @@ class AlumniController < ApplicationController
   # DELETE /alumni/1
   def destroy
     @alum.destroy
-    redirect_to alumni_url, notice: 'Alum was successfully destroyed.'
+    redirect_to alum_path, notice: 'Alum was successfully destroyed.'
   end
 
   private

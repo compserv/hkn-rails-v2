@@ -1,4 +1,4 @@
-<%= form_for(@alum) do |f| %>
+<%= form_for(@alum, :url => alum_path(@alum)) do |f| %>
   <% if @alum.errors.any? %>
     <h2><%= pluralize(@alum.errors.count, "error") %> prohibited this alum from being created:</h2>
     <div class="alert alert-danger">

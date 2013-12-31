@@ -1,5 +1,5 @@
 HknRails::Application.routes.draw do
-  resources :alumni
+  resources :alum
   
   resources :resumes
 

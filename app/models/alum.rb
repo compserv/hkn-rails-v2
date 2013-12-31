@@ -25,10 +25,11 @@ class Alum < ActiveRecord::Base
       :message=>"must be within 0 and 5 quintillion",
       :allow_nil=>true
   validates_presence_of :perm_email, :grad_semester
-  after_create :wants_emails?
+  before_save :wants_emails?
 
   def wants_emails?
-    if mailing_list
+    debugger
+    if mailing_list_changed? && mailing_list
       self.subscribe
     end
   end
@@ -37,7 +38,7 @@ class Alum < ActiveRecord::Base
   SEASONS = ['Fall', 'Spring', 'Summer']
 
   def subscribe
-    debugger
+    debugger # Mechanize undefined for now
     agent = Mechanize.new
     agent.get(MAILING_LIST_URL) do |page|
       page.form_with(:action => '../subscribe/alumni') do |form|
