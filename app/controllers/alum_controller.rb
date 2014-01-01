@@ -1,8 +1,8 @@
 class AlumController < ApplicationController
+  before_filter :authenticate_user!
   before_action :set_alum, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_alumrel!, only: [:index]
   before_filter :alumni_duplication_filtration, :only => [:new, :create]
-  before_filter :authenticate_user!
   before_filter :alumni_modification_authorization_filtration, :only=> [:edit, :update, :destroy, :show]
   before_filter :input_helper, :only => [:create, :update]
 

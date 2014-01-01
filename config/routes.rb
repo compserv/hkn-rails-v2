@@ -11,7 +11,7 @@ HknRails::Application.routes.draw do
 
   resources :challenges, only: [:create, :update, :index]
 
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => "registrations" }
   resources :users
   get 'users/list/:filter' => 'users#list', as: 'users_list'
 

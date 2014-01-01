@@ -61,7 +61,7 @@
   <ul class="plain">
     <% if user_signed_in? && current_user.alum %>
       <li><%= link_to "View My Alumnus/Alumna Information", edit_alum_path(current_user.alum) %></li>
-    <% elsif user_signed_in? %>
+    <% else %>
       <li><%= link_to "Create Alumnus/Alumna", new_alum_path %></li>
     <% end %>
     <% if user_signed_in? && authorize(:alumrel) %>
