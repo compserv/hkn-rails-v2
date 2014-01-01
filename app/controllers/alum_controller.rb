@@ -1,5 +1,5 @@
 class AlumController < ApplicationController
-  before_action :set_alum, only: [:show, :edit, :update, :destroy, :alumni_modification_authorization_filtration]
+  before_action :set_alum, only: [:show, :edit, :update, :destroy, ]#:alumni_modification_authorization_filtration]
   before_filter :authenticate_alumrel!, only: [:index]
   before_filter :alumni_duplication_filtration, :only => [:new, :create]
   before_filter :authenticate_user!
@@ -54,7 +54,6 @@ class AlumController < ApplicationController
   # PATCH/PUT /alumni/1
   def update
     params[:alum][:grad_semester] = Alum.grad_semester(params[:grad_season], params[:grad_year])
-    debugger
     if @alum.update(alum_params)
       redirect_to @alum, notice: 'Alum was successfully updated.'
     else
