@@ -1,9 +1,9 @@
 class AccountMailer < ActionMailer::Base
-  def account_approval(person)
-    @person = person
+  def account_approval(user)
+    @user = user
     mail(
       :from => "no-reply@hkn.eecs.berkeley.edu",
-      :to => person.email,
+      :to => user.email,
       :subject => "[HKN] Account approved"
     )
   end

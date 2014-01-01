@@ -27,7 +27,7 @@ users.each do |user_info|
 end
 
 # candidate tester
-User.create(username: 'notaspammer', email: 'hi@hotmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false)
+User.create(username: 'notaspammer', email: 'hazedcasey@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false)
 
 # Roles
 execs = [

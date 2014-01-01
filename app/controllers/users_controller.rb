@@ -47,9 +47,9 @@ class UsersController < ApplicationController
   end
 
   def approve
-    debugger
     if @user.update(approved: true)
-      flash[:notice] = "Successfully approved #{@user.fullname}"
+      flash[:notice] = "Successfully approved #{@user.fullname}, an email has been sent to #{@user.email}"
+      AccountMailer.account_approval(@user).deliver
     else
       flash[:alert] = "Oops something went wrong!"
     end
