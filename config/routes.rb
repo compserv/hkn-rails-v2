@@ -11,6 +11,7 @@ HknRails::Application.routes.draw do
 
   resources :challenges, only: [:create, :update, :index]
 
+  post 'users/approve/:id' => 'users#approve', as: 'users_approve'
   devise_for :users, :controllers => { :registrations => "registrations" }
   resources :users
   get 'users/list/:category' => 'users#list', as: 'users_list'

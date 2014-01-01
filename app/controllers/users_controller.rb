@@ -1,7 +1,7 @@
 require 'will_paginate/array'
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :approve]
 
   # GET /users
   def index
@@ -11,6 +11,10 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = user.new
+  end
+
+  # GET /users/1
+  def show
   end
 
   # GET /users/1/edit
@@ -40,6 +44,16 @@ class UsersController < ApplicationController
     else
       @users = MemberSemester.current.send("#{params[:category]}".to_sym).paginate opts
     end
+  end
+
+  def approve
+    debugger
+    if @user.update(approved: true)
+      flash[:notice] = "Successfully approved #{@user.fullname}"
+    else
+      flash[:alert] = "Oops something went wrong!"
+    end
+    redirect_to user_path(@user)
   end
 
   private

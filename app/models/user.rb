@@ -97,6 +97,9 @@ class User < ActiveRecord::Base
   def full_name
     first_name + " " + last_name
   end
+  def fullname
+    full_name
+  end
 
   def status
     stat = roles_for_semester(MemberSemester.current).first

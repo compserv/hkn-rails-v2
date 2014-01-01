@@ -26,6 +26,9 @@ users.each do |user_info|
   puts "Created user with username: #{user.username} and email: #{user.email}."
 end
 
+# candidate tester
+User.create(username: 'notaspammer', email: 'hi@hotmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false)
+
 # Roles
 execs = [
   "pres",
