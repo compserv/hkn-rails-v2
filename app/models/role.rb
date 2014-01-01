@@ -35,6 +35,14 @@ class Role < ActiveRecord::Base
       all.collect { |role| role.users }.flatten
     end
 
+    def current_officers_from_committee(committee)
+      officers_from_committee committee, MemberSemester.current
+    end
+
+    def officers_from_committee(committee, semester)
+      all.collect { |role| role.users.select { |user| user.has_role_for_semester? committee, semester } }.flatten
+    end
+
     def current_officers
       all_current.officers.all_users
     end

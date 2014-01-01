@@ -20,11 +20,16 @@
 
 class Resume < ActiveRecord::Base
   belongs_to :user
-  validates :overall_gpa, :presence => true, :numericality => { greater_than_or_equal_to: 0, less_than_or_equal_to: 4 }
-  validates :major_gpa, :numericality => { greater_than_or_equal_to: 0, less_than_or_equal_to: 4 }
+  validates :overall_gpa,
+      :numericality => { greater_than_or_equal_to: 0, less_than_or_equal_to: 4 }
+  validates :major_gpa,
+      :numericality => { greater_than_or_equal_to: 0, less_than_or_equal_to: 4 },
+      :allow_nil => true
   validates :resume_text, :presence => true
-  validates :graduation_year, :numericality => { greater_than_or_equal_to: 1915, less_than_or_equal_to: 2037 }
-  validates :graduation_semester, inclusion: { in: %w(Spring Fall),
+  validates :graduation_year,
+      :numericality => { greater_than_or_equal_to: 1915, less_than_or_equal_to: 2037 }
+  validates :graduation_semester,
+      inclusion: { in: %w(Spring Fall),
       message: "%{value} is not a valid semester" }
   validates :included, :inclusion => [true,false]
 
