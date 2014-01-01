@@ -30,6 +30,8 @@ class Alum < ActiveRecord::Base
   def wants_emails?
     if mailing_list_changed? && mailing_list
       self.subscribe
+    elsif mailing_list_was && !mailing_list # mailing list just changed from true to false
+      self.unsubscribe
     end
   end
 
@@ -37,12 +39,11 @@ class Alum < ActiveRecord::Base
   SEASONS = ['Fall', 'Spring', 'Summer']
 
   def subscribe
-    return # included gem, leaving untested for now however
     agent = Mechanize.new
     agent.get(MAILING_LIST_URL) do |page|
       page.form_with(:action => '../subscribe/alumni') do |form|
         form['email'] = self.perm_email
-        form['fullname'] = self.user.fullname
+        form['fullname'] = self.user.full_name
       end.submit
     end
   end
