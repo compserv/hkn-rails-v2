@@ -2,6 +2,7 @@ require 'will_paginate/array'
 
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :approve]
+  before_filter :authenticate_user!
 
   # GET /users
   def index
