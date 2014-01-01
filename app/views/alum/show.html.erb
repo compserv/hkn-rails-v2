@@ -22,16 +22,16 @@
 
 <p>
   <strong>Salary:</strong>
-  <%= @alum.salary %>
+  <%= number_to_currency(@alum.salary, :unit => "$", precision: 0) %>
 </p>
 
 <p>
   <strong>User:</strong>
-  <%= @alum.user_id %>
+  <%= @alum.user.username %>
 </p>
 
 <p>
-  <strong>Perm email:</strong>
+  <strong>Permanent email:</strong>
   <%= @alum.perm_email %>
 </p>
 
@@ -51,4 +51,7 @@
 </p>
 
 <%= link_to 'Edit', edit_alum_path(@alum) %> |
-<%= link_to 'Back', alum_index_path %>
+<%= link_to 'Destroy', @alum, method: :delete, data: { confirm: 'Are you sure?' } %>
+<% if authorize(:alumrel) %>
+  | <%= link_to 'Index', alum_index_path %>
+<% end %>

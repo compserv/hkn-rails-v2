@@ -16,11 +16,11 @@
     <div>You'll receive periodic news/updates about HKN, including Alumni events.</div>
     <%= f.check_box :mailing_list%>
   </div>
-  <%= hidden_field_tag(:on_mailing_list, @alum.mailing_list) %>
   <div class="field">
     <%= label_tag :grad_semester, 'Semester graduated (from Ugrad)' %>
-    <%= select_tag :grad_season, options_for_select(Alum::SEASONS) %>
-    <%= select_year Date.today, :field_name => :year, :prefix => 'grad', :end_year => 1915, :start_year => Date.today.year %>
+    <%= select_tag :grad_season, options_for_select(Alum::SEASONS, @grad_semester) %>
+    <%= select_tag :grad_year, options_for_select(Alum.years, @grad_year), :style => 'padding-bottom: 10px;' %>
+    <br style="clear: both;" />
   </div>
   <div class="field">
     <%= f.label :grad_school %>
@@ -36,7 +36,7 @@
   </div>
   <div class="field">
     <%= f.label :salary %>
-    <%= f.text_field :salary, :value=> (if @alum.salary then pretty_salary(@alum.salary) else "" end)%>
+    <%= f.text_field :salary, :value => number_to_currency(@alum.salary, :unit => "$", precision: 0) %>
   </div>
   <div class="field">
     <%= f.label :location %>

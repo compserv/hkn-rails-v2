@@ -33,6 +33,9 @@ gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 # Lists
 gem 'will_paginate', '3.0.4'
 
+# Mailing Lists
+gem 'mechanize'
+
 group :development, :test do
   gem 'pry', '0.9.12.2'
   gem 'pry-rails', '0.3.2'

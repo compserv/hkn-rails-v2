@@ -2,7 +2,7 @@
   <ul class="plain">
     <li><a href="/tutor/">Tutoring Hours</a></li>
     <li><a href="/tutor/calendar">Review Sessions</a></li>
-    <li><a href="/exams/">Exam Archive</a></li>
+    <li><%= link_to "Exam Archive", exams_path %></li>
   </ul>
   <ul class="plain">
     <li><%= link_to "Course Surveys", "/" %></li>
@@ -59,10 +59,13 @@
 
 <div class="submenu alumni_submenu">
   <ul class="plain">
-    <% unless user_signed_in? && current_user.has_ever_had_role?('alumni') %>
-      <li><%= link_to "Alumni Contact Information", new_alum_path %></li>
-    <% else %>
-      <%= link_to "View My Alumni Information", "/" %>
+    <% if user_signed_in? && current_user.alum %>
+      <li><%= link_to "View My Alumnus/Alumna Information", edit_alum_path(current_user.alum) %></li>
+    <% elsif user_signed_in? %>
+      <li><%= link_to "Create Alumnus/Alumna", new_alum_path %></li>
+    <% end %>
+    <% if user_signed_in? && authorize(:alumrel) %>
+      <li><%= link_to "Alumni Contact Information", alum_index_path %></li>
     <% end %>
   </ul>
 </div>
