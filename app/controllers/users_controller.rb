@@ -28,14 +28,18 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
-    redirect_to users_url, notice: 'Resume was successfully destroyed.'
+    redirect_to users_url, notice: 'User was successfully destroyed.'
   end
 
   def list
     opts = { :page     => params[:page],
              :per_page => params[:per_page] || 20,
            }
-    @users = MemberSemester.current.send("#{params[:filter]}".to_sym).paginate opts
+    if params[:approved] == "false"
+      @users = User.where(approved: false).paginate opts
+    else
+      @users = MemberSemester.current.send("#{params[:category]}".to_sym).paginate opts
+    end
   end
 
   private

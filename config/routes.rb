@@ -13,7 +13,7 @@ HknRails::Application.routes.draw do
 
   devise_for :users, :controllers => { :registrations => "registrations" }
   resources :users
-  get 'users/list/:filter' => 'users#list', as: 'users_list'
+  get 'users/list/:category' => 'users#list', as: 'users_list'
 
   get 'candidate/portal' => 'candidate#portal', as: 'candidate_portal'
   get 'candidate/autocomplete_officer_name' => 'candidate#autocomplete_officer_name', as: 'autocomplete_officer_name'
