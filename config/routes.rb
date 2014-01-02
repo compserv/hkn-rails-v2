@@ -21,6 +21,10 @@ HknRails::Application.routes.draw do
 
   #Indrel
   scope 'indrel' do
+    match "/", to: "indrel#why_hkn", via: 'get', as: 'indrel'
     match "contact_us", to: "indrel#contact_us", via: 'get', as: 'indrel_contact_us'
+    match "career_fair", to: "indrel#career_fair", via: 'get', as: 'career_fair'
+    match 'infosessions', to: "indrel#infosessions", via: 'get'
+    match 'resume_books', to: "indrel#resume_books", via: 'get', as: "resume_books_about"
   end
 end
