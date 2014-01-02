@@ -4,6 +4,9 @@ class CandidateController < ApplicationController
     @challenges = Challenge.all
   end
 
+  def quiz
+  end
+
   def autocomplete_officer_name
     if params[:term]
       @users = User.where('username LIKE ?', "#{params[:term]}%").limit(10)
