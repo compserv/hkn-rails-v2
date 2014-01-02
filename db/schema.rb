@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140101194721) do
+ActiveRecord::Schema.define(version: 20140102011328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -283,6 +283,10 @@ ActiveRecord::Schema.define(version: 20140101194721) do
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.boolean  "approved",               default: false, null: false
+    t.boolean  "private"
+    t.date     "date_of_birth"
+    t.string   "phone_number"
+    t.boolean  "sms_alerts"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
