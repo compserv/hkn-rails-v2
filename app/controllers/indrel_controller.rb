@@ -1,7 +1,6 @@
 class IndrelController < ApplicationController
   def why_hkn
     @indrel_officers = Role.current_officers_from_committee 'indrel'
-    #Don't we have the same number of officers every semester?
     @officer_count = Role.current_officers.count
   end
 
