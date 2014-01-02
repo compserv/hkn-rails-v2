@@ -65,7 +65,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    unless @user == current_user || authorize(:superuser)
+    unless @user == current_user || authorize(:superuser) || (authorize(:vp) and @user.approved == false)
       redirect_to edit_user_path(current_user) and return
     end
     @user.destroy
