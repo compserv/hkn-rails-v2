@@ -21,10 +21,13 @@
     <%= f.label :email %>
     <%= f.text_field :email %>
   </div>
-  <div class="field">
-    <%= f.label :picture %>
-    <%= f.text_field :picture %>
-  </div>
+  <% if authorize(:bridge) %>
+    <div class="field">
+      <%= f.label :picture %>
+      <%= f.file_field :file %>
+    </div>
+    <br style="clear: both;" />
+  <% end %>
   <div class="field">
     <%= f.label :private, "Keep my profile private" %>
     <%= f.check_box :private %>
