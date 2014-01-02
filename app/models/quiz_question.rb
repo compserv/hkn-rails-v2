@@ -10,10 +10,9 @@
 #
 
 class QuizQuestion < ActiveRecord::Base
+  has_many :candidate_quizzes, through: :quiz_responses
+  has_many :quiz_responses
 
-    has_many :candidate_quizzes, through: :quiz_responses
-    has_many :quiz_responses
-
-    validates :question, presence: true
-    validates :answer, presence: true
+  validates :question, presence: true
+  validates :answer, presence: true
 end

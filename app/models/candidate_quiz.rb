@@ -10,9 +10,9 @@
 #
 
 class CandidateQuiz < ActiveRecord::Base
-    belongs_to :user
-    has_many :quiz_questions, through: :quiz_responses
-    has_many :quiz_responses
+  belongs_to :user
+  has_many :quiz_questions, through: :quiz_responses
+  has_many :quiz_responses
 
-    validates :user_id, presence: true, uniqueness: true
+  validates :user_id, presence: true, uniqueness: true
 end

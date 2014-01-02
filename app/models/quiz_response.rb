@@ -11,15 +11,15 @@
 #
 
 class QuizResponse < ActiveRecord::Base
-    belongs_to :quiz_question
-    belongs_to :candidate_quiz
+  belongs_to :quiz_question
+  belongs_to :candidate_quiz
 
-    validates :response, presence: true
-    validates :quiz_question_id, presence: true
-    validates :candidate_quiz_id, presence: true
+  validates :response, presence: true
+  validates :quiz_question_id, presence: true
+  validates :candidate_quiz_id, presence: true
 
-    def correct?
-        response.downcase.split(',').map { |str| str.strip } ==
-            self.quiz_question.answer.downcase.split(',').map { |str| str.strip }
-    end
+  def correct?
+    response.downcase.split(',').map { |str| str.strip } ==
+      self.quiz_question.answer.downcase.split(',').map { |str| str.strip }
+  end
 end
