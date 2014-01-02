@@ -22,6 +22,8 @@ class Role < ActiveRecord::Base
   scope :committee_members, -> { where(role_type: "committee_member") }
   scope :candidates, -> { where(role_type: "candidate") }
   scope :members, -> { where(role_type: ["committee_member", "officer"])}
+  scope :position, lambda {|pos| where(name: pos)}
+  scope :semester_filter, lambda {|sem| where(resource_id: sem.id)}
 
   class << self
     def current(position)
@@ -58,14 +60,6 @@ class Role < ActiveRecord::Base
     def current_candidates
       all_current.candidates.all_users
     end
-  end
-
-  def self.position(position)
-    where(name: position)
-  end
-
-  def self.semester_filter(semester)
-    where(resource_id: semester.id)
   end
 
   def semester

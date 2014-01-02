@@ -97,9 +97,6 @@ class User < ActiveRecord::Base
   def full_name
     first_name + " " + last_name
   end
-  def fullname
-    full_name
-  end
 
   def status
     stat = roles_for_semester(MemberSemester.current).first
@@ -110,15 +107,15 @@ class User < ActiveRecord::Base
   end
 
   def active_for_authentication? 
-  super && approved? 
-end 
-
-def inactive_message 
-  if !approved? 
-    :not_approved 
-  else 
-    super # Use whatever other message 
+    super && approved? 
   end 
-end
+
+  def inactive_message 
+    if !approved? 
+      :not_approved 
+    else 
+      super # Use whatever other message 
+    end 
+  end
 
 end

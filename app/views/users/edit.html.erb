@@ -1,4 +1,4 @@
-<h1>Account Settings <%= "for #{@user.fullname}" if @user.id != current_user.id %></h1>
+<h1>Account Settings <%= "for #{@user.full_name}" if @user.id != current_user.id %></h1>
 <p>Note: You must enter in your current password to make any changes to your settings.</p>
 
 <%= form_for @user do |f| %>

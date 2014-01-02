@@ -65,6 +65,9 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
+    unless @user == current_user || authorize(:superuser)
+      redirect_to edit_user_path(current_user) and return
+    end
     @user.destroy
     redirect_to users_url, notice: 'User was successfully destroyed.'
   end
@@ -82,7 +85,7 @@ class UsersController < ApplicationController
 
   def approve
     if @user.update(approved: true)
-      flash[:notice] = "Successfully approved #{@user.fullname}, an email has been sent to #{@user.email}"
+      flash[:notice] = "Successfully approved #{@user.full_name}, an email has been sent to #{@user.email}"
       AccountMailer.account_approval(@user).deliver
     else
       flash[:alert] = "Oops something went wrong!"
