@@ -22,6 +22,7 @@
 #  picture_content_type   :string(255)
 #  picture_file_size      :integer
 #  picture_updated_at     :datetime
+#  candidate_quiz_id      :integer
 #
 
 class User < ActiveRecord::Base
@@ -34,6 +35,8 @@ class User < ActiveRecord::Base
   has_many :rsvps
   has_many :events, through: :rsvps
   has_many :resumes, :dependent => :destroy
+
+  has_one :candidate_quiz
 
   has_and_belongs_to_many :member_semesters
 

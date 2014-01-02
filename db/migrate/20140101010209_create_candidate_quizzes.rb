@@ -6,5 +6,7 @@ class CreateCandidateQuizzes < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :candidate_quizzes, :user_id
   end
 end
