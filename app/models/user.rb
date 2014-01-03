@@ -22,6 +22,12 @@
 #  picture_content_type   :string(255)
 #  picture_file_size      :integer
 #  picture_updated_at     :datetime
+#  approved               :boolean          default(FALSE), not null
+#  private                :boolean
+#  date_of_birth          :date
+#  phone_number           :string(255)
+#  sms_alerts             :boolean
+#  mobile_carrier_id      :integer
 #
 
 class User < ActiveRecord::Base
@@ -31,10 +37,13 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  before_save :phone_number_fix
+
   has_many :rsvps
   has_many :events, through: :rsvps
   has_many :resumes, :dependent => :destroy
   has_one :alum
+  belongs_to :mobile_carrier
 
   has_and_belongs_to_many :member_semesters
 
@@ -116,6 +125,32 @@ class User < ActiveRecord::Base
     else 
       super # Use whatever other message 
     end 
+  end
+
+  def phone_number_is_valid?
+    phone_number_compact.size == 10
+  end
+
+  def phone_number_compact
+    return "" unless n = read_attribute(:phone_number) and not n.blank?
+    n.gsub /[^\d]/, ''
+  end
+
+  def sms_email_address
+    return "" unless phone_number_is_valid? and not mobile_carrier.blank?
+    "#{phone_number_compact}#{mobile_carrier.sms_email}"
+  end
+
+  # Sends an SMS message with the provided text if the user has sms_alerts enabled
+  def send_sms!(msg)
+    return false unless sms_alerts and phone_number_is_valid? and not mobile_carrier.blank?
+    UserMailer.send_sms(self, msg).deliver
+  end
+
+  def phone_number_fix
+    n = self.phone_number.gsub /[^\d]/, ''
+    return unless n && n.length == 10
+    self.phone_number = "(#{n[0..2]}) #{n[3..5]}-#{n[6..9]}"
   end
 
 end

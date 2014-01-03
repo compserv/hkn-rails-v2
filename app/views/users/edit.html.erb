@@ -51,7 +51,7 @@
   </div>
   <div class="field">
     <%= f.label :mobile_carrier_id, "Mobile Carrier" %>
-    <%#= collection_select(:person, :mobile_carrier_id, @mobile_carriers, :id, :name) %>
+    <%= collection_select(:user, :mobile_carrier_id, @mobile_carriers, :id, :name) %>
   </div>
   <div class="field">
     <%= f.label :sms_alerts, "Would you like to receive SMS alerts for events?" %>

@@ -9,11 +9,6 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  # GET /users/new
-  def new
-    @user = User.new
-  end
-
   # GET /users/1
   def show
   end
@@ -24,7 +19,7 @@ class UsersController < ApplicationController
       redirect_to edit_user_path(current_user) and return
     end
 
-    @mobile_carriers# = MobileCarrier.all
+    @mobile_carriers = MobileCarrier.all
   end
 
   # POST /users
@@ -56,6 +51,7 @@ class UsersController < ApplicationController
     end
 
     # DO IT
+    debugger
     if @user.update_attributes(user_params)
       redirect_to path, :notice => 'Settings successfully updated.'
     else
@@ -99,6 +95,6 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
     end
     def user_params
-      params.require(:user).permit(:email, :password, :private, :picture, :password_confirmation, :phone_number, :sms_alerts, :date_of_birth)
+      params.require(:user).permit(:email, :password, :private, :picture, :password_confirmation, :phone_number, :sms_alerts, :date_of_birth, :mobile_carrier_id)
     end
 end
