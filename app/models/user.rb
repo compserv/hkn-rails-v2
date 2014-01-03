@@ -76,8 +76,11 @@ class User < ActiveRecord::Base
   end
 
   def add_position_for_semester_and_role_type(position, semester, role)
-    a = Role.where(name: position, resource_id: semester.id, role_type: role).first
-    a.users << self if a
+    Role.find_or_create_by_name_and_resource_id_and_role_type(position, semester.id, role).users << self
+  end
+
+  def has_position_for_semester_and_role_type(position, semester, role)
+    Role.find_by_name_and_resource_id_and_role_type(position, semester.id, role)
   end
 
   # Helpers for adding and checking roles for a user.
