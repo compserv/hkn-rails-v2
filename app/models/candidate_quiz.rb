@@ -15,4 +15,11 @@ class CandidateQuiz < ActiveRecord::Base
   has_many :quiz_responses
 
   validates :user_id, presence: true, uniqueness: true
+
+  def grade
+    self.score = 0
+    self.quiz_responses.each do |resp|
+      self.score += 1 if resp.correct?
+    end
+  end
 end
