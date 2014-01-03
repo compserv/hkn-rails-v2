@@ -37,8 +37,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  before_save :phone_number_fix
-
   has_many :rsvps
   has_many :events, through: :rsvps
   has_many :resumes, :dependent => :destroy
@@ -148,6 +146,7 @@ class User < ActiveRecord::Base
   end
 
   def phone_number_fix
+    return unless self.phone_number
     n = self.phone_number.gsub /[^\d]/, ''
     return unless n && n.length == 10
     self.phone_number = "(#{n[0..2]}) #{n[3..5]}-#{n[6..9]}"
