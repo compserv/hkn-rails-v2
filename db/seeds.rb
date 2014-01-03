@@ -77,6 +77,11 @@ officer_to_position.each do |user, role|
   puts "Added role: #{role.name} to user: #{user.username} for semester: #{semester.name}."
 end
 
+(1..4).each do |num|
+  QuizQuestion.create(question: 'test question ' << num.to_s, answer: 'answer ' << num.to_s)
+  puts "Added question number " + num.to_s + " to candidate quiz questions"
+end
+
 def initialize_mobile_carriers
   mobile_carriers = [
     {:name => "Alltel",             :sms_email => "@message.alltel.com"},
@@ -95,3 +100,4 @@ def initialize_mobile_carriers
 end
 
 initialize_mobile_carriers
+

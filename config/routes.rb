@@ -1,6 +1,6 @@
 HknRails::Application.routes.draw do
   resources :alum
-  
+
   resources :resumes
 
   get 'dept_tours/success' => 'dept_tours#success', as: 'dept_tours_success'
@@ -16,8 +16,12 @@ HknRails::Application.routes.draw do
   resources :users
   get 'users/list/:category' => 'users#list', as: 'users_list'
 
-  get 'candidate/portal' => 'candidate#portal', as: 'candidate_portal'
-  get 'candidate/autocomplete_officer_name' => 'candidate#autocomplete_officer_name', as: 'autocomplete_officer_name'
+  scope "candidate" do
+    match 'quiz', to: "candidate#quiz", via: 'get', as: 'candidate_quiz'
+    match 'submit_quiz', to: "candidate#submit_quiz", via: 'post', as: 'candidate_submit_quiz'
+    get 'portal' => 'candidate#portal', as: 'candidate_portal'
+    get 'autocomplete_officer_name' => 'candidate#autocomplete_officer_name', as: 'autocomplete_officer_name'
+  end
 
   root to: "pages#home"
   get 'about/contact' => 'pages#contact'

@@ -22,6 +22,7 @@
 #  picture_content_type   :string(255)
 #  picture_file_size      :integer
 #  picture_updated_at     :datetime
+#  candidate_quiz_id      :integer
 #  approved               :boolean          default(FALSE), not null
 #  private                :boolean
 #  date_of_birth          :date
@@ -42,6 +43,8 @@ class User < ActiveRecord::Base
   has_many :resumes, :dependent => :destroy
   has_one :alum
   belongs_to :mobile_carrier
+
+  has_one :candidate_quiz
 
   has_and_belongs_to_many :member_semesters
 
