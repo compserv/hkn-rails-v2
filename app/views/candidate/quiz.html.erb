@@ -5,54 +5,13 @@
 
 <%= form_tag "submit_quiz" do %>
   <ol>
-    <li>
-      Eta Kappa Nu was founded at <%= text_field_tag(:q1, @quiz_resp[:q1]) %> (include the full name of the university).
-    </li>
-    <li>
-      Eta Kappa Nu was founded in the year <%= text_field_tag(:q2, @quiz_resp[:q2]) %>.
-    </li>
-    <li>
-      The Berkeley Chapter is known as the <%= text_field_tag(:q3, @quiz_resp[:q3]) %> chapter.
-    </li>
-    <li>
-      The Berkeley Chapter was established in the year <%= text_field_tag(:q4, @quiz_resp[:q4]) %>.
-    </li>
-    <li>
-      The colors of the organization are <%= text_field_tag(:q5_1, @quiz_resp[:q5_1]) %> and <%= text_field_tag(:q5_2, @quiz_resp[:q5_2]) %>.
-    </li>
-    <li>
-      The emblem of the organization is <%= text_field_tag(:q6, @quiz_resp[:q6]) %>.
-    </li>
-    <li>
-      What are the six officer positions mandated by the nationals constitution for each chapter? (In alphabetical order)
-      <ol>
-        <li><%= text_field_tag(:q7_1, @quiz_resp[:q7_1]) %></li>
-        <li><%= text_field_tag(:q7_2, @quiz_resp[:q7_2]) %></li>
-        <li><%= text_field_tag(:q7_3, @quiz_resp[:q7_3]) %></li>
-        <li><%= text_field_tag(:q7_4, @quiz_resp[:q7_4]) %></li>
-        <li><%= text_field_tag(:q7_5, @quiz_resp[:q7_5]) %></li>
-        <li><%= text_field_tag(:q7_6, @quiz_resp[:q7_6]) %></li>
-      </ol>
-    </li>
-    <li>
-      Name four student services carried out by the Berkeley Chapter. (In alphabetical order)
-      <ol>
-        <li><%= text_field_tag(:q8_1, @quiz_resp[:q8_1]) %></li>
-        <li><%= text_field_tag(:q8_2, @quiz_resp[:q8_2]) %></li>
-        <li><%= text_field_tag(:q8_3, @quiz_resp[:q8_3]) %></li>
-        <li><%= text_field_tag(:q8_4, @quiz_resp[:q8_4]) %></li>
-      </ol>
-    </li>
-    <li>
-      Name any current Berkeley EECS faculty who is a member of HKN. <%= text_field_tag(:q9, @quiz_resp[:q9]) %>
-    </li>
-    <li>
-      What are the locations of the two HKN offices? (In alphabetical order)
-        <ol>
-          <li><%= text_field_tag(:q10_1, @quiz_resp[:q10_1]) %></li>
-          <li><%= text_field_tag(:q10_2, @quiz_resp[:q10_2]) %></li>
-        </ol>
-    </li>
+    <% QuizQuestion.all.each do |question| %>
+      <li>
+      <%= question.question %>
+      <%= text_field_tag(('q' << question.id.to_s).to_sym, @quiz_resp[('q' << question.id.to_s).to_sym]) %>
+      </li>
+    <% end %>
   </ol>
+
   <%= submit_tag "Save Responses" %>
 <% end %>
