@@ -5,6 +5,9 @@ class CandidateController < ApplicationController
   end
 
   def quiz
+    if !current_user.candidate_quiz
+      current_user.candidate_quiz.create
+    end
     quiz_resp = current_user.candidate_quiz.quiz_responses
     @quiz_resp = Hash.new('')
     if !quiz_resp.empty? #Fill hash with default blanks
@@ -23,7 +26,7 @@ class CandidateController < ApplicationController
           old_answer.response = value.to_s
           old_answer.save
         else 
-          quiz_responses.create(quiz_question_id: ('q' << resp.quiz_question_id.to_s).to_sym,
+          quiz_responses.create(quiz_question_id: Integer(key.to_s[1..-1])
                                 response: value.to_s)
         end
       end

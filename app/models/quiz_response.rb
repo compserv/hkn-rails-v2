@@ -17,6 +17,7 @@ class QuizResponse < ActiveRecord::Base
   validates :response, presence: true
   validates :quiz_question_id, presence: true
   validates :candidate_quiz_id, presence: true
+  validates_uniqueness_of :candidate_quiz_id, :scope => :quiz_question_id
 
   def correct?
     response.downcase.split(',').map { |str| str.strip } ==

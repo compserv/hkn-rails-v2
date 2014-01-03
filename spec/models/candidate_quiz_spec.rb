@@ -13,11 +13,11 @@ require 'spec_helper'
 
 describe CandidateQuiz do
   before do
-    @quiz = CandidateQuiz.new(id: 1, user_id: 1)
-    @question = QuizQuestion.new(id: 1, answer: "answer", question: "test")
+    @quiz = CandidateQuiz.new(user_id: 1)
+    @question = QuizQuestion.new(answer: "answer", question: "test")
     @quiz.save
     @question.save
-    @resp = @quiz.quiz_responses.create(quiz_question_id: 1, response: "answer")
+    @resp = @quiz.quiz_responses.create(quiz_question: @question, response: "answer")
   end
 
   subject { @resp }
