@@ -27,7 +27,10 @@ users.each do |user_info|
 end
 
 # candidate tester
-User.create(username: 'notaspammer', email: 'hazedcasey@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false)
+u = User.create(username: 'notaspammer', email: 'hazedcasey@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false)
+v = User.create(username: 'approved', email: 'hihihi@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: true)
+new_role = Role.create(name: :empty, role_type: :candidate, resource_type: MemberSemester.to_s, resource_id: MemberSemester.current.id)
+v.add_position_for_semester_and_role_type(:empty, MemberSemester.current, :candidate)
 
 # Roles
 execs = [

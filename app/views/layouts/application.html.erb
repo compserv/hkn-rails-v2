@@ -39,9 +39,12 @@
 
           <li><a class="navigation_toplevel_item" id="alumni" href="#">Alumni Network</a></li>
           <li><a class="navigation_toplevel_item" id="about" href="#">About HKN</a></li>
-
-          <!-- link to candidate portal goes here -->
-          <!-- link to admin panel for officers goes here -->
+          <% if candidate_authorize %>
+            <li><a class="navigation_toplevel_item" id="cand" href="#">Candidate Portal</a></li>
+          <% end %>
+          <% if current_user && current_user.is_officer_for_semester?(MemberSemester.current) %>
+            <li><a class="navigation_toplevel_item" id="admin" href="#">Admin</a></li>
+          <% end %>
         </ul>
 
         <div class="clear"></div>
@@ -91,7 +94,7 @@
 
   <div id="footer">
     <div id="footer-right">Eta Kappa Nu, Mu Chapter</div>
-    <div id="footer-left"><%= link_to "HOME", root_url %> | <a href="/about/contact/">CONTACT</a> | <%= link_to "Confirm Candidate Accounts", users_list_path('candidates', approved: "false") %></div>
+    <div id="footer-left"><%= link_to "HOME", root_url %> | <%= link_to "CONTACT", contact_path %> | <%= link_to "Confirm Candidate Accounts", users_list_path('candidates', approved: "false") %></div>
     <% # I know this is the wrong spot for this, but I don't really want to sort through the admin stuff yet %>
   </div>
 

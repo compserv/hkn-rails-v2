@@ -75,6 +75,14 @@ class User < ActiveRecord::Base
     true
   end
 
+  def add_position_for_semester_and_role_type(position, semester, role)
+    Role.find_or_create_by_name_and_resource_id_and_role_type(position, semester.id, role).users << self
+  end
+
+  def has_position_for_semester_and_role_type(position, semester, role)
+    Role.find_by_name_and_resource_id_and_role_type(position, semester.id, role)
+  end
+
   # Helpers for adding and checking roles for a user.
   def add_role_for_semester(role, semester)
     add_role role, semester
@@ -92,9 +100,16 @@ class User < ActiveRecord::Base
     has_role_for_semester? role, MemberSemester.current
   end
 
-  #this is sort of broken.
   def has_ever_had_role?(role)
-    has_role? role
+    roles.where(role_type: role).count > 0
+  end
+
+  def has_ever_had_position_role?(position, role)
+    roles.where(name: position, role_type: role).count > 0
+  end
+
+  def has_ever_had_position?(position)
+    roles.where(name: position).count > 0
   end
 
   def is_current_officer?(position)

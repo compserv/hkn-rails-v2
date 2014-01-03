@@ -336,14 +336,13 @@ ActiveRecord::Schema.define(version: 20140103005536) do
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
-    t.integer  "candidate_quiz_id"
     t.boolean  "approved",               default: false, null: false
     t.boolean  "private"
     t.date     "date_of_birth"
     t.string   "phone_number"
     t.boolean  "sms_alerts"
+    t.integer  "candidate_quiz_id"
     t.integer  "mobile_carrier_id"
-
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
