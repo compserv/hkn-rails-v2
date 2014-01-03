@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140102035938) do
+ActiveRecord::Schema.define(version: 20140103005536) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -336,9 +337,6 @@ ActiveRecord::Schema.define(version: 20140102035938) do
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
     t.integer  "candidate_quiz_id"
-  end
-
-  add_index "users", ["candidate_quiz_id"], name: "index_users_on_candidate_quiz_id", using: :btree
     t.boolean  "approved",               default: false, null: false
     t.boolean  "private"
     t.date     "date_of_birth"
@@ -348,6 +346,7 @@ ActiveRecord::Schema.define(version: 20140102035938) do
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
+  add_index "users", ["candidate_quiz_id"], name: "index_users_on_candidate_quiz_id", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
