@@ -21,10 +21,13 @@ users = [
 ]
 
 users.each do |user_info|
-  user = User.create(username: user_info[0], email: user_info[1], password: "password", password_confirmation: "password", first_name: "tester", last_name: "testing")
+  user = User.create(username: user_info[0], email: user_info[1], password: "password", password_confirmation: "password", first_name: "tester", last_name: "testing", approved: true)
   user.member_semesters << current_member_semester
   puts "Created user with username: #{user.username} and email: #{user.email}."
 end
+
+# candidate tester
+User.create(username: 'notaspammer', email: 'hazedcasey@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false)
 
 # Roles
 execs = [
@@ -73,3 +76,22 @@ officer_to_position.each do |user, role|
   user.add_role_for_semester(role.name, semester)
   puts "Added role: #{role.name} to user: #{user.username} for semester: #{semester.name}."
 end
+
+def initialize_mobile_carriers
+  mobile_carriers = [
+    {:name => "Alltel",             :sms_email => "@message.alltel.com"},
+    {:name => "AT&T",               :sms_email => "@txt.att.net"},
+    {:name => "Boost Mobile",       :sms_email => "@myboostmobile.com"},
+    {:name => "Nextel",             :sms_email => "@messaging.nextel.com"},
+    {:name => "Sprint",             :sms_email => "@messaging.sprintpcs.com"},
+    {:name => "T-Mobile",           :sms_email => "@tmomail.net"},
+    {:name => "US Cellular",        :sms_email => "@email.uscc.net"},
+    {:name => "Verizon",            :sms_email => "@vtext.com"},
+    {:name => "Virgin Mobile USA",  :sms_email => "@vmobl.com"},
+  ]
+  mobile_carriers.each do |mobile_carrier|
+    MobileCarrier.find_or_create_by_name_and_sms_email(mobile_carrier)
+  end
+end
+
+initialize_mobile_carriers

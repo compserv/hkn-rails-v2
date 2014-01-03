@@ -3,4 +3,7 @@
 <%= render 'form' %>
 
 <%= link_to 'Show', @alum %> |
-<%= link_to 'Back', alum_index_path %>
+<%= link_to 'Destroy', @alum, method: :delete, data: { confirm: 'Are you sure?' } %>
+<% if authorize(:alumrel) %>
+  | <%= link_to 'Index', alum_index_path %>
+<% end %>

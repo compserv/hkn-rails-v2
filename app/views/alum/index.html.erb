@@ -11,6 +11,7 @@
       <th>Salary</th>
       <th>Location</th>
       <th>Suggestions</th>
+      <th>Username</th>
       <th></th>
       <th></th>
       <th></th>
@@ -28,6 +29,7 @@
         <td><%= alum.salary %></td>
         <td><%= alum.location %></td>
         <td><%= alum.suggestions %></td>
+        <td><%= alum.get_username %></td>
         <td><%= link_to 'Show', alum %></td>
         <td><%= link_to 'Edit', edit_alum_path(alum) %></td>
         <td><%= link_to 'Destroy', alum, method: :delete, data: { confirm: 'Are you sure?' } %></td>

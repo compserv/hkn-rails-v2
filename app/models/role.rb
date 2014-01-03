@@ -21,6 +21,9 @@ class Role < ActiveRecord::Base
   scope :officers, -> { where(role_type: "officer") }
   scope :committee_members, -> { where(role_type: "committee_member") }
   scope :candidates, -> { where(role_type: "candidate") }
+  scope :members, -> { where(role_type: ["committee_member", "officer"])}
+  scope :position, lambda {|pos| where(name: pos)}
+  scope :semester_filter, lambda {|sem| where(resource_id: sem.id)}
 
   class << self
     def current(position)
@@ -31,6 +34,7 @@ class Role < ActiveRecord::Base
       find_by_name_and_resource_id(position, semester.id)
     end
 
+    #returns array of users
     def all_users
       all.collect { |role| role.users }.flatten
     end
@@ -47,10 +51,12 @@ class Role < ActiveRecord::Base
       all_current.officers.all_users
     end
 
+    #returns array of users
     def current_committee_members
       all_current.committee_members.all_users
     end
 
+    #returns array of users
     def current_candidates
       all_current.candidates.all_users
     end
