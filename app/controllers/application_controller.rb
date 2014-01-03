@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:first_name, :last_name, :username, :email, :password, :password_confirmation)}
   end
 
-  helper_method :authorize
+  helper_method :authorize, :candidate_authorize
 
   def method_missing(name, *args)
     case name.to_s
@@ -25,7 +25,11 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize(group)
-    authenticate_user! and (current_user.is_current_officer?(group) || current_user.is_current_officer?(:compserv))
+    current_user and (current_user.is_current_officer?(group) || current_user.is_current_officer?(:compserv))
+  end
+
+  def candidate_authorize
+    current_user and current_user.has_ever_had_role?(:candidate)
   end
 
   def authenticate!(group)

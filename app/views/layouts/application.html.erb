@@ -39,8 +39,9 @@
 
           <li><a class="navigation_toplevel_item" id="alumni" href="#">Alumni Network</a></li>
           <li><a class="navigation_toplevel_item" id="about" href="#">About HKN</a></li>
-
-          <!-- link to candidate portal goes here -->
+          <% if candidate_authorize %>
+            <li><a class="navigation_toplevel_item" id="cand" href="#">Candidate Portal</a></li>
+          <% end %>
           <!-- link to admin panel for officers goes here -->
         </ul>
 
