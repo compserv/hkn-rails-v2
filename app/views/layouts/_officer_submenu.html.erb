@@ -69,12 +69,16 @@
 
 <div class="submenu about_submenu">
   <ul class="plain">
+<<<<<<< HEAD
     <li><%= link_to 'Contact Information', contact_path, :class => 'navigation_sublevel_item'  %></li>
+=======
+    <li><%= link_to "Contact Information", contact_information_path %> </li>
+>>>>>>> Fixed routes
     <li><%= link_to "Photo Gallery", "/gallery3/", :class=>"navigation_sublevel_item" %></li>
     <li><%= link_to "Yearbooks",     "/about/yearbook/",            :class=>"navigation_sublevel_item" %></li>
   </ul>
   <ul class="plain">
-    <li><a href="/about/slideshow/" class="navigation_sublevel_item">Slideshows</a></li>
+    <li><%= link_to "Slideshows", bridge_slideshow_path %></li>
     <li><%= link_to "Current Officers", about_officers_path, :class=>"navigation_sublevel_item" %></li>
     <li><%= link_to "Current Committee Members", about_committee_members_path, :class=>"navigation_sublevel_item" %></li>
   </ul>
