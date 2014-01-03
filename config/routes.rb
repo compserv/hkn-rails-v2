@@ -53,6 +53,13 @@ HknRails::Application.routes.draw do
     end
   end
 
+  #About HKN
+  scope 'about' do
+    match 'contact', to: "pages#contact", via: :get, as: "contact"
+    match 'slideshow', to: 'pages#slideshow', via: 'get', as: 'bridge_slideshow'
+    match 'yearbook', to: 'pages#yearbook', via: 'get', as: 'bridge_yearbook'
+  end
+
   namespace :admin do
     scope "vp" do
       match "/", to: "vp#index", via: :get, as: :vp
