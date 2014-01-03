@@ -24,7 +24,7 @@ HknRails::Application.routes.draw do
   end
 
   root to: "pages#home"
-  get 'about/contact' => 'pages#contact'
+  get 'about/contact' => 'pages#contact', as: 'contact'
 
   #Indrel
   scope 'indrel' do
