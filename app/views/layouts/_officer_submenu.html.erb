@@ -2,7 +2,7 @@
   <ul class="plain">
     <li><a href="/tutor/">Tutoring Hours</a></li>
     <li><a href="/tutor/calendar">Review Sessions</a></li>
-    <li><a href="/exams/">Exam Archive</a></li>
+    <li><%= link_to "Exam Archive", exams_path %></li>
   </ul>
   <ul class="plain">
     <li><%= link_to "Course Surveys", "/" %></li>
@@ -26,15 +26,15 @@
 <% if user_signed_in? %>
   <div class="submenu people_submenu">
     <ul class="plain">
-      <li><%= link_to "Officers",          people_list_path("officers") %></li>
-      <li><%= link_to "Committee Members", people_list_path("cmembers") %></li>
-      <li><%= link_to "Members",           people_list_path("members") %></li>
+      <li><%= link_to "Officers", users_list_path('officers') %></li>
+      <li><%= link_to "Committee Members", users_list_path('committee_members') %></li>
+      <li><%= link_to "Members", users_list_path('members') %></li>
     </ul>
     <ul class="plain">
-      <li><%= link_to "Candidates",        people_list_path("candidates") %></li>
-      <li><%= link_to 'Election Details', admin_election_details_path, :class => "navigation_sublevel_item" %></li>
-      <% if current_member.is_active_member? %>
-        <li><%= link_to 'Contact Card', contact_card_path, :class => 'navigation_sublevel_item'  %></li>
+      <li><%= link_to "Candidates", users_list_path('candidates') %></li>
+      <li><%= link_to 'Election Details', 'admin_election_details_path', :class => "navigation_sublevel_item" %></li>
+      <% if current_user.is_active_member? %>
+        <li><%= link_to 'Contact Card', 'contact_card_path', :class => 'navigation_sublevel_item'  %></li>
       <% end %>
     </ul>
   </div>
@@ -48,10 +48,10 @@
   </ul>
   <% if user_signed_in? %>
     <ul class="plain">
-      <li><%= link_to "My RSVPs", my_rsvps_path %></li>
+      <li><%= link_to "My RSVPs", 'my_rsvps_path' %></li>
     <% if user_signed_in? && current_user.is_active_member? %>
-      <li><%= link_to "New Event", new_event_path %></li>
-      <li><%= link_to "Leaderboard", leaderboard_path %></li>
+      <li><%= link_to "New Event", 'new_event_path' %></li>
+      <li><%= link_to "Leaderboard", 'leaderboard_path' %></li>
     <% end %>
     </ul>
   <% end %>
@@ -59,10 +59,13 @@
 
 <div class="submenu alumni_submenu">
   <ul class="plain">
-    <% unless user_signed_in? && current_user.is_alumni? %>
-      <li><%= link_to "Alumni Contact Information", new_alum_path %></li>
+    <% if user_signed_in? && current_user.alum %>
+      <li><%= link_to "View My Alumnus/Alumna Information", edit_alum_path(current_user.alum) %></li>
     <% else %>
-      <%= link_to "View My Alumni Information", "/" %>
+      <li><%= link_to "Create Alumnus/Alumna", new_alum_path %></li>
+    <% end %>
+    <% if user_signed_in? && authorize(:alumrel) %>
+      <li><%= link_to "Alumni Contact Information", alum_index_path %></li>
     <% end %>
   </ul>
 </div>
@@ -80,7 +83,7 @@
   </ul>
 </div>
 
-<% if user_signed_in? && current_user.is_candidate? %>
+<% if user_signed_in? && current_user#.is_candidate? %>
   <div class="submenu cand_submenu">
     <ul class="plain">
       <li><a href="/cand/portal/" class="navigation_sublevel_item">Portal Home</a></li>
@@ -90,7 +93,7 @@
   </div>
 <% end %>
 
-<% if user_signed_in? && current_user.is_active_member? %>
+<% if false#user_signed_in? && current_user.is_active_member? %>
   <div class="submenu admin_submenu">
     <ul class="plain">
       <li><a href="/admin/tutor/signup_slots/" class="navigation_sublevel_item">Tutor Slot Signup</a></li>

@@ -1,0 +1,46 @@
+<h1>Account Registration</h1>
+<p>*Please only register if you are a HKN candidate/member.
+   Otherwise, send us an email with your reason for
+   registration.</p>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label :username %>
+    <%= f.text_field :username %>
+  </div>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </div>
+  <div class="field">
+    <%= f.label :password_confirmation, "Password (confirm)" %>
+    <%= f.password_field :password_confirmation %>
+  </div>
+
+  <div class="field">
+    <br />
+    <%# dirty hack to get captcha to align properly %>
+    <label>&nbsp;</label>
+    <%= recaptcha_tags :ssl=>true, :display=>{:theme=>'clean'} %>
+  </div>
+
+  <div class="field-submit">
+    <%= f.submit "Register" %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

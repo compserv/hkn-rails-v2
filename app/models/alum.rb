@@ -19,7 +19,7 @@
 
 class Alum < ActiveRecord::Base
   belongs_to :user
-  #validates_uniqueness_of :user_id
+  validates_uniqueness_of :user_id
   validates_inclusion_of :salary,
       :in => 0...5000000000000000000,
       :message=>"must be within 0 and 5 quintillion",
@@ -28,9 +28,10 @@ class Alum < ActiveRecord::Base
   before_save :wants_emails?
 
   def wants_emails?
-    debugger
     if mailing_list_changed? && mailing_list
       self.subscribe
+    elsif mailing_list_was && !mailing_list # mailing list just changed from true to false
+      self.unsubscribe
     end
   end
 
@@ -38,12 +39,11 @@ class Alum < ActiveRecord::Base
   SEASONS = ['Fall', 'Spring', 'Summer']
 
   def subscribe
-    debugger # Mechanize undefined for now
     agent = Mechanize.new
     agent.get(MAILING_LIST_URL) do |page|
       page.form_with(:action => '../subscribe/alumni') do |form|
         form['email'] = self.perm_email
-        form['fullname'] = self.user.fullname
+        form['fullname'] = self.user.full_name
       end.submit
     end
   end
@@ -62,5 +62,14 @@ class Alum < ActiveRecord::Base
 
   def self.grad_semester(semester, year)
     return semester + ' ' + year
+  end
+
+  def get_username
+    self.user.username
+  end
+
+  def self.years
+    current = Time.now.year
+    return (1915..current).to_a.reverse
   end
 end

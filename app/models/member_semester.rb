@@ -23,4 +23,20 @@ class MemberSemester < ActiveRecord::Base
     "#{season} #{year}"
   end
 
+  def candidates
+    Role.semester_filter(self).candidates.includes(:users).all_users
+  end
+
+  def officers
+    Role.semester_filter(self).officers.includes(:users).all_users
+  end
+
+  def committee_members
+    Role.semester_filter(self).committee_members.includes(:users).all_users
+  end
+
+  def members
+    Role.members.includes(:users).all_users
+  end
+
 end
