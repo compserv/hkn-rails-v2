@@ -343,6 +343,7 @@ ActiveRecord::Schema.define(version: 20140103005536) do
     t.string   "phone_number"
     t.boolean  "sms_alerts"
     t.integer  "mobile_carrier_id"
+
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree

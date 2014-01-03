@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   has_many :resumes, :dependent => :destroy
   has_one :alum
   belongs_to :mobile_carrier
+  has_many :tutor_slot_preferences
 
   has_one :candidate_quiz
 
