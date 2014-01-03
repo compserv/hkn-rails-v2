@@ -18,12 +18,11 @@ class CandidateController < ApplicationController
   end
 
   def quiz
-    if !current_user.candidate_quiz
-      current_user.candidate_quiz.create
-    end
-    quiz_resp = current_user.candidate_quiz.quiz_responses
     @quiz_resp = Hash.new('')
-    if !quiz_resp.empty? #Fill hash with default blanks
+    if !current_user.candidate_quiz
+      CandidateQuiz.create(user: current_user)
+    else 
+      quiz_resp = current_user.candidate_quiz.quiz_responses
       for resp in quiz_resp
         @quiz_resp[('q' << resp.id.to_s).to_sym] = resp.response
       end

@@ -78,9 +78,7 @@ officer_to_position.each do |user, role|
 end
 
 (1..4).each do |num|
-  q = QuizQuestion.new(question: 'test question ' << num.to_s,
-                       answer: 'answer ' << num.to_s)
-  q.save
+  QuizQuestion.create(question: 'test question ' << num.to_s, answer: 'answer ' << num.to_s)
   puts "Added question number " + num.to_s + " to candidate quiz questions"
 end
 
