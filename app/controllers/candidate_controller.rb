@@ -1,4 +1,17 @@
 class CandidateController < ApplicationController
+  before_filter :is_candidate?
+
+  def is_candidate?
+    if current_user
+      if !current_user.has_role? :candidate
+        flash[:notice] = "You're not a candidate, so this information may not apply to you"
+      end
+      return true
+    else
+      flash[:notice] = "You must be logged in to view that page."
+      redirect_to "/"
+    end
+  end
 
   def portal
     @challenges = Challenge.all
@@ -22,11 +35,11 @@ class CandidateController < ApplicationController
       if key.match(/^q/) #Starts with "q", is a quiz response
         quiz_responses = current_user.candidate.quiz_responses
         old_answer = quiz_responses.select { |resp| ('q' << resp.quiz_question_id.to_s).to_sym == key }.first
-        if old_answer:
+        if old_answer
           old_answer.response = value.to_s
           old_answer.save
         else 
-          quiz_responses.create(quiz_question_id: Integer(key.to_s[1..-1])
+          quiz_responses.create(quiz_question_id: Integer(key.to_s[1..-1]),
                                 response: value.to_s)
         end
       end
