@@ -32,7 +32,7 @@ class CandidateController < ApplicationController
   def submit_quiz
     params.each do |key, value|
       if key.match(/^q/) #Starts with "q", is a quiz response
-        quiz_responses = current_user.candidate.quiz_responses
+        quiz_responses = current_user.candidate_quiz.quiz_responses
         old_answer = quiz_responses.select { |resp| ('q' << resp.quiz_question_id.to_s).to_sym == key }.first
         if old_answer
           old_answer.response = value.to_s
