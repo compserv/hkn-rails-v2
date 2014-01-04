@@ -16,7 +16,7 @@ class CandidateController < ApplicationController
     @quiz_resp = Hash.new('')
     if !current_user.candidate_quiz
       CandidateQuiz.create(user: current_user)
-    else 
+    else
       quiz_resp = current_user.candidate_quiz.quiz_responses
       for resp in quiz_resp
         @quiz_resp[('q' << resp.quiz_question_id.to_s).to_sym] = resp.response

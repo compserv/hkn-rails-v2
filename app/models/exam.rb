@@ -36,7 +36,7 @@ class Exam < ActiveRecord::Base
 
   validates_attachment_presence :file
 
-  validates_attachment_content_type :file, 
+  validates_attachment_content_type :file,
       :content_type => ["image/jpeg", "image/jpg", "image/gif", "image/png", "application/pdf"],
       :message => "Oops, please use a jpg/gif/png/pdf"
 
