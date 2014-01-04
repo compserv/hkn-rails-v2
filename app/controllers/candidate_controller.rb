@@ -1,15 +1,10 @@
 class CandidateController < ApplicationController
+  before_filter :authenticate_user!
   before_filter :is_candidate?
 
   def is_candidate?
-    if current_user
-      if !current_user.has_role? :candidate
-        flash[:notice] = "You're not a candidate, so this information may not apply to you"
-      end
-      return true
-    else
-      flash[:notice] = "You must be logged in to view that page."
-      redirect_to "/"
+    unless current_user.has_role? :candidate, MemberSemester.current
+      flash[:notice] = "You're not a candidate, so this information may not apply to you"
     end
   end
 
@@ -48,11 +43,7 @@ class CandidateController < ApplicationController
   end
 
   def autocomplete_officer_name
-    if params[:term]
-      @users = User.where('username LIKE ?', "#{params[:term]}%").limit(10)
-    else
-      @users = User.limit(10)
-    end
+    @users = User.where('username LIKE ?', "#{params[:term]}%").limit(10)
     render :json => @users.pluck(:username).to_json
   end
 end
