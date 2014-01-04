@@ -1,43 +1,39 @@
 HknRails::Application.routes.draw do
+  root to: "pages#home"
+
+  match "about/contact", to: "pages#contact", via: :get, as: "contact"
+  match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
+  match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
+  match "users/approve/:id", to: "users#approve", via: :post, as: "users_approve"
+  match "users/list/:category", to: "users#list", via: :get, as: "users_list"
+
+  devise_for :users, controllers: { registrations: "registrations" }
+
   resources :alum
-
-  resources :resumes
-
-  get 'dept_tours/success' => 'dept_tours#success', as: 'dept_tours_success'
-  post 'dept_tours/:id' => 'dept_tours#respond_to_tour'
-  resources :dept_tours
-
-  resources :exams
-
   resources :challenges, only: [:create, :update, :index]
-
-  post 'users/approve/:id' => 'users#approve', as: 'users_approve'
-  devise_for :users, :controllers => { :registrations => "registrations" }
+  resources :dept_tours
+  resources :exams
+  resources :resumes
   resources :users
-  get 'users/list/:category' => 'users#list', as: 'users_list'
 
   scope "candidate" do
-    match 'quiz', to: "candidate#quiz", via: 'get', as: 'candidate_quiz'
-    match 'submit_quiz', to: "candidate#submit_quiz", via: 'post', as: 'candidate_submit_quiz'
-    get 'portal' => 'candidate#portal', as: 'candidate_portal'
-    get 'autocomplete_officer_name' => 'candidate#autocomplete_officer_name', as: 'autocomplete_officer_name'
+    match "quiz", to: "candidate#quiz", via: :get, as: "candidate_quiz"
+    match "submit_quiz", to: "candidate#submit_quiz", via: :post, as: "candidate_submit_quiz"
+    match "portal", to: 'candidate#portal', via: :get, as: "candidate_portal"
+    match "autocomplete_officer_name", to: "candidate#autocomplete_officer_name", via: :get, as: "autocomplete_officer_name"
   end
 
-  root to: "pages#home"
-  get 'about/contact' => 'pages#contact', as: 'contact'
-
-  #Indrel
-  scope 'indrel' do
-    match "/", to: "indrel#why_hkn", via: 'get', as: 'indrel'
-    match "contact_us", to: "indrel#contact_us", via: 'get', as: 'indrel_contact_us'
-    match "career_fair", to: "indrel#career_fair", via: 'get', as: 'career_fair'
-    match 'infosessions', to: "indrel#infosessions", via: 'get'
-    match 'resume_books', to: "indrel#resume_books", via: 'get', as: "resume_books_about"
+  scope "indrel" do
+    match "/", to: "indrel#why_hkn", via: :get, as: "indrel"
+    match "contact_us", to: "indrel#contact_us", via: :get, as: "indrel_contact_us"
+    match "career_fair", to: "indrel#career_fair", via: :get, as: "career_fair"
+    match "infosessions", to: "indrel#infosessions", via: :get
+    match "resume_books", to: "indrel#resume_books", via: :get, as: "resume_books_about"
   end
 
   namespace :admin do
     scope "vp" do
-      get "/" => "vp#index", :as => :vp
+      match "/", to: "vp#index", via: :get, as: :vp
     end
   end
 
