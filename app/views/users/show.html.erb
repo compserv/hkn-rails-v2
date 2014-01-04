@@ -1,6 +1,6 @@
 <div class="admin">
   <% if authorize(:vp) %>
-    Admin Bar: 
+    Admin Bar:
     <% if !@user.approved %>
       <%= link_to "[Approve Account]", users_approve_path(@user), :method => :post %>
     <% end %>
