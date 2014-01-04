@@ -38,12 +38,10 @@ class CandidateController < ApplicationController
         end
       end
     end
-    flash[:notice] = "Your quiz responses have been recorded."
-    redirect_to :back
+    redirect_to candidate_portal_path, notice: "Your quiz responses have been recorded."
   end
 
   def autocomplete_officer_name
-    @users = User.where('username LIKE ?', "#{params[:term]}%").limit(10)
-    render :json => @users.pluck(:username).to_json
+    render :json => Role.members.includes(:users).all_users.map {|p| {:label => p.full_name, :id => p.id} }
   end
 end

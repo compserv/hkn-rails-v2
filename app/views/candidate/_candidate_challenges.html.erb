@@ -20,14 +20,15 @@
   <div class="field">
     <%= label_tag "Find Officer" %><br>
     <%= text_field_tag "officer", nil, :id => 'officer_field' %>
+    <%= hidden_field_tag "officer_id", "", :id => "officer_id" %>
   </div>
   <div class="field">
     <%= f.label :name %><br>
-    <%= text_field_tag "name", nil %>
+    <%= f.text_field :name %>
   </div>
   <div class="field">
     <%= f.label :description %><br>
-    <%= text_area_tag "description", nil %>
+    <%= f.text_area :description %>
   </div>
   <div class="actions">
     <%= f.submit :class => 'btn btn-primary' %>
@@ -36,9 +37,17 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#officer_field').autocomplete({
-      minLength: 2,
-      source: '<%= autocomplete_officer_name_path %>'
+    $.ajax({
+      url: '<%= autocomplete_officer_name_path %>',
+      success: function(data) {
+        $("#officer_field").autocomplete({
+          source: data,
+          autoFocus: true,
+          select: function( event, ui ) {
+            $('#officer_id').val(ui.item.id);
+          }
+        });
+      }
     });
   });
 </script>

@@ -101,7 +101,7 @@
       <li><a href="/admin/tutor/edit_schedule/" class="navigation_sublevel_item">View Tutor Signups</a></li>
     </ul>
     <ul class="plain">
-      <li><a href="/admin/general/confirm_challenges/" class="navigation_sublevel_item">Confirm Challenges</a></li>
+      <li><%= link_to "Confirm Challenges", challenges_path, :class=>"navigation_sublevel_item" %></li>
       <% if authorize(:studrel) %>
         <li><a href="/admin/studrel/" class="navigation_sublevel_item">Studrel Admin</a></li>
       <% end %>
