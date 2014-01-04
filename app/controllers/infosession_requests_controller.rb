@@ -10,7 +10,8 @@ class InfosessionRequestsController < ApplicationController
   def create
     @infosession_request = InfosessionRequest.new(infosession_request_params)
     if @infosession_request.save
-      IndrelMailer.infosession_request(@infosession_request).deliver
+      IndrelMailer.infosession_registration(@infosession_request).deliver
+      redirect_to infosessions_path, success: "Infosession Request for #{@infosession_request.company_name} has been submitted."
     else
       render :new
     end
