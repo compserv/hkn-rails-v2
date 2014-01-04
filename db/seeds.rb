@@ -14,23 +14,23 @@ current_member_semester = MemberSemester.last
 
 # Users
 users = [
-  ["mark", "mark@mark.com"],
-  ["kacasey", "kacasey@berkeley.edu"],
-  ["kevintesterbot", "hazedkasey@gmail.com"],
-  ["indreltesterbot", "indrel@indrel.indrel"]
+  ["mark", "mark@mark.com", "Mark", "Miyashita"],
+  ["kacasey", "kacasey@berkeley.edu", "Kevin", "Casey"],
+  ["kevintesterbot", "hazedkasey@gmail.com", "Night", "Stalker"],
+  ["indreltesterbot", "indrel@indrel.indrel", "Tester", "testing"]
 ]
 
 users.each do |user_info|
-  user = User.create(username: user_info[0], email: user_info[1], password: "password", password_confirmation: "password", first_name: "tester", last_name: "testing", approved: true)
+  user = User.create(username: user_info[0], email: user_info[1], password: "password", password_confirmation: "password", first_name: user_info[2], last_name: user_info[3], approved: true)
   user.member_semesters << current_member_semester
   puts "Created user with username: #{user.username} and email: #{user.email}."
 end
 
 # candidate tester
 u = User.create(username: 'notaspammer', email: 'hazedcasey@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false)
-v = User.create(username: 'approved', email: 'hihihi@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: true)
-new_role = Role.create(name: :empty, role_type: :candidate, resource_type: MemberSemester.to_s, resource_id: MemberSemester.current.id)
-v.add_position_for_semester_and_role_type(:empty, MemberSemester.current, :candidate)
+v = User.create(username: 'approved', email: 'hihihi@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "alice", approved: true)
+new_role = Role.create(name: :candidate, role_type: :candidate, resource_type: MemberSemester.to_s, resource_id: MemberSemester.current.id)
+v.add_position_for_semester_and_role_type(:candidate, MemberSemester.current, :candidate)
 
 # Roles
 execs = [
