@@ -1,6 +1,13 @@
 class ChallengesController < ApplicationController
+  before_filter :authenticate_user!
   before_action :set_challenge, only: [:update]
-  #before_action :authenticate_officer, only: [:index, :update]
+  before_filter :is_candidate?, only: [:index, :update]
+
+  def is_candidate?
+    if current_user.has_role? :candidate, MemberSemester.current
+      redirect_to root_path, notice: "Oops, a candidate shouldn't be here"
+    end
+  end
 
   # GET /challenges
   def index
