@@ -36,7 +36,7 @@ class Role < ActiveRecord::Base
 
     #returns array of users
     def all_users
-      all.collect { |role| role.users }.flatten
+      all.includes(:users).collect { |role| role.users }.flatten
     end
 
     def current_officers_from_committee(committee)

@@ -50,6 +50,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :member_semesters
 
   has_attached_file :picture, :default_url => "/pictures/:normalized_file_name.png", #guess saved as png to work w/ old system, if this gets updated (should only have to do it for current officers) can swap this to assets/person_placeholder.png
+      :styles => {original: "125x100#"},
       :path => ":rails_root/public/pictures/:normalized_file_name.:extension",
       :url => "/pictures/:normalized_file_name.:extension"
 

@@ -39,6 +39,11 @@ HknRails::Application.routes.draw do
     scope "vp" do
       get "/" => "vp#index", :as => :vp
     end
+    scope "bridge" do
+      match "/", to: "bridge#index", via: :get, as: :bridge
+      match "officer_photo_upload", to: "bridge#officer_photo_index", via: :get, as: :bridge_officer_index
+      match "officer_photo_upload", to: "bridge#officer_photo_upload", via: :post, as: :bridge_officer_upload
+    end
   end
 
 end
