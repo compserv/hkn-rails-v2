@@ -32,7 +32,7 @@ class CandidateController < ApplicationController
         if old_answer
           old_answer.response = value.to_s
           old_answer.save
-        else 
+        else
           quiz_responses.create(quiz_question_id: Integer(key.to_s[1..-1]),
                                 response: value.to_s)
         end
