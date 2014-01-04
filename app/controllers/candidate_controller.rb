@@ -19,7 +19,7 @@ class CandidateController < ApplicationController
     else 
       quiz_resp = current_user.candidate_quiz.quiz_responses
       for resp in quiz_resp
-        @quiz_resp[('q' << resp.id.to_s).to_sym] = resp.response
+        @quiz_resp[('q' << resp.quiz_question_id.to_s).to_sym] = resp.response
       end
     end
   end
