@@ -30,9 +30,9 @@ HknRails::Application.routes.draw do
     match "resume_books", to: "indrel#resume_books", via: :get, as: "resume_books_about"
 
     scope "infosessions" do
-      match "/", to: "infosession_requests#about", via: :get
-      match "registration", to: "infosession_requests#new", via: :get
-      match "registration", to: "infosession_request#create", via: :post
+      match "/", to: "infosession_requests#about", via: :get, as: "infosessions"
+      match "registration", to: "infosession_requests#new", via: :get, as: "new_infosession_request"
+      match "registration", to: "infosession_requests#create", via: :post, as: "create_infosession_request"
     end
   end
 
