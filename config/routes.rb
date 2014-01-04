@@ -35,4 +35,10 @@ HknRails::Application.routes.draw do
     match 'resume_books', to: "indrel#resume_books", via: 'get', as: "resume_books_about"
   end
 
+  namespace :admin do
+    scope "vp" do
+      get "/" => "vp#index", :as => :vp
+    end
+  end
+
 end

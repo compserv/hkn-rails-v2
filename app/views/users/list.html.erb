@@ -6,10 +6,10 @@
 <table class="table">
   <tr class="ajax-controls">
     <th>Image</th>
-    <th>Name (<%= "sort_link 'First', 'first_name' %> <%= sort_link 'Last', 'last_name'" %>)</th>
+    <th>Name (<%#= sort_link 'First', 'first_name' %> <%#= sort_link 'Last', 'last_name' %>)</th>
     <th><%= "sort_link 'Email', 'email'" %></th>
     <th>Phone</th>
-    <% if params[:not_approved] %>
+    <% if params[:approved] == "false" %>
       <th>Registered</th>
     <% end %>
   </tr>
@@ -24,6 +24,9 @@
     </td>
     <td><%= user.email %></td>
     <td><%= user.email %></td>
+    <% if params[:approved] == "false" %>
+      <td><%= user.created_at %></td>
+    <% end %>
 <% end %>
 
 </table>
