@@ -76,13 +76,7 @@
 
     <div id="content">
       <div id="container">
-        <% flash.each do |name, msg| %>
-            <% if msg.is_a?(String) %>
-              <div id="messages" class="<%= 'alert' if name != :notice%>">
-                <%= content_tag :div, msg, :id => "flash_#{name}", :class => ('message' if name == :notice) %>
-              </div>
-            <% end %>
-         <% end %>
+        <%= render partial: "shared/flash" %>
         <%= yield %>
       </div>
     </div>
