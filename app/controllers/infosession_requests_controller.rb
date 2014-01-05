@@ -9,9 +9,10 @@ class InfosessionRequestsController < ApplicationController
 
   def create
     @infosession_request = InfosessionRequest.new(infosession_request_params)
-    if verify_recaptcha(:model => @infosession_request, :message => "oops recaptcha failed!") && @infosession_request.save
+    if verify_recaptcha(model: @infosession_request, message: "Oops, recaptcha failed!") && @infosession_request.save
       IndrelMailer.infosession_registration(@infosession_request).deliver
-      redirect_to infosessions_path, success: "Infosession Request for #{@infosession_request.company_name} has been submitted."
+      flash[:success] = "Infosession Request for #{@infosession_request.company_name} has been submitted."
+      redirect_to infosessions_path
     else
       flash.delete(:recaptcha_error)
       render :new
