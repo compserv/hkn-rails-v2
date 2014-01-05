@@ -51,7 +51,6 @@ class UsersController < ApplicationController
     end
 
     # DO IT
-    debugger
     if @user.update_attributes(user_params)
       redirect_to path, :notice => 'Settings successfully updated.'
     else
