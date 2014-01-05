@@ -16,7 +16,7 @@ class CandidateController < ApplicationController
     @quiz_resp = Hash.new('')
     if !current_user.candidate_quiz
       CandidateQuiz.create(user: current_user)
-    else 
+    else
       quiz_resp = current_user.candidate_quiz.quiz_responses
       for resp in quiz_resp
         @quiz_resp[('q' << resp.quiz_question_id.to_s).to_sym] = resp.response
@@ -32,7 +32,7 @@ class CandidateController < ApplicationController
         if old_answer
           old_answer.response = value.to_s
           old_answer.save
-        else 
+        else
           quiz_responses.create(quiz_question_id: Integer(key.to_s[1..-1]),
                                 response: value.to_s)
         end

@@ -4,7 +4,7 @@
   <% @challenges.each do |challenge| %>
     <li id='list'>
       <span class="<%= "event_status " +
-          (challenge.confirmed ? 'event_done' : 
+          (challenge.confirmed ? 'event_done' :
           (challenge.rejected ? 'rejected' : 'event_notdone'))%>"></span>
       <strong><%= challenge.name %></strong>
       - <%= User.find_by_id(challenge.requester_id).username %>

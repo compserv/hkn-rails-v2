@@ -35,6 +35,6 @@ class ApplicationController < ActionController::Base
   def authenticate!(group)
     unless authenticate_user! and (current_user.is_current_officer?(group) || current_user.is_current_officer?(:compserv))
       redirect_to root_path, alert: "You do not have permission(#{group}) to access that"
-    end 
+    end
   end
 end

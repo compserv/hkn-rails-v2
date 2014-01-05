@@ -1,4 +1,5 @@
 class IndrelController < ApplicationController
+
   def why_hkn
     @indrel_officers = Role.current_officers_from_committee 'indrel'
     @officer_count = Role.current_officers.count
@@ -8,15 +9,12 @@ class IndrelController < ApplicationController
     @indrel_officers = Role.current_officers_from_committee 'indrel'
   end
 
-  def infosessions
-  end
-
   def career_fair
   end
 
   def resume_books
     #TODO: ResumeBook model
-    
+
     book = ResumeBook.select("cutoff_date, created_at")
                      .order("created_at desc")
                      .limit(1)

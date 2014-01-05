@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
       :path => ":rails_root/public/pictures/:normalized_file_name.:extension",
       :url => "/pictures/:normalized_file_name.:extension"
 
-  validates_attachment_content_type :picture, 
+  validates_attachment_content_type :picture,
       :content_type => ["image/jpeg", "image/jpg", "image/gif", "image/png", "application/pdf"],
       :message => "Oops, please use a jpg/gif/png/pdf"
 
@@ -133,16 +133,16 @@ class User < ActiveRecord::Base
     dict[stat.name] unless !stat
   end
 
-  def active_for_authentication? 
-    super && approved? 
-  end 
+  def active_for_authentication?
+    super && approved?
+  end
 
-  def inactive_message 
-    if !approved? 
-      :not_approved 
-    else 
-      super # Use whatever other message 
-    end 
+  def inactive_message
+    if !approved?
+      :not_approved
+    else
+      super # Use whatever other message
+    end
   end
 
   def phone_number_is_valid?
