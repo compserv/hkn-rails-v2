@@ -64,9 +64,6 @@
     <% else %>
       <li><%= link_to "Create Alumnus/Alumna", new_alum_path %></li>
     <% end %>
-    <% if user_signed_in? && authorize(:alumrel) %>
-      <li><%= link_to "Alumni Contact Information", alum_index_path %></li>
-    <% end %>
   </ul>
 </div>
 
@@ -130,7 +127,7 @@
         <li><%= link_to "Pres Admin", 'admin_pres_path', :class => "navigation_sublevel_item" %></li>
       <% end %>
       <% if authorize(:alumrel) %>
-        <li><%= link_to "Alumrel Admin", 'alumnis_path', :class => "navigation_sublevel_item" %></li>
+        <li><%= link_to "Alumrel Admin", alum_index_path, :class => "navigation_sublevel_item" %></li>
       <% end %>
     </ul>
   </div>
