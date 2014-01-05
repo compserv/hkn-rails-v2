@@ -42,6 +42,6 @@ class CandidateController < ApplicationController
   end
 
   def autocomplete_officer_name
-    render :json => Role.members.includes(:users).all_users.map {|p| {:label => p.full_name, :id => p.id} }
+    render :json => Role.members.all_users.map {|p| {:label => p.full_name, :id => p.id} }
   end
 end
