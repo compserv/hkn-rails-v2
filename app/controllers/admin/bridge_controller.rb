@@ -1,4 +1,6 @@
 class Admin::BridgeController < ApplicationController
+  before_filter :authenticate_bridge!
+
   def index
   end
 
