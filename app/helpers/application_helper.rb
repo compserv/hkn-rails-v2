@@ -3,8 +3,7 @@ module ApplicationHelper
   # This is for the pagination sort links
   # This could probably be cleaned up a bit more...
   def sort_link(inner_text, sort_variable, opts = {})
-    sort_direction = 'up'
-    sort_direction = 'down' if sort_variable == @search_opts['sort'] and @search_opts['sort_direction'] != 'down'
+    sort_direction = (sort_variable == @search_opts['sort'] and @search_opts['sort_direction'] != 'down') ? 'down' : 'up'
     arrow = (sort_variable == @search_opts['sort']) ? (@search_opts['sort_direction'] == 'down') ? image_tag('site/arrow_desc.gif') : image_tag('site/arrow_asc.gif') : ''
     link_to(inner_text, @search_opts.merge('sort' => sort_variable, 'sort_direction' => sort_direction).merge(opts)) + arrow
   end
@@ -36,7 +35,7 @@ module ApplicationHelper
             dataType: 'script',
             complete: function (xhr, status) { // This is retarded. Because we are asking for a script response and getting an html render response it will throw the error handler and not the success.  Hack solution is to use complete
               if (status === 'error' || !xhr.responseText) {
-                // plz give up?
+                // just give up?
               }
               else {
                 $('#ajax-wrapper').html(xhr.responseText);

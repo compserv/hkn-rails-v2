@@ -77,7 +77,7 @@ class UsersController < ApplicationController
     #   (3) you're in it
     #   (2) it's a public group               (  vvv      one of these      vvv        )    v combines public groups w/ roles of current_user
     unless authenticate_superuser or (%w[officers committee_members members candidates all] | current_user.roles.collect(&:name)).include?(params[:category])
-      flash[:notice] = "No category named #{@category}. Displaying all people."
+      flash[:notice] = "No category named #{params[:category]}. Displaying all people."
       params[:category] = "all"
     end
 
