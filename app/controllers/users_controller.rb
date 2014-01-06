@@ -68,23 +68,47 @@ class UsersController < ApplicationController
   end
 
   def list
-    order = params["sort"] || "first_name"
+    params[:category] ||= "all"
+    params["sort"] ||= "first_name"
+    params["sort_direction"] ||= "up"
     sort_direction = case params["sort_direction"]
                      when "up" then "ASC"
                      when "down" then "DESC"
                      else "ASC"
                      end
 
-    @search_opts = {'sort' => "first_name"}.merge params
+    # Can view a group if:
+    #   (1) you're a superuser
+    #   (3) you're in it
+    #   (2) it's a public group      (  vvv      one of these      vvv        )    v combines public groups w/ roles of current_user
+    unless authenticate_superuser or (%w[officers cmembers members candidates all] | current_user.roles.collect(&:name)).include?(params[:category])
+      flash[:notice] = "No category named #{@category}. Displaying all people."
+      params[:category] = "all"
+    end
+
+    @search_opts = params # for use in #sort_link in application_helper
 
     opts = { :page     => params[:page],
              :per_page => params[:per_page] || 20,
+             :order    => "users.#{params["sort"]} #{sort_direction}"
            }
-    if params[:approved] == "false"
-      @users = User.where(approved: false).paginate opts
-    else
-      @users = MemberSemester.current.send("#{params[:category]}".to_sym).paginate opts
+
+    joinstr = 'INNER JOIN "users_roles" ON "users_roles"."user_id" = "users"."id" INNER JOIN "roles" ON "roles"."id" = "users_roles"."role_id"' # this looks terribad...
+    if %w[officers committee_members candidates].include? params[:category]
+      cond = ["role_type = ? AND resource_id = ?", params[:category].singularize, MemberSemester.current.id]
+    elsif params[:category] == "members"
+      cond = ["role_type = 'officer' OR role_type = 'committee_member'"]
+    elsif params[:category] != "all"
+      cond = ["name = ?", params[:category]]
     end
+    opts.merge!( { :joins => joinstr, :conditions => cond } )
+   
+    user_selector = User
+    if authenticate_vp and params[:not_approved]
+      user_selector = user_selector.where(:approved => false )
+    end
+
+    @users = user_selector.paginate opts
 
     respond_to do |format|
       format.html

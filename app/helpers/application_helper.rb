@@ -4,18 +4,9 @@ module ApplicationHelper
   # This could probably be cleaned up a bit more...
   def sort_link(inner_text, sort_variable, opts = {})
     sort_direction = 'up'
-
-    @search_opts ||= {}
-    @search_opts = {
-      'sort'           => params[:sort] || sort_variable,
-      'sort_direction' => params[:sort_direction] || 'down'
-    }.merge(@search_opts)
-
-    if sort_variable == @search_opts['sort'] and @search_opts['sort_direction'] != 'down'
-      sort_direction = 'down'
-    end
+    sort_direction = 'down' if sort_variable == @search_opts['sort'] and @search_opts['sort_direction'] != 'down'
     arrow = (sort_variable == @search_opts['sort']) ? (@search_opts['sort_direction'] == 'down') ? image_tag('site/arrow_desc.gif') : image_tag('site/arrow_asc.gif') : ''
-    link_to(inner_text, @search_opts.merge('sort' => sort_variable, 'sort_direction' => sort_direction)) + arrow
+    link_to(inner_text, @search_opts.merge('sort' => sort_variable, 'sort_direction' => sort_direction).merge(opts)) + arrow
   end
 
   # http://wiki.github.com/mislav/will_paginate/ajax-pagination
@@ -75,6 +66,14 @@ $(window).bind('statechange', function(){
         window.alert('hi');
         var newContent = $(data).find('#ajax-wrapper');
         $('#ajax-wrapper').html(newContent);
+      },
+      complete: function (xhr, status) {
+        window.alert('hi');
+        if (status === 'error' || !xhr.responseText) {
+          // plz give up?
+        }
+        else {
+        }
       }
     });
   }
