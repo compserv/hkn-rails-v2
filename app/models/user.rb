@@ -126,11 +126,7 @@ class User < ActiveRecord::Base
   end
 
   def status
-    stat = roles_for_semester(MemberSemester.current).first
-    dict = { "pres" => "President",
-             "compserv" => "Computing Services Officer",
-             "tutoring" => "Tutoring Officer"  } # not sure how to handle this yet.
-    dict[stat.name] unless !stat
+    roles_for_semester(MemberSemester.current).map{|x| x.nice_position}.join(', ')
   end
 
   def active_for_authentication?

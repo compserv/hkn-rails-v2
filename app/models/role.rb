@@ -12,6 +12,11 @@
 #
 
 class Role < ActiveRecord::Base
+  @Committees = %w(pres vp rsec treas csec deprel act alumrel bridge compserv indrel serv studrel tutoring pub examfiles ejc) #This generates a constant which is an array of possible committees.
+  Positions = %w(officer committee_member candidate)  # A list of possible positions
+  Execs = %w(pres vp rsec csec treas deprel) # Executive positions
+  NonExecs = @Committees-Execs
+
   has_and_belongs_to_many :users, :join_table => :users_roles
   belongs_to :resource, :polymorphic => true
 
@@ -68,6 +73,44 @@ class Role < ActiveRecord::Base
 
   def is_officer?
     role_type == "officer"
+  end
+
+  def nice_semester
+    MemberSemester.find_by_id(resource_id).name
+  end
+
+  def nice_position
+    if Execs.include? name
+      nice_committee
+    else
+      nice_committee + " " + nice_title
+    end
+  end
+
+  def nice_title
+    role_type.split("_").map{|w| w.capitalize }.join(" ")
+  end
+
+  def nice_committee
+    nice_committees = { 
+      "pres"     => "President", 
+      "vp"       => "Vice President", 
+      "rsec"     => "Recording Secretary",
+      "csec"     => "Corresponding Secretary",
+      "treas"    => "Treasurer",
+      "deprel"   => "Department Relations",
+      "act"      => "Activities",
+      "alumrel"  => "Alumni Relations",
+      "bridge"   => "Bridge",
+      "compserv" => "Computing Services",
+      "indrel"   => "Industrial Relations",
+      "serv"     => "Service",
+      "studrel"  => "Student Relations",
+      "tutoring" => "Tutoring",
+      "pub"      => "Publicity",
+      "examfiles"=> "Exam Files",
+    }
+    nice_committees[name]
   end
 
 end
