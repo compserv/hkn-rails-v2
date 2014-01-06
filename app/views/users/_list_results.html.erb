@@ -23,11 +23,11 @@
       <div class="small"><%= user.status %></div>
     </td>
     <td><%= user.email %></td>
-    <td><%= user.email %></td>
+    <td><%= user.phone_number %></td>
     <% if params[:approved] == 'false' %>
       <td><%= user.created_at %></td>
     <% end %>
-  <tr>
+  </tr>
 <% end %>
 
 </table>

@@ -100,7 +100,7 @@ class UsersController < ApplicationController
            }
    
     user_selector = User
-    if authenticate_vp and params[:not_approved]
+    if authenticate_vp and params[:approved] == 'false'
       user_selector = user_selector.where(:approved => false )
     end
 
