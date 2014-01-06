@@ -68,6 +68,15 @@ class UsersController < ApplicationController
   end
 
   def list
+    order = params["sort"] || "first_name"
+    sort_direction = case params["sort_direction"]
+                     when "up" then "ASC"
+                     when "down" then "DESC"
+                     else "ASC"
+                     end
+
+    @search_opts = {'sort' => "first_name"}.merge params
+
     opts = { :page     => params[:page],
              :per_page => params[:per_page] || 20,
            }
@@ -75,6 +84,13 @@ class UsersController < ApplicationController
       @users = User.where(approved: false).paginate opts
     else
       @users = MemberSemester.current.send("#{params[:category]}".to_sym).paginate opts
+    end
+
+    respond_to do |format|
+      format.html
+      format.js {
+        render :partial => 'list_results'
+      }
     end
   end
 

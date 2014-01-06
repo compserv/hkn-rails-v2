@@ -7,7 +7,7 @@ HknRails::Application.routes.draw do
   match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
   match "users/approve/:id", to: "users#approve", via: :post, as: "users_approve"
-  match "users/list/:category", to: "users#list", via: :get, as: "users_list"
+  match "users/list(/:category)", to: "users#list", via: :get, as: "users_list"
 
   resources :alum
   resources :challenges, only: [:create, :update, :index]
