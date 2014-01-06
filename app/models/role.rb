@@ -113,6 +113,7 @@ class Role < ActiveRecord::Base
       "tutoring" => "Tutoring",
       "pub"      => "Publicity",
       "examfiles"=> "Exam Files",
+      "candidate"=> ""
     }
     nice_committees[name]
   end

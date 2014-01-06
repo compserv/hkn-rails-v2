@@ -99,7 +99,7 @@ class UsersController < ApplicationController
              :conditions => cond
            }
    
-    user_selector = User
+    user_selector = User.uniq(:id)
     if authenticate_vp and params[:approved] == 'false'
       user_selector = user_selector.where(:approved => false )
     end
