@@ -65,6 +65,10 @@ class Role < ActiveRecord::Base
     def current_candidates
       all_current.candidates.all_users
     end
+
+    def committees
+      return @Committees
+    end
   end
 
   def semester
@@ -112,5 +116,4 @@ class Role < ActiveRecord::Base
     }
     nice_committees[name]
   end
-
 end
