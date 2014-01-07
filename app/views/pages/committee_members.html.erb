@@ -1,0 +1,16 @@
+<h1>HKN Officers, <%= @semester.name %></h1>
+
+<span id="semester-nav">
+  <%= link_to "Previous Semester", about_committee_members_path(@semester.prev.id) unless @semester.prev.nil? %>&nbsp;|&nbsp;
+  <%= link_to "Next Semester", about_committee_members_path(@semester.next.id) unless @semester.next.nil? %>
+</span>
+<% if @committeeships.values.collect(&:empty?).all? %>
+  <div id="no-data">
+    <p>No data available for this semester. If you know information about the committee members for this semester and would like us to add it, please email hkn@hkn.</p>
+  </div>
+<% else %><%# there are cships for this semester %>
+
+  <%= render "committee_list", :position_type => :committees %>
+<br/>
+
+<% end %><%# there are cships %>

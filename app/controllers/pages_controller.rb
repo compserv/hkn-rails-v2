@@ -26,13 +26,11 @@ class PagesController < ApplicationController
   def slideshow
   end
 
-  def cmembers
+  def committee_members
     # Get the most recent semester
     @semester = params[:semester] ? MemberSemester.find_by_id(params[:semester]) : MemberSemester.current
     # Using the semester, get the committeeships, sorted by committee
-    cships = Committeeship.semester(@semester).cmembers.sort_by do |c|
-      c.committee
-    end.ordered_group_by(&:committee)
+    cships = Role.semester_filter(@semester).committee_members.includes(:users).sort_by(&:name)
     # Group cships by committee
     @committeeships = cships.group_by do |c_ary|
       :committees
