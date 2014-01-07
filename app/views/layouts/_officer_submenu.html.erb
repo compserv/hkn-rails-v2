@@ -33,7 +33,7 @@
     <ul class="plain">
       <li><%= link_to "Candidates", users_list_path('candidates') %></li>
       <li><%= link_to 'Election Details', 'admin_election_details_path', :class => "navigation_sublevel_item" %></li>
-      <% if current_user.is_active_member? %>
+      <% if active_member_authorize %>
         <li><%= link_to 'Contact Card', 'contact_card_path', :class => 'navigation_sublevel_item'  %></li>
       <% end %>
     </ul>
@@ -59,7 +59,7 @@
 
 <div class="submenu alumni_submenu">
   <ul class="plain">
-    <% if user_signed_in? && (user_session[:alum].nil? ? user_session[:alum] = !current_user.alum.nil? : user_session[:alum]) %>
+    <% if current_user && (user_session[:alum].nil? ? user_session[:alum] = !current_user.alum.nil? : user_session[:alum]) %>
       <li><%= link_to "View My Alumnus/Alumna Information", edit_alum_path(current_user.alum) %></li>
     <% else %>
       <li><%= link_to "Create Alumnus/Alumna", new_alum_path %></li>
@@ -80,7 +80,7 @@
   </ul>
 </div>
 
-<% if user_signed_in? && candidate_authorize %>
+<% if candidate_authorize %>
   <div class="submenu cand_submenu">
     <ul class="plain">
       <li><%= link_to "Portal Home", candidate_portal_path, :class=>"navigation_sublevel_item" %></li>
@@ -90,7 +90,7 @@
   </div>
 <% end %>
 
-<% if user_signed_in? && current_user.is_active_member? %>
+<% if active_member_authorize %>
   <div class="submenu admin_submenu">
     <ul class="plain">
       <li><a href="/admin/tutor/signup_slots/" class="navigation_sublevel_item">Tutor Slot Signup</a></li>

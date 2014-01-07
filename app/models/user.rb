@@ -71,9 +71,7 @@ class User < ActiveRecord::Base
   end
 
   def is_active_member?
-    # TODO(mark): This should be true for all officers and committee members.
-    # Will add functionality when semesters + roles are working.
-    true
+    Role.semester_filter(MemberSemester.current).members.all_users.include?(self)
   end
 
   def add_position_for_semester_and_role_type(position, semester, role)
