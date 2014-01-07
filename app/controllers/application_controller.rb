@@ -37,7 +37,9 @@ class ApplicationController < ActionController::Base
   end
 
   def candidate_authorize
-    user_session[:candidate].nil? ? (user_session[:candidate] = current_user and current_user.has_ever_had_role?(:candidate)) : user_session[:candidate] 
+    if user_session
+      user_session[:candidate_id].nil? ? (user_session[:candidate_id] = current_user.id and current_user.has_ever_had_role?(:candidate)) : user_session[:candidate_id]
+    end
   end
 
   def authenticate!(group)
