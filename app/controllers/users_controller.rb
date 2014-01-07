@@ -115,7 +115,7 @@ class UsersController < ApplicationController
   end
 
   def approve
-    authenticate_vp!
+    authenticate_vp! # current user must at least be vp to approve
     if @user.update(approved: true)
       flash[:notice] = "Successfully approved #{@user.full_name}, an email has been sent to #{@user.email}"
       AccountMailer.account_approval(@user).deliver
