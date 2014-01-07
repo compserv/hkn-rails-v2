@@ -28,12 +28,10 @@ class ApplicationController < ActionController::Base
     return unless current_user
     if !user_session[group].nil?
       user_session[group]
-    elsif current_user.is_current_officer?(group) || current_user.is_current_officer?(:compserv)
-      user_session[group] = true
-      true
+    elsif current_user.has_ever_had_position?(group) || current_user.is_current_officer?(:compserv)
+      user_session[group] = true # assigns and returns true
     else
-      user_session[group] = false
-      false
+      user_session[group] = false # assigns and returns false
     end
   end
 
@@ -43,7 +41,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate!(group)
-    unless authenticate_user! and (current_user.is_current_officer?(group) || current_user.is_current_officer?(:compserv))
+    unless authorize(group)
       redirect_to root_path, alert: "You do not have permission(#{group}) to access that"
     end
   end

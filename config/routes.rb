@@ -12,6 +12,8 @@ HknRails::Application.routes.draw do
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
   match "users/approve/:id", to: "users#approve", via: :post, as: "users_approve"
   match "users/list(/:category)", to: "users#list", via: :get, as: "users_list"
+  match "users/roles/:id", to: "users#roles", via: :get, as: "edit_roles_user"
+  match "users/roles/:id", to: "users#alter_roles", via: :post, as: "alter_roles_user"
 
   resources :alum
   resources :challenges, only: [:create, :update, :index]

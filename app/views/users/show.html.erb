@@ -7,7 +7,7 @@
     <% if authorize(:superuser) %>
       <%= link_to "[Edit]", edit_user_path(@user) %>
       <%= link_to "[Delete]", user_path(@user), :method => :delete, data: { confirm: "Are you sure you want to remove \"" + @user.full_name + "\"?" } %>
-      <%#= link_to "[Groups]", groups_person_path(@person.username) %>
+      <%= link_to "[Groups]", edit_roles_user_path(@user) %>
     <% elsif !@user.approved %>
       <%= link_to "[Delete]", user_path(@user), :method => :delete, :confirm => "Are you sure you want to remove \"" + @user.full_name + "\"?" %>
     <% end %>

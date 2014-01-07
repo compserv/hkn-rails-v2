@@ -1,7 +1,7 @@
 require 'will_paginate/array'
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :approve]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :approve, :roles, :alter_roles]
   before_filter :authenticate_user!
 
   # GET /users/1
@@ -115,6 +115,7 @@ class UsersController < ApplicationController
   end
 
   def approve
+    authenticate_vp!
     if @user.update(approved: true)
       flash[:notice] = "Successfully approved #{@user.full_name}, an email has been sent to #{@user.email}"
       AccountMailer.account_approval(@user).deliver
@@ -122,6 +123,26 @@ class UsersController < ApplicationController
       flash[:alert] = "Oops something went wrong!"
     end
     redirect_to user_path(@user)
+  end
+
+  def roles
+    authenticate_superuser! # roles are shown on a user's show page, no reason for civilians to be here
+    @current_semester = MemberSemester.current
+    @roles = @user.roles.order(:resource_id, :role_type)
+  end
+
+  def alter_roles
+    authenticate_superuser!
+    if params[:delete]
+      r = Role.find_by_id(params[:role])
+      @user.delete_role(r)
+      flash[:notice] = @user.full_name + " has lost the title " + r.nice_position + " in " + r.nice_semester
+    else
+      semester = MemberSemester.find_by_season_and_year(params[:season], params[:year])
+      r = @user.add_position_for_semester_and_role_type(params[:position], semester, params[:role])
+      flash[:notice] = @user.full_name + " has gained the title " + r.nice_position + " in " + r.nice_semester
+    end
+    redirect_to edit_roles_user_path(@user)
   end
 
   private
