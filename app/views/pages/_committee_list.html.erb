@@ -1,0 +1,16 @@
+<div id="<%= position_type %>">
+  <% @committeeships[position_type].each do |role| %>
+    <div class="<%= position_type.to_s.singularize %>">
+      <h2><%= role.nice_committee %> (<%= role.name %>@hkn)</h2>
+      <% for user in role.users.sort_by(&:full_name) %>
+        <div class="officer">
+          <div class="photo <%= "no-photo" if user.picture.blank? %>">
+            <%= image_tag user.picture  unless user.picture.blank? %>
+          </div>
+          <span class="name"><%= user.full_name %></span>
+          <span class="email"><%= user.username %>@hkn</span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

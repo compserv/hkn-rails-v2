@@ -4,6 +4,7 @@ HknRails::Application.routes.draw do
   devise_for :users, controllers: { registrations: "registrations" }
 
   match "about/contact", to: "pages#contact", via: :get, as: "contact"
+  match "about/officers(/:semester)", to: "pages#officers", via: :get, as: "about_officers"
   match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
   match "users/approve/:id", to: "users#approve", via: :post, as: "users_approve"

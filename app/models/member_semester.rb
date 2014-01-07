@@ -39,4 +39,19 @@ class MemberSemester < ActiveRecord::Base
     Role.members.all_users
   end
 
+  def next
+    if season == "Fall"
+      MemberSemester.find_by_year_and_season(year + 1, "Spring")
+    else
+      MemberSemester.find_by_year_and_season(year, "Fall")
+    end
+  end
+
+  def prev
+    if season == "Spring"
+      MemberSemester.find_by_year_and_season(year - 1, "Fall")
+    else
+      MemberSemester.find_by_year_and_season(year, "Spring")
+    end
+  end
 end

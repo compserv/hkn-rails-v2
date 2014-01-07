@@ -71,6 +71,10 @@ class Role < ActiveRecord::Base
     end
   end
 
+  def exec?
+    Execs.include? self.name
+  end
+
   def semester
     resource
   end

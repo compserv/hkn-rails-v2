@@ -28,7 +28,7 @@ class PagesController < ApplicationController
 
   def cmembers
     # Get the most recent semester
-    @semester = params[:semester] || Election.maximum(:semester)
+    @semester = params[:semester] ? MemberSemester.find_by_id(params[:semester]) : MemberSemester.current
     # Using the semester, get the committeeships, sorted by committee
     cships = Committeeship.semester(@semester).cmembers.sort_by do |c|
       c.committee
@@ -42,20 +42,20 @@ class PagesController < ApplicationController
   end
 
   def officers
-    @semester = params[:semester] || Election.maximum(:semester)
+    @semester = params[:semester] ? MemberSemester.find_by_id(params[:semester]) : MemberSemester.current
 
-    cships = Committeeship.semester(@semester).officers.sort_by do |c|
-      if c.exec?  # exec position
-        [0, Committeeship::Execs.find_index(c.committee)].join
-      else        # normal committee
-        [1, c.committee].join
+    cships = Role.semester_filter(@semester).officers.includes(:users).sort_by do |c|
+      if c.exec?  # exec position is in a certain order.
+        Role::Execs.find_index(c.name).to_s
+      else        # normal committee is alphabetical
+        c.name
       end
-    end.ordered_group_by(&:committee)
-
-    @committeeships = cships.group_by do |c_ary|  # c_ary = [committee_name, [cships]]
-      Committeeship::Execs.include?(c_ary[0])  ?  :execs  :  :committees
     end
 
-    [:execs, :committees].each {|s| @committeeships[s] ||= {}}   # NPEs are bad
+    @committeeships = cships.group_by do |r|  # r is a role
+      Role::Execs.include?(r.name)  ?  :execs  :  :committees
+    end
+
+    [:execs, :committees].each {|s| @committeeships[s] ||= {}}   # Null Pointer Expceptions are bad
   end
 end
