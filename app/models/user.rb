@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def delete_position_for_semester_and_role_type(position, semester, role)
-    Role.find_by_name_and_resource_id_and_role_type(position, semester.id, role).delete(self)
+    Role.find_by_name_and_resource_id_and_role_type(position, semester.id, role).users.delete(self)
   end
 
   def delete_role(r) # r should be an object of Role class

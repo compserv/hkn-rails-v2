@@ -139,9 +139,11 @@ class UsersController < ApplicationController
       flash[:notice] = @user.full_name + " has lost the title " + r.nice_position + " in " + r.nice_semester
     else
       semester = MemberSemester.find_by_season_and_year(params[:season], params[:year])
-      r = @user.add_position_for_semester_and_role_type(params[:position], semester, params[:role])
+      @user.add_position_for_semester_and_role_type(params[:position], semester, params[:role])
+      r = Role.find_by_name_and_resource_id_and_role_type(params[:position], semester.id, params[:role])
       flash[:notice] = @user.full_name + " has gained the title " + r.nice_position + " in " + r.nice_semester
     end
+    destroy_user_session_path(@user) # this appears to clear the user session of the user w/out signing them out, this is so user authentications go off again.
     redirect_to edit_roles_user_path(@user)
   end
 
