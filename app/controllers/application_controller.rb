@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
     return unless current_user
     if !user_session[group].nil?
       user_session[group]
-    elsif current_user && (current_user.is_current_officer?(group) || current_user.is_current_officer?(:compserv))
+    elsif current_user.is_current_officer?(group) || current_user.is_current_officer?(:compserv)
       user_session[group] = true
       true
     else
