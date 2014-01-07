@@ -32,9 +32,7 @@ class PagesController < ApplicationController
     # Using the semester, get the committeeships, sorted by committee
     cships = Role.semester_filter(@semester).committee_members.includes(:users).sort_by(&:name)
     # Group cships by committee
-    @committeeships = cships.group_by do |c_ary|
-      :committees
-    end
+    @committeeships = cships.group_by{ :committees }
     # If @committeeships[:committees] is null, make it empty
     @committeeships[:committees] ||= {}
   end

@@ -35,10 +35,6 @@ class MemberSemester < ActiveRecord::Base
     Role.semester_filter(self).committee_members.all_users
   end
 
-  def members
-    Role.members.all_users
-  end
-
   def next
     if season == "Fall"
       MemberSemester.find_by_year_and_season(year + 1, "Spring")
