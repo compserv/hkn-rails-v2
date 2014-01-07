@@ -25,11 +25,19 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize(group)
-    current_user and (current_user.is_current_officer?(group) || current_user.is_current_officer?(:compserv))
+    if !user_session[group].nil?
+      user_session[group]
+    elsif current_user and (current_user.is_current_officer?(group) || current_user.is_current_officer?(:compserv))
+      user_session[group] = true
+      true
+    else
+      user_session[group] = false
+      false
+    end
   end
 
   def candidate_authorize
-    current_user and current_user.has_ever_had_role?(:candidate)
+    user_session[:candidate].nil? ? (user_session[:candidate] = current_user and current_user.has_ever_had_role?(:candidate)) : user_session[:candidate] 
   end
 
   def authenticate!(group)

@@ -35,6 +35,7 @@ class AlumController < ApplicationController
 
   # POST /alumni
   def create
+    user_session[:alum] = nil
     params[:alum][:grad_semester] = Alum.grad_semester(params[:grad_season], params[:grad_year])
     params[:alum][:user_id] = current_user.id
     @alum = Alum.new(alum_params)
