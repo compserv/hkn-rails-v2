@@ -1,0 +1,25 @@
+<h1>HKN Officers, <%= @semester.name %></h1>
+
+<span id="semester-nav">
+  <%= link_to "Previous Semester", about_officers_path(@semester.prev.id) unless @semester.prev.nil? %>&nbsp;|&nbsp;
+  <%= link_to "Next Semester", about_officers_path(@semester.next.id) unless @semester.next.nil? %>
+</span>
+<% if @committeeships.values.collect(&:empty?).all? %>
+  <div id="no-data">
+    <p>No data available for this semester. If you know information about the officers for this semester and would like us to add it, please email hkn@hkn.</p>
+  </div>
+<% else %><%# there are cships for this semester %>
+
+  <% [:execs, :committees].each do |position_type| %>
+    <%= render "committee_list", :position_type => position_type %>
+  <% end %><%# position_type %>
+
+  <%# Alumni Advisor should go here. %>
+
+  <br/>
+  <div class="hbar"></div>
+  <div>
+    To send an email, fill out the full domain name (hkn&nbsp;&rarr;&nbsp;hkn.eecs.berkeley.edu)
+  </div>
+
+<% end %><%# there are cships %>

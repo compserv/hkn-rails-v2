@@ -59,7 +59,7 @@
 
 <div class="submenu alumni_submenu">
   <ul class="plain">
-    <% if user_signed_in? && current_user.alum %>
+    <% if user_signed_in? && (user_session[:alum].nil? ? user_session[:alum] = !current_user.alum.nil? : user_session[:alum]) %>
       <li><%= link_to "View My Alumnus/Alumna Information", edit_alum_path(current_user.alum) %></li>
     <% else %>
       <li><%= link_to "Create Alumnus/Alumna", new_alum_path %></li>
@@ -75,8 +75,8 @@
   </ul>
   <ul class="plain">
     <li><a href="/about/slideshow/" class="navigation_sublevel_item">Slideshows</a></li>
-    <li><%= link_to "Current Officers", "/about/officers/", :class=>"navigation_sublevel_item" %></li>
-    <li><%= link_to "Current Committee Members", "/about/cmembers/", :class=>"navigation_sublevel_item" %></li>
+    <li><%= link_to "Current Officers", about_officers_path, :class=>"navigation_sublevel_item" %></li>
+    <li><%= link_to "Current Committee Members", about_committee_members_path, :class=>"navigation_sublevel_item" %></li>
   </ul>
 </div>
 

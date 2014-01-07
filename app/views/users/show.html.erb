@@ -1,5 +1,5 @@
-<div class="admin">
-  <% if authorize(:vp) %>
+<% if authorize(:vp) %>
+  <div class="admin">
     Admin Bar:
     <% if !@user.approved %>
       <%= link_to "[Approve Account]", users_approve_path(@user), :method => :post %>
@@ -9,7 +9,58 @@
       <%= link_to "[Delete]", user_path(@user), :method => :delete, data: { confirm: "Are you sure you want to remove \"" + @user.full_name + "\"?" } %>
       <%#= link_to "[Groups]", groups_person_path(@person.username) %>
     <% elsif !@user.approved %>
-      <%= link_to "[Delete]", user_path(@user), :method => :delete, :confirm => "Are you sure you want to remove \"" + @person.full_name + "\"?" %>
+      <%= link_to "[Delete]", user_path(@user), :method => :delete, :confirm => "Are you sure you want to remove \"" + @user.full_name + "\"?" %>
     <% end %>
+  </div>
+<% end %>
+
+<div style="float: left; padding-right: 1em; width: 49%">
+  <h1><%= @user.full_name %></h1>
+
+  <div id="photo" <%= "class=no-photo" if @user.picture.blank? %>>
+    <%= image_tag @user.picture, :id => "profile_picture" unless @user.picture.blank? %>
+  </div>
+
+  <div id="info">
+    <% unless @user.email.blank? or @user.private %>
+      <span class="user-field">
+        <span class="label">Email</span><%= @user.email %>
+      </span>
+    <% end %>
+    <% unless @user.phone_number.blank? or @user.private %>
+      <span class="user-field">
+        <span class="label">Phone Number</span><%= @user.phone_number %>
+      </span>
+    <% end %>
+    <span class="user-field">
+      <span class="label">Status</span><%= @user.status %>
+    </span>
+  </div>
+  <div class="clear"></div>
+  
+  <h2>Badges Earned</h2>
+  <div id="badges">
+    <%# for badge in @badges %>
+      <%#= image_tag badge.picture_url, :title=> badge.name, :class=>"badge" %>
+    <%# end %>
+  </div>
+  
+</div>
+<div style="float: left; width: 49%">
+  <h2>Additional Membership Information</h2>
+  <% @user.roles.order(:resource_id, :role_type).each do |role| %>
+    <p><%=@user.first_name%> had the position of <%=role.nice_position%> in <%=role.nice_semester%>.</p>
+  <% end %>
+
+  <% if @user.rsvps.count > 0 %>
+    <h2><%= @user.fullname %>'s RSVPs</h2>
+    <ul>
+    <% @user.rsvps.ordered_desc.each do |rsvp| %>
+      <% if rsvp.event.can_view? current_user %>
+        <li><%= link_to "#{rsvp.event.start_date} - #{rsvp.event.name}", rsvp.event %></li>
+      <% end %>
+    <% end %>
+    </ul>
   <% end %>
 </div>
+

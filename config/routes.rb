@@ -4,10 +4,14 @@ HknRails::Application.routes.draw do
   devise_for :users, controllers: { registrations: "registrations" }
 
   match "about/contact", to: "pages#contact", via: :get, as: "contact"
+  match "about/officers(/:semester)", to: "pages#officers", via: :get, as: "about_officers"
+  match "about/committee_members(/:semester)", to: "pages#committee_members", via: :get, as: "about_committee_members"
+
+
   match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
   match "users/approve/:id", to: "users#approve", via: :post, as: "users_approve"
-  match "users/list/:category", to: "users#list", via: :get, as: "users_list"
+  match "users/list(/:category)", to: "users#list", via: :get, as: "users_list"
 
   resources :alum
   resources :challenges, only: [:create, :update, :index]

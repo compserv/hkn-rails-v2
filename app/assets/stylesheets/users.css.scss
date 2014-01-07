@@ -1,0 +1,41 @@
+.admin{
+  padding: 0.5em;
+  background: #ccc;
+}
+
+div#photo{
+  width: 125px;
+  height: 100px;
+  float:left;
+}
+
+div#photo img {
+  max-width: 125px;
+  max-height: 100px;
+}
+
+.table img {
+  max-width: 125px;
+  max-height: 100px;
+}
+
+#info{
+  padding-left: 1em;
+  float:left;
+}
+
+div.no-photo{
+  background: image-url('person_placeholder.png');
+}
+
+span.label{
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  color: #999;
+  width: 12em;
+}
+
+.user-field{
+  display: block;
+}
