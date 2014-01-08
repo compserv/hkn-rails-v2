@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
 
   has_many :rsvps
   has_many :events, through: :rsvps
-  has_many :resumes, :dependent => :destroy
+  has_one :resume, :dependent => :destroy
   has_one :alum
   belongs_to :mobile_carrier
   has_many :tutor_slot_preferences

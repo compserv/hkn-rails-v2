@@ -42,6 +42,9 @@
       Please provide a PDF of your résumé. You should contact <a href="mailto:indrel@hkn.eecs.berkeley.edu">indrel@hkn.eecs.berkeley.edu</a> if you can't generate a PDF file.
     </div>
   </div>
+  <% if @user %>
+    <%= f.hidden_field :user_id, :value => @user.id %>
+  <% end %>
   <div class="submitglue field-submit">
     <%= f.submit "Upload Résumé" %>
   </div>

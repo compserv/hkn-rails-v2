@@ -1,6 +1,11 @@
 class ResumesController < ApplicationController
   before_action :set_resume, only: [:show, :edit, :update, :destroy]
-  # before_filter :authorize_indrel, :only => [:index, :resume_books, :upload_for, :include, :exclude, :status_list]
+  before_filter :authenticate_indrel!, :only => [:index, :resume_books, :upload_for, :include, :exclude, :status_list]
+  before_filter :my_resume_or_indrel!, only: [:show, :edit, :update, :destroy]
+
+  def my_resume_or_indrel!
+    @resume.user.id == current_user.id || authenticate_indrel!
+  end
 
   # GET /resumes
   def index
@@ -13,6 +18,9 @@ class ResumesController < ApplicationController
 
   # GET /resumes/new
   def new
+    if current_user.resume # help user just in case (multiple resumes for a single user aren't allowed)
+      redirect_to edit_resume_path(current_user.resume) and return
+    end
     @resume = Resume.new
   end
 
@@ -22,9 +30,10 @@ class ResumesController < ApplicationController
 
   # POST /resumes
   def create
-    params[:resume][:user_id] = User.first.id # TODO reflect current_user.
+    params[:resume][:user_id] ||= current_user.id # account for indrel potentially uploading for someone.
     params[:resume][:included] = false
     @resume = Resume.new(resume_params)
+    my_resume_or_indrel! # security verification.
 
     if @resume.save
       redirect_to @resume, notice: 'Resume was successfully created.'
@@ -45,7 +54,15 @@ class ResumesController < ApplicationController
   # DELETE /resumes/1
   def destroy
     @resume.destroy
-    redirect_to resumes_url, notice: 'Resume was successfully destroyed.'
+    redirect_to new_resume_path, notice: 'Resume was successfully destroyed.'
+  end
+
+  def upload_for
+    @user = User.find_by_id(params[:id])
+    if @user.resume
+      redirect_to edit_resume_path(@user.resume), alert: "#{@user.full_name} has a resume already" and return
+    end
+    @resume = Resume.new
   end
 
   private
