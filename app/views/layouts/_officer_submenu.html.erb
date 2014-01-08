@@ -49,7 +49,7 @@
   <% if user_signed_in? %>
     <ul class="plain">
       <li><%= link_to "My RSVPs", 'my_rsvps_path' %></li>
-    <% if user_signed_in? && current_user.is_active_member? %>
+    <% if user_signed_in? && active_member_authorize %>
       <li><%= link_to "New Event", 'new_event_path' %></li>
       <li><%= link_to "Leaderboard", 'leaderboard_path' %></li>
     <% end %>
