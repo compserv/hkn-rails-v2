@@ -27,4 +27,22 @@ class Event < ActiveRecord::Base
   validates :event_type, :presence => true
   validates :start_time, :presence => true
   validates :end_time, :presence => true
+  validates_inclusion_of :view_permission_roles, in: [:candidates, :members, :officers, nil]
+
+  scope :with_permission, Proc.new { |user| 
+    if user.nil?
+      where(:view_permission_roles => nil)
+    elsif user.is_officer_for_semester? MemberSemester.current
+      all
+    elsif user.is_active_member?
+      where(view_permission_roles: %w[candidates members nil])
+    elsif user.is_candidate?
+      where(view_permission_roles: %w[candidates nil])
+    else
+      where(:view_permission_roles => nil)
+    end
+  }
+
+  scope :past,     where(['start_time < ?', Time.now])
+  scope :upcoming, where(['start_time > ?', Time.now])
 end

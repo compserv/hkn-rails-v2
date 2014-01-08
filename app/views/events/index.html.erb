@@ -1,2 +1,9 @@
-<h1>Events#index</h1>
-<p>Find me in app/views/events/index.html.erb</p>
+<h1><%= @heading %></h1>
+
+<%= render :partial => 'list' %>
+
+<%= ajaxify_links %>
+
+<% if member_authorize %>
+  <%= link_to 'New Event', new_event_path %>
+<% end %>

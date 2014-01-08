@@ -26,7 +26,7 @@ HknRails::Application.routes.draw do
 
   scope "events" do
     match "calendar", to: "events#calendar", via: :get, as: "events_calendar"
-    match ":category" => "events#index", :as => :events_category, :constraints => {:category => /(future|past)/}
+    match ":category", to: "events#index", via: :get, as: :events_category, constraints: {:category => /(future|past)/}
   end
 
   scope "candidate" do

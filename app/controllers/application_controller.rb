@@ -37,6 +37,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def member_authorize
+    return unless current_user
+    current_user.is_active_member?
+  end
+
   def candidate_authorize
     return unless current_user
     user_session[:candidate].nil? ? (user_session[:candidate] = current_user && current_user.has_ever_had_role?(:candidate)) : user_session[:candidate]
