@@ -6,9 +6,9 @@
     <% end %>
     <% if authorize(:superuser) %>
       <%= link_to "[Edit]", edit_user_path(@user) %>
-      <%= link_to "[Delete]", user_path(@user), :method => :delete, data: { confirm: "Are you sure you want to remove \"" + @user.full_name + "\"?" } %>
-      <%= link_to "[Groups]", edit_roles_user_path(@user) %>
-    <% elsif !@user.approved %>
+      <%= link_to "[Roles]", edit_roles_user_path(@user) %>
+    <% end %>
+    <% if !@user.approved || authorize(:superuser) %>
       <%= link_to "[Delete]", user_path(@user), :method => :delete, :confirm => "Are you sure you want to remove \"" + @user.full_name + "\"?" %>
     <% end %>
   </div>
@@ -22,12 +22,12 @@
   </div>
 
   <div id="info">
-    <% unless @user.email.blank? or @user.private %>
+    <% unless !@user.email? || @user.private %>
       <span class="user-field">
         <span class="label">Email</span><%= @user.email %>
       </span>
     <% end %>
-    <% unless @user.phone_number.blank? or @user.private %>
+    <% unless !@user.phone_number? || @user.private %>
       <span class="user-field">
         <span class="label">Phone Number</span><%= @user.phone_number %>
       </span>
@@ -37,15 +37,16 @@
     </span>
   </div>
   <div class="clear"></div>
-  
+
   <h2>Badges Earned</h2>
   <div id="badges">
     <%# for badge in @badges %>
       <%#= image_tag badge.picture_url, :title=> badge.name, :class=>"badge" %>
     <%# end %>
   </div>
-  
+
 </div>
+
 <div style="float: left; width: 49%">
   <h2>Additional Membership Information</h2>
   <% @user.roles.order(:resource_id, :role_type).each do |role| %>

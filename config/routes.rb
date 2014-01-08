@@ -20,7 +20,7 @@ HknRails::Application.routes.draw do
   resources :dept_tours
   resources :exams
   resources :resumes
-  resources :users
+  resources :users, except: [:new, :create, :index]
 
   scope "candidate" do
     match "quiz", to: "candidate#quiz", via: :get, as: "candidate_quiz"

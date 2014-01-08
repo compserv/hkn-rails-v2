@@ -43,15 +43,15 @@ class Resume < ActiveRecord::Base
       :content_type => "application/pdf",
       :message => "Oops, please use a pdf"
 
-  default_scope :order => 'resumes.created_at DESC'
-  # so we can just pick out the 'first' of the resumes to get the most recent
-
-
   Paperclip.interpolates :normalized_file_name do |attachment, style|
     attachment.instance.normalized_file_name
   end
 
   def normalized_file_name
     "#{self.user.username}/#{self.created_at}"
+  end
+
+  def get_username
+    self.user.username
   end
 end

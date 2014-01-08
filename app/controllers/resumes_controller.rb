@@ -29,7 +29,7 @@ class ResumesController < ApplicationController
     if @resume.save
       redirect_to @resume, notice: 'Resume was successfully created.'
     else
-      render action: 'new'
+      render :new
     end
   end
 
@@ -38,7 +38,7 @@ class ResumesController < ApplicationController
     if @resume.update(resume_params)
       redirect_to @resume, notice: 'Resume was successfully updated.'
     else
-      render action: 'edit'
+      render :edit
     end
   end
 

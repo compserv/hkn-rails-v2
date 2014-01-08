@@ -17,10 +17,6 @@ class UsersController < ApplicationController
     @mobile_carriers = MobileCarrier.all
   end
 
-  # POST /users
-  def create
-  end
-
   # PATCH/PUT /users/1
   def update
     # Permissions
@@ -49,13 +45,13 @@ class UsersController < ApplicationController
     if @user.update_attributes(user_params)
       redirect_to path, notice: 'Settings successfully updated.'
     else
-      render action: 'edit'
+      render :edit
     end
   end
 
   # DELETE /users/1
   def destroy
-    unless @user == current_user || authorize(:superuser) || (authorize(:vp) and @user.approved == false)
+    unless @user.id == current_user.id || authorize(:superuser) || (authorize(:vp) and @user.approved == false)
       redirect_to edit_user_path(current_user), notice: "You can't delete #{@user.username}" and return
     end
     @user.destroy
@@ -98,13 +94,13 @@ class UsersController < ApplicationController
              :joins      => joinstr,
              :conditions => cond
            }
-   
+
     user_selector = User.uniq(:id)
     if authenticate_vp and params[:approved] == 'false'
       user_selector = user_selector.where(:approved => false )
     end
 
-    @users = user_selector.paginate opts 
+    @users = user_selector.paginate opts
 
     respond_to do |format|
       format.html
@@ -140,8 +136,8 @@ class UsersController < ApplicationController
     else
       semester = MemberSemester.find_by_season_and_year(params[:season], params[:year])
       @user.add_position_for_semester_and_role_type(params[:position], semester, params[:role])
-      r = Role.find_by_name_and_resource_id_and_role_type(params[:position], semester.id, params[:role])
-      flash[:notice] = @user.full_name + " has gained the title " + r.nice_position + " in " + r.nice_semester
+      role = Role.find_by_name_and_resource_id_and_role_type(params[:position], semester.id, params[:role])
+      flash[:notice] = @user.full_name + " has gained the title " + role.nice_position + " in " + role.nice_semester
     end
     destroy_user_session_path(@user) # this appears to clear the user session of the user w/out signing them out, this is so user authentications go off again.
     redirect_to edit_roles_user_path(@user)

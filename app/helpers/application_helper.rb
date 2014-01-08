@@ -7,18 +7,18 @@ module ApplicationHelper
     lower = %w(a b c d e f g h i j k l m n o p q r s t u v w x y z)
     upper = %w(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
     char_array = string.split('')
-    char_array.each do |char|  
+    char_array.each do |char|
       output = lower.index(char) + 97 if lower.include?(char)
       output = upper.index(char) + 65 if upper.include?(char)
       if output
         output_array << "&##{output};"
-      else 
+      else
         output_array << char
       end
     end
     return output_array.join
   end
-  
+
   # This is for the pagination sort links
   # This could probably be cleaned up a bit more...
   def sort_link(inner_text, sort_variable, opts = {})
@@ -52,7 +52,7 @@ module ApplicationHelper
             url: el.href,
             method: 'get',
             dataType: 'script',
-            complete: function (xhr, status) { // This is retarded. Because we are asking for a script response and getting an html render response it will throw the error handler and not the success.  Hack solution is to use complete
+            complete: function (xhr, status) { // Because we are asking for a script response and getting an html render response it will throw the error handler and not the success.  Hack solution is to use complete
               if (status === 'error' || !xhr.responseText) {
                 // just give up?
               }
