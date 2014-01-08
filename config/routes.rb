@@ -16,6 +16,7 @@ HknRails::Application.routes.draw do
   match "users/roles/:id", to: "users#alter_roles", via: :post, as: "alter_roles_user"
   match "resumes/upload_for/:user_id" => "resumes#upload_for", via: :get, :as => :resumes_upload_for
   match "resumes/:id/download" => "resumes#download", via: :get, :as => :resume_download
+  match "resumes/status_list" => "resumes#status_list", via: :get, :as => :resume_status_list
 
   resources :alum
   resources :challenges, only: [:create, :update, :index]

@@ -1,0 +1,15 @@
+<tr><th>Name</th><th>Current Résumé</th><th>Upload a new résumé for this User</th></tr>
+<% group.each do |user| %>
+  <tr>
+    <td><%= user.full_name %></td>
+    <td>
+      <% resume = user.resume %>
+      <% if resume.nil? %>
+        No resume uploaded
+      <% else %>
+        <%= link_to "Uploaded at #{resume.file_updated_at}", resume_download_path(resume) %>
+      <% end %>
+    </td>
+    <td><%= link_to "Upload resume for #{user.full_name}", resumes_upload_for_path(user) %></td>
+  </tr>
+<% end %>

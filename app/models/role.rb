@@ -44,6 +44,10 @@ class Role < ActiveRecord::Base
       all.includes(:users).collect { |role| role.users }.flatten
     end
 
+    def all_users_resumes
+      all.includes(:users => :resume).collect { |role| role.users }.flatten
+    end
+
     def current_officers_from_committee(committee)
       officers_from_committee committee, MemberSemester.current
     end

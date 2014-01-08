@@ -1,0 +1,20 @@
+<%#= link_to "Indrel Résumé admin", resume_books_path %>
+
+<h1> List of Officers, Candidates, and Everyone Else, and their Résumé Statuses </h1>
+
+Use this page to upload a résumé for a particular person.
+
+<h2>Officers</h2>
+<table>
+  <%= render "status_group", group: @officers %>
+</table>
+
+<h2>Candidates</h2>
+<table>
+  <%= render "status_group", group: @candidates %>
+</table>
+
+<h2>Everyone Else</h2>
+<table>
+  <%= render "status_group", group: @everyone_else %>
+</table>

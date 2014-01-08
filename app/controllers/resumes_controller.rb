@@ -86,6 +86,12 @@ class ResumesController < ApplicationController
     render :js => 'location.reload();'
   end
 
+  def status_list
+    @officers = Role.semester_filter(MemberSemester.current).officers.all_users_resumes
+    @candidates = Role.semester_filter(MemberSemester.current).candidates.all_users_resumes
+    @everyone_else = User.all.includes(:resume).find_all {|p| not (@officers.include?(p) or @candidates.include?(p))}
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_resume

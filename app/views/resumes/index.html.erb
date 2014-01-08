@@ -1,13 +1,11 @@
-<h1>Listing resumes</h1>
+<h1> Résumés </h1>
 
 <table>
   <thead>
     <tr>
+      <th>Upload Date</th>
       <th>Overall gpa</th>
-      <th>Major gpa</th>
-      <th>Resume text</th>
-      <th>Graduation year</th>
-      <th>Graduation semester</th>
+      <th>File Location</th>
       <th>User</th>
       <th>Included</th>
       <th></th>
@@ -19,12 +17,10 @@
   <tbody>
     <% @resumes.each do |resume| %>
       <tr>
+        <td><%= resume.file_updated_at %></td>
         <td><%= resume.overall_gpa %></td>
-        <td><%= resume.major_gpa %></td>
-        <td><%= resume.resume_text %></td>
-        <td><%= resume.graduation_year %></td>
-        <td><%= resume.graduation_semester %></td>
-        <td><%= resume.get_username %></td>
+        <td><%= resume.file.path.split(Rails.root.to_s)[1] %></td>
+        <td><%= resume.get_full_name %></td>
         <td><%= resume.included %></td>
         <td><%= link_to 'Show', resume %></td>
         <td><%= link_to 'Edit', edit_resume_path(resume) %></td>
