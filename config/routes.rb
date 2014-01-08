@@ -14,7 +14,8 @@ HknRails::Application.routes.draw do
   match "users/list(/:category)", to: "users#list", via: :get, as: "users_list"
   match "users/roles/:id", to: "users#roles", via: :get, as: "edit_roles_user"
   match "users/roles/:id", to: "users#alter_roles", via: :post, as: "alter_roles_user"
-  match "resumes/upload_for/:id" => "resumes#upload_for", via: :get, :as => :resumes_upload_for
+  match "resumes/upload_for/:user_id" => "resumes#upload_for", via: :get, :as => :resumes_upload_for
+  match "resumes/:id/download" => "resumes#download", via: :get, :as => :resume_download
 
   resources :alum
   resources :challenges, only: [:create, :update, :index]

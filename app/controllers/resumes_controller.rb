@@ -58,11 +58,32 @@ class ResumesController < ApplicationController
   end
 
   def upload_for
-    @user = User.find_by_id(params[:id])
+    @user = User.find_by_id(params[:user_id])
     if @user.resume
       redirect_to edit_resume_path(@user.resume), alert: "#{@user.full_name} has a resume already" and return
     end
     @resume = Resume.new
+  end
+
+  def download
+    @resume = Resume.find(params[:id])
+    my_resume_or_indrel!
+    send_file @resume.file.path, type: @resume.file_content_type,
+                                 filename: @resume.file_file_name,
+                                 disposition: 'inline' # loads file in browser for now.
+  end
+
+  # intended for ajax
+  def include
+    @resume = Resume.find(params[:id])
+    @resume.update_attribute :included, true
+    render :js => 'location.reload();'
+  end
+
+  def exclude
+    @resume = Resume.find(params[:id])
+    @resume.update_attribute :included, false
+    render :js => 'location.reload();'
   end
 
   private

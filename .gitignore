@@ -33,3 +33,4 @@ config/initializers/environment_variables.rb
 /public/examfiles/
 /public/resumes/
 /public/pictures
+/private

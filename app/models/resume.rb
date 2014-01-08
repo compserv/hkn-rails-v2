@@ -35,8 +35,8 @@ class Resume < ActiveRecord::Base
   validates :user_id, presence: true, uniqueness: true
 
   has_attached_file :file, :default_url => '/resumes/new',
-      :path => ":rails_root/public/resumes/:normalized_file_name.:extension",
-      :url => "/resumes/:normalized_file_name.:extension"
+      :path => ":rails_root/private/resumes/:normalized_file_name.:extension",
+      :url => '/:class/:id/download'
 
   validates_attachment_presence :file
 
