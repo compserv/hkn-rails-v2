@@ -1,0 +1,33 @@
+<%= form_for(@resume_book) do |f| %>
+  <% if @resume_book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@resume_book.errors.count, "error") %> prohibited this resume_book from being saved:</h2>
+
+      <ul>
+      <% @resume_book.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :remarks %><br>
+    <%= f.text_field :remarks %>
+  </div>
+  <div class="field">
+    <%= f.label :details %><br>
+    <%= f.text_area :details %>
+  </div>
+  <div class="field">
+    <%= f.label :cutoff_date %><br>
+    <%= f.date_select :cutoff_date %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
