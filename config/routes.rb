@@ -1,4 +1,5 @@
 HknRails::Application.routes.draw do
+
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -19,6 +20,14 @@ HknRails::Application.routes.draw do
   resources :exams
   resources :resumes
   resources :users
+  resources :events do
+    resources :rsvps
+  end
+
+  scope "events" do
+    match "calendar", to: "events#calendar", via: :get, as: "events_calendar"
+    match ":category" => "events#index", :as => :events_category, :constraints => {:category => /(future|past)/}
+  end
 
   scope "candidate" do
     match "quiz", to: "candidate#quiz", via: :get, as: "candidate_quiz"
