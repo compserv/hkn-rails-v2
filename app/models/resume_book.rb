@@ -34,7 +34,7 @@ class ResumeBook < ActiveRecord::Base
   end
 
   def normalized_file_name
-    "#{self.created_at}"
+    "#{self.title}"
   end
 
 end

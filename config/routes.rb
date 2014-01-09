@@ -18,6 +18,7 @@ HknRails::Application.routes.draw do
   match "resumes/upload_for/:user_id" => "resumes#upload_for", via: :get, :as => :resumes_upload_for
   match "resumes/:id/download" => "resumes#download", via: :get, :as => :resume_download
   match "resumes/status_list" => "resumes#status_list", via: :get, :as => :resumes_status_list
+  match "resume_books/:id/download_pdf" => "resume_books#download_pdf", via: :get, :as => :resume_book_download
 
   resources :alum
   resources :challenges, only: [:create, :update, :index]
