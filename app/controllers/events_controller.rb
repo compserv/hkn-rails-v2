@@ -72,7 +72,6 @@ class EventsController < ApplicationController
 
   private
     def is_member?
-      return unless current_user
-      current_user.is_active_member?
+      @is_member = current_user ? current_user.is_active_member? : false
     end
 end

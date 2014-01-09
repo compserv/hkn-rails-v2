@@ -4,6 +4,6 @@
 
 <%= ajaxify_links %>
 
-<% if member_authorize %>
+<% if @is_member %>
   <%= link_to 'New Event', new_event_path %>
 <% end %>
