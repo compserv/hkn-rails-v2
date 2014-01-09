@@ -167,7 +167,7 @@ class User < ActiveRecord::Base
     UserMailer.send_sms(self, msg).deliver
   end
 
-  def phone_number_fix    
+  def phone_number_fix
     return unless self.phone_number
     n = self.phone_number.gsub /[^\d]/, ''
     return unless n && n.length == 10
