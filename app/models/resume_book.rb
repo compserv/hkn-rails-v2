@@ -23,6 +23,7 @@ class ResumeBook < ActiveRecord::Base
       :path => ":rails_root/private/resumes_book/:normalized_file_name.:extension",
       :url => '/:class/:id/download_pdf'
 
+
   validates_attachment_presence :pdf
 
   validates_attachment_content_type :pdf,
@@ -34,7 +35,7 @@ class ResumeBook < ActiveRecord::Base
   end
 
   def normalized_file_name
-    "#{self.title}"
+    "#{self.title}/#{self.updated_at}"
   end
 
 end

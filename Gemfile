@@ -36,7 +36,7 @@ gem 'will_paginate', '3.0.4'
 # Mailing Lists
 gem 'mechanize'
 
-# pdf mergine
+# pdf merging
 gem 'prawn'
 
 group :development, :test do
