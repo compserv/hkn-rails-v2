@@ -13,7 +13,7 @@
     ].each do |group, ppl|
 -%>
   <h2>Emails of <%= group %> who did not submit a resume since <%= @cutoff_date %></h2>
-  <%- ppl.collect(&:email).each do |s| -%>
+  <%- ppl.collect(&:as_email).each do |s| -%>
     <%= s %>;<br/>
   <%- end -%>
 <%- end -%>
