@@ -1,6 +1,6 @@
 <div id="ajax-wrapper">
-  <%=#spinner %>
-  <%= will_paginate @events, :class => 'ajax-controls' %>
+  <%= spinner %>
+  <%= will_paginate(@events, class: 'ajax-controls') %>
   <table>
     <tbody>
       <tr class="ajax-controls">
@@ -9,7 +9,7 @@
         <th><%= sort_link 'Location', 'location' %></th>
         <th><%= sort_link 'Event Type', 'event_type' %></th>
         <%# th for edit/delete %>
-        <% if member_authorize %>
+        <% if @is_member%>
           <th></th>
         <% end %>
       </tr>
@@ -20,7 +20,7 @@
           <td><%= link_to event.name, event %></td>
           <td><%= event.location %></td>
           <td class="ajax-controls"><%= link_to(event.event_type, @search_opts.merge('event_filter' => event.event_type.downcase)) %></td>
-          <% if member_authorize %>
+          <% if @is_member? %>
             <td><%= link_to 'Edit', edit_event_path(event) %></td>
           <% end %>
         </tr>

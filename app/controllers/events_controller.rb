@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  before_filter :is_member?
+
   def index
     per_page = 20
 
@@ -67,4 +69,10 @@ class EventsController < ApplicationController
 
   def calendar
   end
+
+  private
+    def is_member?
+      return unless current_user
+      current_user.is_active_member?
+    end
 end

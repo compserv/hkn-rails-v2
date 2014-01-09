@@ -105,3 +105,13 @@ end
 
 initialize_mobile_carriers
 
+events = [
+  ["Picnic", "Lots of fun", DateTime.yesterday, DateTime.now, "Big Fun", nil, nil],
+  ["HM1", "hm1", DateTime.tomorrow, DateTime.tomorrow, "Meeting", :members, :members]
+]
+
+events.each do |event|
+  Event.create(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
+               event_type: event[4], view_permission_roles: event[5], rsvp_permission_roles: event[6])
+  puts "Created event #{event[0]}"
+end

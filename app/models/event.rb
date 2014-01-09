@@ -43,6 +43,13 @@ class Event < ActiveRecord::Base
     end
   }
 
-  scope :past,     where(['start_time < ?', Time.now])
-  scope :upcoming, where(['start_time > ?', Time.now])
+  VALID_SORT_FIELDS = %w[start_time name location event_type]
+
+  def self.past
+    Event.where(['start_time < ?', Time.now])
+  end
+
+  def self.upcoming
+    Event.where(['start_time > ?', Time.now])
+  end
 end
