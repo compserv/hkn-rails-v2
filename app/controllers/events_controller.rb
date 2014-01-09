@@ -20,7 +20,7 @@ class EventsController < ApplicationController
                      end
     @search_opts = {'sort' => order, 'sort_direction' => sort_direction }.merge params
     # Maintains start_time as secondary sort column
-    opts = { :page => params[:page], :per_page => per_page, :order => "#{order} #{sort_direction}, start_time #{sort_direction}" }
+    options = { :page => params[:page], :per_page => per_page, :order => "#{order} #{sort_direction}, start_time #{sort_direction}" }
 
     category = params[:category] || 'all'
     event_finder = Event.with_permission(current_user)
@@ -43,9 +43,9 @@ class EventsController < ApplicationController
     if order == "event_type"
       opts = { page: params[:page], per_page: per_page }
       @events = @events.sort_by{|event| event.event_type }
-      @events = @events.paginate opts
+      @events = @events.paginate options
     else
-      @events = @events.paginate opts
+      @events = @events.paginate options
     end
   end
 

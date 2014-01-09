@@ -9,7 +9,7 @@
         <th><%= sort_link 'Location', 'location' %></th>
         <th><%= sort_link 'Event Type', 'event_type' %></th>
         <%# th for edit/delete %>
-        <% if @is_member%>
+        <% if @is_member %>
           <th></th>
         <% end %>
       </tr>
@@ -17,11 +17,11 @@
       <% @events.each do |event| %>
         <tr>
           <td><%= event.start_time.strftime('%a %m/%d/%y %I:%M%p') %></td>
-          <td><%= link_to event.name, event %></td>
+          <td><%= link_to event.title, event %></td>
           <td><%= event.location %></td>
           <td class="ajax-controls"><%= link_to(event.event_type, @search_opts.merge('event_filter' => event.event_type.downcase)) %></td>
           <% if @is_member? %>
-            <td><%= link_to 'Edit', edit_event_path(event) %></td>
+            <td><%= link_to 'Edit', edit_event_path(event.id) %></td>
           <% end %>
         </tr>
       <% end %>

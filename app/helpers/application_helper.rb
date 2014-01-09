@@ -21,28 +21,8 @@ module ApplicationHelper
   
   # This is for the pagination sort links
   # This could probably be cleaned up a bit more...
-=begin This doesn't seem to be working.
   def sort_link(inner_text, sort_variable, opts = {})
     sort_direction = (sort_variable == @search_opts['sort'] and @search_opts['sort_direction'] != 'down') ? 'down' : 'up'
-    arrow = (sort_variable == @search_opts['sort']) ? (@search_opts['sort_direction'] == 'down') ? image_tag('site/arrow_desc.gif') : image_tag('site/arrow_asc.gif') : ''
-    link_to(inner_text, @search_opts.merge('sort' => sort_variable, 'sort_direction' => sort_direction).merge(opts)) + arrow
-  end
-=end
-
-  # This is for the pagination sort links
-  # This could probably be cleaned up a bit more...
-  def sort_link(inner_text, sort_variable, opts = {})
-    sort_direction = 'up'
-
-    @search_opts ||= {}
-    @search_opts = {
-      'sort'           => params[:sort] || sort_variable,
-      'sort_direction' => params[:sort_direction] || 'down'
-    }.merge(@search_opts)
-
-    if sort_variable == @search_opts['sort'] and @search_opts['sort_direction'] != 'down'
-      sort_direction = 'down'
-    end
     arrow = (sort_variable == @search_opts['sort']) ? (@search_opts['sort_direction'] == 'down') ? image_tag('site/arrow_desc.gif') : image_tag('site/arrow_asc.gif') : ''
     link_to(inner_text, @search_opts.merge('sort' => sort_variable, 'sort_direction' => sort_direction).merge(opts)) + arrow
   end
