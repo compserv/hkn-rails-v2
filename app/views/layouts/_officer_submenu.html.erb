@@ -42,9 +42,9 @@
 
 <div class="submenu events_submenu">
   <ul class="plain">
-    <li><%= link_to "Events Calendar", "/" %></li>
-    <li><%= link_to "Upcoming Events", "/" %></li>
-    <li><%= link_to "Past Events", "/" %></li>
+    <li><%= link_to "Events Calendar", events_calendar_path %></li>
+    <li><%= link_to "Upcoming Events", events_category_path('future') %></li>
+    <li><%= link_to "Past Events", events_category_path('past') %></li>
   </ul>
   <% if user_signed_in? %>
     <ul class="plain">

@@ -23,13 +23,14 @@ HknRails::Application.routes.draw do
   resources :exams
   resources :resumes
   resources :users, except: [:new, :create, :index]
-  resources :events do
-    resources :rsvps
-  end
 
   scope "events" do
     match "calendar", to: "events#calendar", via: :get, as: "events_calendar"
     match ":category", to: "events#index", via: :get, as: :events_category, constraints: {:category => /(future|past)/}
+  end
+
+  resources :events do
+    resources :rsvps
   end
 
   scope "candidate" do

@@ -68,6 +68,13 @@ class EventsController < ApplicationController
   end
 
   def calendar
+    @start_date = Date.today.at_beginning_of_month
+    @end_date = Date.today.at_beginning_of_month
+    @events = Event.where(start_time: ((st.to_time)..(en.to_time.end_of_day))).order(:start_time)
+    #First Sunday
+    @calendar_start_date = (@start_date.wday == 0) ? @start_date : @start_date.next_week.ago(8.days)
+    #Last Saturday
+    @calendar_end_date = (@end_date.wday == 0) ? @end_date.since(6.days) : @end_date.next_week.ago(2.days)
   end
 
   private
