@@ -1,5 +1,5 @@
 class ResumesController < ApplicationController
-  before_action :set_resume, only: [:show, :edit, :update, :destroy]
+  before_action :set_resume, only: [:show, :edit, :update, :destroy, :include, :exclude]
   before_filter :authenticate_indrel!, :only => [:index, :resume_books, :upload_for, :include, :exclude, :status_list]
   before_filter :my_resume_or_indrel!, only: [:show, :edit, :update, :destroy]
 
@@ -75,13 +75,11 @@ class ResumesController < ApplicationController
 
   # intended for ajax
   def include
-    @resume = Resume.find(params[:id])
     @resume.update_attribute :included, true
     render :js => 'location.reload();'
   end
 
   def exclude
-    @resume = Resume.find(params[:id])
     @resume.update_attribute :included, false
     render :js => 'location.reload();'
   end

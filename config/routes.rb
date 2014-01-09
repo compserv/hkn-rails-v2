@@ -19,6 +19,10 @@ HknRails::Application.routes.draw do
   match "resumes/:id/download" => "resumes#download", via: :get, :as => :resume_download
   match "resumes/status_list" => "resumes#status_list", via: :get, :as => :resumes_status_list
   match "resume_books/:id/download_pdf" => "resume_books#download_pdf", via: :get, :as => :resume_book_download
+  match "resume_books/missing" => "resume_books#missing", via: :post, :as => :resume_book_missing
+  match "resume_books/missing" => "resume_books#missing", via: :get, :as => :resume_book_missing_get
+  match 'resumes/include/:id' => "resumes#include", via: :post, :as => :resumes_include
+  match 'resumes/exclude/:id' => "resumes#exclude", via: :post, :as => :resumes_exclude
 
   resources :alum
   resources :challenges, only: [:create, :update, :index]

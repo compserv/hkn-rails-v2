@@ -1,7 +1,6 @@
-require "stringio"
-
 class ResumeBooksController < ApplicationController
   before_action :set_resume_book, only: [:show, :edit, :update, :destroy, :download_pdf]
+  before_filter :authenticate_indrel!, :except => [:download_pdf]
 
   # GET /resume_books
   def index
@@ -100,6 +99,22 @@ class ResumeBooksController < ApplicationController
     send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type,
                                  filename: @resume_book.pdf_file_name,
                                  disposition: 'inline' # loads file in browser for now.
+  end
+
+  # Missing gives the emails of officers and current candidates who are missing
+  # a resume book so indrel can bug them.
+  def missing
+    @cutoff_date = params[:date] ? params[:date].map{|k,v| v}.join("-").to_date : Date.today
+
+    officers = Role.semester_filter(MemberSemester.current).officers.all_users_resumes
+    candidates = Role.semester_filter(MemberSemester.current).candidates.all_users_resumes
+
+    @officers_without_resumes, @candidates_without_resumes = [officers,candidates].collect do |ppl|
+      ppl.reject { |p| p.resume && p.resume.file_updated_at.to_date >= @cutoff_date }
+    end
+
+    @users_in_book = Resume.where("file_updated_at >= ?", @cutoff_date).collect(&:user).sort_by(&:full_name)
+
   end
 
 
