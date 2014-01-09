@@ -70,4 +70,8 @@ class Event < ActiveRecord::Base
   def css_event_type
     event_type.gsub(/\s/, '-').downcase
   end
+
+  def start_day
+    start_time.to_date
+  end
 end

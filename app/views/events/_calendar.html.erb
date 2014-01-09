@@ -2,7 +2,6 @@
   <ul class="plain calendar" style="float:right">
     <% @event_types.sort.each do |event_type| %>
       <li class="event <%= event_type.gsub(/\s/, '-').downcase %>"><%= event_type %></li>
-      <% end %>
     <% end %>
   </ul>
   <div class="clear"></div>
@@ -30,7 +29,7 @@
     <% event_idx = 0 %>
     <% (@calendar_start_date..@calendar_end_date).each do |date| %>
       <% if date.wday == 0 %><tr><% end %>
-      <% if (@start_date..@end_date).include? date %>
+      <% if (@start_date..@end_date).cover? date %>
         <% if date == Time.now.to_date %>
         <td class="today">
         <% else %>
@@ -40,7 +39,7 @@
           <div class="date-cell">
           <% while @events[event_idx] && @events[event_idx].start_time.to_date == date %>
             <div class="event <%= @events[event_idx].css_event_type %>">
-              <%= link_to "#{@events[event_idx].short_start_time} #{@events[event_idx].name}", @events[event_idx] %>
+              <%= link_to "#{@events[event_idx].short_start_time} #{@events[event_idx].title}", @events[event_idx] %>
             </div>
             <% event_idx += 1 %>
           <% end %>
