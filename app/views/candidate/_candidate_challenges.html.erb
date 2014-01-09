@@ -1,4 +1,4 @@
-<h1>Current Challenges</h1>
+<h4>Current Challenges</h4>
 
 <% if @challenges.length > 0 %>
   <% @challenges.each do |challenge| %>
@@ -14,7 +14,7 @@
   No challenges requested
 <% end %>
 
-<h1>Request a Challenge</h1>
+<h4>Request a Challenge</h4>
 
 <%= form_for(Challenge.new) do |f| %>
   <div class="field">

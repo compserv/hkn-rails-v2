@@ -1,0 +1,29 @@
+<%= link_to raw("&larr; profile"), user_path(@user) %>
+
+<%= form_tag alter_roles_user_path do %>
+  <div class="field">
+    <%= label_tag :semester %>
+    <%= select_tag :season, options_for_select(MemberSemester::SEASONS, @current_semester.season) %>
+    <%= select_tag :year, options_for_select(MemberSemester.years, @current_semester.year), :style => 'padding-bottom: 10px;' %>
+  </div>
+  <div class="field">
+    <%= label_tag :position %>
+    <%= select_tag :position, options_for_select(Role.committees + ["candidate"], "candidate") %>
+  </div>
+  <div class="field">
+    <%= label_tag :role %>
+    <%= select_tag :role, options_for_select(Role::Positions) %>
+  </div>
+  <div class="field-submit">
+    <%= submit_tag "Add Role"%>
+  </div>
+<% end %>
+
+<h1>Current Groups for <%= @user.full_name %> (<%= @user.username %>)</h1>
+
+<% @roles.each do |role| %>
+  <h2>
+    <%= role.nice_position %> in <%= role.nice_semester %>.
+    <%= button_to "Delete this role?", alter_roles_user_path(:delete => true, :role => role.id) %>
+  </h2>
+<% end %>

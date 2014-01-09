@@ -11,11 +11,18 @@
 
 class MemberSemester < ActiveRecord::Base
   has_and_belongs_to_many :users
+  SEASONS = ['Fall', 'Spring']
+  validates :season, inclusion: { in: SEASONS,
+      message: "%{value} is not a valid semester" }
 
   class << self
     def current
       # TODO(mark): This isn't always the case, but works for now.
       last
+    end
+
+    def years
+      pluck(:year).uniq
     end
   end
 

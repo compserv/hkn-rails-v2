@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
 
   has_many :rsvps
   has_many :events, through: :rsvps
-  has_many :resumes, :dependent => :destroy
+  has_one :resume, :dependent => :destroy
   has_one :alum
   belongs_to :mobile_carrier
   has_many :tutor_slot_preferences
@@ -71,9 +71,7 @@ class User < ActiveRecord::Base
   end
 
   def is_active_member?
-    # TODO(mark): This should be true for all officers and committee members.
-    # Will add functionality when semesters + roles are working.
-    true
+    Role.semester_filter(MemberSemester.current).members.all_users.include?(self)
   end
 
   def add_position_for_semester_and_role_type(position, semester, role)
@@ -82,6 +80,14 @@ class User < ActiveRecord::Base
 
   def has_position_for_semester_and_role_type(position, semester, role)
     Role.find_by_name_and_resource_id_and_role_type(position, semester.id, role)
+  end
+
+  def delete_position_for_semester_and_role_type(position, semester, role)
+    Role.find_by_name_and_resource_id_and_role_type(position, semester.id, role).users.delete(self)
+  end
+
+  def delete_role(r) # r should be an object of Role class
+    r.users.delete(self)
   end
 
   # Helpers for adding and checking roles for a user.
@@ -118,7 +124,7 @@ class User < ActiveRecord::Base
   end
 
   def is_officer_for_semester?(semester)
-    roles_for_semester(semester).where(role_type: "officer").count > 0
+    roles_for_semester(semester).officers.count > 0
   end
 
   def is_candidate?

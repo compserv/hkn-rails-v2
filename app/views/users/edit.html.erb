@@ -10,9 +10,26 @@
     <% end %>
   </div>
   <% end %>
-  <%# @f = f%>
-  <%#= render :partial => "current_resume", :locals => { :f  => @f }%>
 
+  <div class="field">
+    <%= f.label "Current résumé" %>
+    <div class="tableglue">
+    <table>
+      <% if @current_user.resume.nil? %>
+        <tr><td><%= "No résumés on file" %></td></tr>
+        <tr><td><%= link_to "Upload résumé", new_resume_path %></td></tr>
+      <% else %>
+
+        <% current_resume = @user.resume %>
+        <% upload_time = current_resume.created_at.getlocal.to_datetime.strftime("%A %B %e, %Y %l:%M %p") %>
+        <tr><td><%= link_to "Uploaded #{upload_time}", current_resume.file.url %></td></tr>
+        <tr><td><%= "GPA #{current_resume.overall_gpa} (overall)" %></td></tr>
+        <tr><td><%= link_to "Update résumé", edit_resume_path(current_resume) %></td></tr>
+      <% end %>
+    </table>
+    </div>
+  </div>
+  
   <div class="field">
     <%= f.label :username %>
     <%= @user.username %>

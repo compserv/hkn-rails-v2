@@ -29,13 +29,8 @@
 
 <p>
   <strong>User:</strong>
-  <%= @resume.user.username %>
+  <%= @resume.get_username %>
 </p>
 
-<p>
-  <strong>Included:</strong>
-  <%= @resume.included %>
-</p>
-
-<%= link_to 'Edit', edit_resume_path(@resume) %> |
-<%= link_to 'Back', resumes_path %>
+<%= link_to "Home", root_path %> |
+<%= link_to 'Edit', edit_resume_path(@resume) %>

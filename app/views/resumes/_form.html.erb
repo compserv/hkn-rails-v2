@@ -10,30 +10,42 @@
 
   <div class="field">
     <%= f.label :overall_gpa %>
-    <%= f.text_field :overall_gpa %>
+    <div class="glue"><%= f.text_field :overall_gpa %></div>
   </div>
   <div class="field">
-    <%= f.label :major_gpa %>
-    <%= f.text_field :major_gpa %>(optional)
+    <%= f.label :major_gpa, "Major GPA (optional)" %>
+    <div class="glue"><%= f.text_field :major_gpa %></div>
   </div>
   <div class="field">
-    <%= f.label :resume_text %>
-    <%= f.text_area :resume_text %>
-    Paste the contents of your résumé (used for searching).
+    <%= f.label :resume_text, "Resume Text" %>
+    <div class="glue">
+      <%= f.text_area :resume_text %><br />
+      Paste the contents of your résumé (used for searching).
+    </div>
   </div>
   <div class="field">
     <%= f.label :graduation_year %>
-    <%= select_year 1.year.from_now, :field_name => 'graduation_year', :prefix => 'resume' %>
+    <div class="glue">
+      <%= select_year Date.today, :field_name => 'graduation_year', :prefix => 'resume', :end_year => 1915, :start_year => 4.years.from_now.year %>
+    </div>
   </div>
   <div class="field">
     <%= f.label :graduation_semester %>
-    <%= select :resume, :graduation_semester, options_for_select(%w{ Spring Fall }), :prefix => 'resume' %>
+    <div class ="glue">
+      <%= select :resume, :graduation_semester, options_for_select(%w{ Spring Fall }), :prefix => 'resume' %>
+    </div>
   </div>
   <div class="field">
-    <%= f.file_field :file %>
-    Please provide a PDF of your résumé. You should contact <a href="mailto:indrel@hkn.eecs.berkeley.edu">indrel@hkn.eecs.berkeley.edu</a> if you can't generate a PDF file.
+    <%= f.label :file, "Resume" %>
+    <div class="glue">
+      <%= f.file_field(:file, :accept => 'application/pdf') %><br />
+      Please provide a PDF of your résumé. You should contact <a href="mailto:indrel@hkn.eecs.berkeley.edu">indrel@hkn.eecs.berkeley.edu</a> if you can't generate a PDF file.
+    </div>
   </div>
-  <div class="actions">
-    <%= f.submit %>
+  <% if @user %>
+    <%= f.hidden_field :user_id, :value => @user.id %>
+  <% end %>
+  <div class="submitglue field-submit">
+    <%= f.submit "Upload Résumé" %>
   </div>
 <% end %>
