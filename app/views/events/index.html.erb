@@ -2,6 +2,8 @@
 
 <%= render 'list' %>
 
+<% #= ajaxify_links NOT WORKING %>
+
 <% if @event_auth %>
   <%= link_to 'New Event', new_event_path %>
 <% end %>

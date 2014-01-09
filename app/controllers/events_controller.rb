@@ -68,9 +68,13 @@ class EventsController < ApplicationController
   end
 
   def calendar
-    @start_date = Date.today.at_beginning_of_month
-    @end_date = Date.today.at_beginning_of_month
-    @events = Event.where(start_time: ((st.to_time)..(en.to_time.end_of_day))).order(:start_time)
+    month = (params[:month] || Time.now.month)
+    year = (params[:year] || Time.now.year)
+    @start_date = Date.new(year, month, 1) 
+    @end_date = Date.new(year, month, 1).end_of_month
+
+    @events = Event.where(start_time: ((@start_date.to_time)..(@end_date.at_end_of_day))).order(:start_time)
+    @event_types = @events.pluck(:event_type)
     #First Sunday
     @calendar_start_date = (@start_date.wday == 0) ? @start_date : @start_date.next_week.ago(8.days)
     #Last Saturday

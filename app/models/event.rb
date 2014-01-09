@@ -28,6 +28,8 @@ class Event < ActiveRecord::Base
   validates :start_time, :presence => true
   validates :end_time, :presence => true
   validates_inclusion_of :view_permission_roles, in: [:candidates, :members, :officers, nil]
+  validates_inclusion_of :event_type, in: ["Big Fun", "Fun", "Industry", "Mandatory for Candidates",
+                                           "Miscellaneous", "Service"]
 
   scope :with_permission, Proc.new { |user| 
     if user.nil?
@@ -51,5 +53,21 @@ class Event < ActiveRecord::Base
 
   def self.upcoming
     Event.where(['start_time > ?', Time.now])
+  end
+
+  def short_start_time
+    ampm = (start_time.hour >= 12) ? "p" : "a"
+    min = (start_time.min > 0) ? start_time.strftime('%M') : ""
+    hour = start_time.hour
+    if hour > 12
+      hour -= 12
+    elsif hour == 0
+      hour = 12
+    end
+    "#{hour}#{min}#{ampm}"
+  end
+
+  def css_event_type
+    event_type.gsub(/\s/, '-').downcase
   end
 end
