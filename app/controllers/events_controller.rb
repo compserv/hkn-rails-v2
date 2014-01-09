@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_filter :is_member?
+  before_filter :event_authorize
 
   def index
     per_page = 20
@@ -71,7 +71,7 @@ class EventsController < ApplicationController
   end
 
   private
-    def is_member?
-      @is_member = current_user ? current_user.is_active_member? : false
+    def event_authorize
+      @event_auth = comm_authorize
     end
 end
