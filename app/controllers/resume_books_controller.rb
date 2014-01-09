@@ -21,7 +21,11 @@ class ResumeBooksController < ApplicationController
 
   # POST /resume_books
   def create
+    debugger
     @resume_book = ResumeBook.new(resume_book_params)
+    resumes = Resume.all
+    #resumes.each do |x|
+
 
     if @resume_book.save
       redirect_to @resume_book, notice: 'Resume book was successfully created.'
@@ -43,6 +47,13 @@ class ResumeBooksController < ApplicationController
   def destroy
     @resume_book.destroy
     redirect_to resume_books_url, notice: 'Resume book was successfully destroyed.'
+  end
+
+  def download
+    @resume = ResumeBook.find(params[:id])
+    send_file @resume.file.path, type: @resume.file_content_type,
+                                 filename: @resume.file_file_name,
+                                 disposition: 'inline' # loads file in browser for now.
   end
 
   private
