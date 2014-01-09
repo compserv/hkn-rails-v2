@@ -3,7 +3,7 @@
    Otherwise, send us an email with your reason for
    registration.</p>
 
-<%= form_for(resource, :as => resource_name, :url => new_user_registration_path(resource_name)) do |f| %>
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
 
   <div class="field">

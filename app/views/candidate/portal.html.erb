@@ -1,3 +1,17 @@
-<%= link_to "Quiz", candidate_quiz_path %>
-
-<%= render "candidate_challenges" %>
+<div style="float:left; width: 45%; padding-left: 3em;">
+  <%= render "candidate_challenges" %>
+  <h3>
+    <span class="<%= "req_status " + (false ? "status_done" : "status_notdone") %>"></span>
+    Forms
+  </h3>
+  <ul id="forms" class="semi-plain">
+    <li>
+      <span class="<%= "event_status " + (false ? 'event_done' : 'event_notdone') %>"></span>
+      <%= link_to "Resume", new_resume_path %>
+    </li>
+    <li>
+      <span class="<%= "event_status " + (false ? 'event_done' : 'event_notdone') %>"></span>
+      <%= link_to "Quiz", candidate_quiz_path %>
+    </li>
+  </ul>
+</div>

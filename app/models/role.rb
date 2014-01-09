@@ -100,9 +100,9 @@ class Role < ActiveRecord::Base
   end
 
   def nice_committee
-    nice_committees = { 
-      "pres"     => "President", 
-      "vp"       => "Vice President", 
+    nice_committees = {
+      "pres"     => "President",
+      "vp"       => "Vice President",
       "rsec"     => "Recording Secretary",
       "csec"     => "Corresponding Secretary",
       "treas"    => "Treasurer",

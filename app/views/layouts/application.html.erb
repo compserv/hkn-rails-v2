@@ -42,7 +42,7 @@
           <% if candidate_authorize %>
             <li><a class="navigation_toplevel_item" id="cand" href="#">Candidate Portal</a></li>
           <% end %>
-          <% if current_user && current_user.is_officer_for_semester?(MemberSemester.current) %>
+          <% if comm_authorize %>
             <li><a class="navigation_toplevel_item" id="admin" href="#">Admin</a></li>
           <% end %>
         </ul>
