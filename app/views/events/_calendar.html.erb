@@ -30,25 +30,25 @@
     <% event_idx = 0 %>
     <% (@calendar_start_date..@calendar_end_date).each do |date| %>
       <% if date.wday == 0 %><tr><% end %>
-        <% if (@start_date..@end_date).include? date %>
-          <% if date == Time.now.to_date %>
-          <td class="today">
-          <% else %>
-          <td>
-          <% end %>
-            <div class="date-field"><%= date.day %></div>
-            <div class="date-cell">
-            <% while @events[event_idx] && @events[event_idx].start_time.to_date == date %>
-              <div class="event <%= @events[event_idx].css_event_type %>">
-                <%= link_to "#{@events[event_idx].short_start_time} #{@events[event_idx].name}", @events[event_idx] %>
-              </div>
-              <% event_idx += 1 %>
-            <% end %>
-          </div>
-          </td>
+      <% if (@start_date..@end_date).include? date %>
+        <% if date == Time.now.to_date %>
+        <td class="today">
         <% else %>
-          <td class="inactive"></td>
+        <td>
         <% end %>
+          <div class="date-field"><%= date.day %></div>
+          <div class="date-cell">
+          <% while @events[event_idx] && @events[event_idx].start_time.to_date == date %>
+            <div class="event <%= @events[event_idx].css_event_type %>">
+              <%= link_to "#{@events[event_idx].short_start_time} #{@events[event_idx].name}", @events[event_idx] %>
+            </div>
+            <% event_idx += 1 %>
+          <% end %>
+          </div>
+        </td>
+      <% else %>
+        <td class="inactive"></td>
+      <% end %>
       <% if date.wday == 6 %></tr><% end %>
     <% end %>
   </table>
