@@ -7,7 +7,6 @@
 #  date       :datetime
 #  email      :string(255)
 #  phone      :string(255)
-#  submitted  :datetime
 #  comments   :text
 #  responded  :boolean
 #  created_at :datetime
@@ -29,7 +28,7 @@ class DeptTour < ActiveRecord::Base
       errors[:base] << "Date must be in the future"
     end
     unless (1..5).include?(date.wday)
-      errors[:base] << "Date must be on a weekday"
+      errors[:base] << "Date must be on a weekday, #{date.strftime('%A, %B %d')} was chosen"
     end
   end
 end

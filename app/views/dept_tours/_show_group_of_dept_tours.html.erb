@@ -14,8 +14,8 @@
   <% group.each do |dept_tour| %>
     <tr>
       <td><%= dept_tour.name %></td>
-      <td><%= dept_tour.date %></td>
-      <td><%= dept_tour.created_at %></td>
+      <td><%= dept_tour.date.strftime("%A, %B %d, at %I:%M %p") %></td>
+      <td><%= dept_tour.created_at.strftime("%A, %B %d, at %I:%M %p") %></td>
       <td><%= dept_tour.email %></td>
       <td><%= dept_tour.phone %></td>
       <td><%= dept_tour.comments %></td>

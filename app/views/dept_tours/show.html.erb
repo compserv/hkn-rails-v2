@@ -12,11 +12,11 @@
       </tr>
       <tr>
         <th>Requested Date</th>
-        <td><%= @dept_tour.date %></td>
+        <td><%= @dept_tour.date.strftime("%A, %B %d, at %I:%M %p") %></td>
       </tr>
       <tr>
         <th>Date Submitted</th>
-        <td><%= @dept_tour.created_at %></td>
+        <td><%= @dept_tour.created_at.strftime("%A, %B %d, at %I:%M %p") %></td>
       </tr>
       <tr>
         <th>Contact e-mail</th>
