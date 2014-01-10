@@ -1,10 +1,14 @@
 class AlumController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_alum, only: [:show, :edit, :update, :destroy]
+  before_filter :my_alum_or_alumrel!, :only => [:show, :edit, :update, :destroy]
   before_filter :authenticate_alumrel!, only: [:index]
-  before_filter :alumni_duplication_filtration, :only => [:new, :create]
-  before_filter :alumni_modification_authorization_filtration, :only=> [:edit, :update, :destroy, :show]
   before_filter :input_helper, :only => [:create, :update]
+  before_filter :alumni_duplication_filtration, :only => [:new, :create]
+
+  def my_alum_or_alumrel!
+    @alum.user.id == current_user.id || authenticate_alumrel! # will redirect the user if both fail
+  end
 
   # GET /alumni
   def index
@@ -17,7 +21,8 @@ class AlumController < ApplicationController
 
   def alumni_duplication_filtration
     if current_user.alum
-      redirect_to edit_alum_path(current_user.alum), :notice => "You already have an alumni record. I've helpfully brought it up for you."
+      redirect_to edit_alum_path(current_user.alum), 
+          notice: "You already have an alumni record. I've helpfully brought it up for you."
     end
   end
 
@@ -35,12 +40,12 @@ class AlumController < ApplicationController
 
   # POST /alumni
   def create
-    user_session[:alum] = nil
     params[:alum][:grad_semester] = Alum.grad_semester(params[:grad_season], params[:grad_year])
     params[:alum][:user_id] = current_user.id
     @alum = Alum.new(alum_params)
 
     if @alum.save
+      user_session[:alum] = nil # fix the user session, works b/c users can only make alum for themselves
       redirect_to edit_alum_path(@alum), notice: 'Alum was successfully created.'
     else
       render :new
@@ -64,14 +69,9 @@ class AlumController < ApplicationController
 
   # DELETE /alumni/1
   def destroy
+    @alum.user.update_attribute :should_reset_session, true # just clear the user's session so the alum menu will display properly
     @alum.destroy
     redirect_to new_alum_path, notice: 'Alum was successfully destroyed.'
-  end
-
-  def alumni_modification_authorization_filtration
-    unless @alum and current_user.alum == @alum or authorize(:alumrel)
-      redirect_to(:alert => "You're not authorized to modify someone else's alumni information!")
-    end
   end
 
   private

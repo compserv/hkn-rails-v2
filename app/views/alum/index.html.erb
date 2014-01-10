@@ -26,7 +26,7 @@
         <td><%= alum.grad_school %></td>
         <td><%= alum.job_title %></td>
         <td><%= alum.company %></td>
-        <td><%= alum.salary %></td>
+        <td><%= number_to_currency(alum.salary, :unit => "$", precision: 0) %></td>
         <td><%= alum.location %></td>
         <td><%= alum.suggestions %></td>
         <td><%= alum.get_username %></td>

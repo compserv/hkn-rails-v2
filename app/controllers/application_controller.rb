@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
   end
 
   def should_reset_session?
-    if current_user.should_reset_session
+    if current_user && current_user.should_reset_session
       current_user.update_attribute :should_reset_session, false
       user_session.keys.each do |x|
         user_session[x] = nil
