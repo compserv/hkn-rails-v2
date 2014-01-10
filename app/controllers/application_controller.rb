@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  before_filter :should_reset_session?
 
   before_filter :update_sanitized_params, if: :devise_controller?
 
@@ -14,10 +15,10 @@ class ApplicationController < ActionController::Base
   def method_missing(name, *args)
     case name.to_s
       when /^authenticate_([_a-zA-Z]\w*)!$/
-        group = $1
+        group = $1.to_sym
         self.send :authenticate!, group
       when /^authenticate_([_a-zA-Z]\w*)$/
-        group = $1
+        group = $1.to_sym
         self.send :authorize, group
       else
         super
@@ -53,6 +54,15 @@ class ApplicationController < ActionController::Base
   def authenticate!(group)
     unless authorize(group)
       redirect_to root_path, alert: "You do not have permission(#{group}) to access that"
+    end
+  end
+
+  def should_reset_session?
+    if current_user.should_reset_session
+      current_user.update_attribute :should_reset_session, false
+      user_session.keys.each do |x|
+        user_session[x] = nil
+      end
     end
   end
 end
