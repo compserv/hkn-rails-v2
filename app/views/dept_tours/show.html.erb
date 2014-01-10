@@ -7,33 +7,33 @@
     <% end %>
     <table>
       <tr>
-        <th>Requestee&nbsp;Name</th>
+        <th>Requestee Name</th>
         <td><%= @dept_tour.name %></td>
       </tr>
       <tr>
-        <th>Requested&nbsp;Date</th>
+        <th>Requested Date</th>
         <td><%= @dept_tour.date %></td>
       </tr>
       <tr>
-        <th>Date&nbsp;Submitted</th>
-        <td><%= @dept_tour.submitted %></td>
+        <th>Date Submitted</th>
+        <td><%= @dept_tour.created_at %></td>
       </tr>
       <tr>
-        <th>Contact&nbsp;e-mail</th>
+        <th>Contact e-mail</th>
         <td><%= @dept_tour.email %></td>
       </tr>
       <tr>
-        <th>Contact&nbsp;phone</th>
+        <th>Contact phone</th>
         <td><%= @dept_tour.phone %></td>
       </tr>
       <tr>
-        <th>Additional&nbsp;Comments</th>
+        <th>Additional Comments</th>
         <td><%= @dept_tour.comments %></td>
       </tr>
     </table>
   </div>
   <br />
-  <% if not @dept_tour.responded %>
+  <% if !@dept_tour.responded %>
     <div id="responseForm">
       <h2>Response:</h2>
       <%= form_tag @dept_tour, :method=>:post do %>
@@ -44,7 +44,7 @@
         <%= text_field_tag :ccs, "", :size=>50 %>
         <br/>
         <%= label_tag :response, "Response text: " %><br/>
-        <%= text_area_tag :response, @default_response_text, style: "width: 80%; height: 200px;" %>
+        <%= text_area_tag :response, get_default_response_text(@dept_tour), style: "width: 80%; height: 200px;" %>
         <br />
         <%= submit_tag "Send Response" %>
       <% end %>
