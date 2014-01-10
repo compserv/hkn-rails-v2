@@ -20,7 +20,7 @@ class ResumeBook < ActiveRecord::Base
   validates_presence_of :cutoff_date, :title, :details
 
   has_attached_file :pdf, :default_url => '/',
-      :path => ":rails_root/private/resumes_book/:normalized_file_name.:extension",
+      :path => ":rails_root/private/resume_books/:normalized_file_name.:extension",
       :url => '/:class/:id/download_pdf'
 
 

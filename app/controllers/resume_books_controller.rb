@@ -23,8 +23,9 @@ class ResumeBooksController < ApplicationController
   # POST /resume_books
   def create
     @resume_book = ResumeBook.new(resume_book_params)
-    resumes = Resume.all.includes(:user)
-    pdf_paths = []
+    @cutoff_date = params[:date] ? params[:date].map{|k,v| v}.join("-").to_date : Date.today
+    resumes = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
+    pdf_paths = [Rails.root.join('private', 'cover.pdf')]
     resumes.each do |x|
       pdf_paths << x.file.path
     end
@@ -39,6 +40,7 @@ class ResumeBooksController < ApplicationController
 
     #now just use the file object to save to the Paperclip association.
     @resume_book.pdf = file
+    File.delete(Rails.root.join('private', 'temp_resume_book.pdf')) # clean up
 
     @resume_book.title = "HI"
     @resume_book.details = "NONE"
@@ -113,7 +115,7 @@ class ResumeBooksController < ApplicationController
       ppl.reject { |p| p.resume && p.resume.file_updated_at.to_date >= @cutoff_date }
     end
 
-    @users_in_book = Resume.where("file_updated_at >= ?", @cutoff_date).collect(&:user).sort_by(&:full_name)
+    @users_in_book = Resume.where("file_updated_at >= ?", @cutoff_date).includes(:user).collect(&:user).sort_by(&:full_name)
 
   end
 
