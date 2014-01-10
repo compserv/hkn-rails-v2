@@ -1,7 +1,7 @@
 <h1>
-  There <%= @dept_tours_requests_length == 1 ? 'is' : 'are' %>
-  <%= @dept_tours_requests_length %> outstanding or pending department tour 
-  request<%= 's' if @dept_tours_requests_length != 1 %>.
+  There <%= @dept_tour_num == 1 ? 'is' : 'are' %>
+  <%= @dept_tour_num %> outstanding or pending department tour 
+  request<%= 's' if @dept_tour_num != 1 %>.
 </h1>
 
 <h2>
@@ -13,8 +13,7 @@
 
 <h2>
   <%= pluralize(@dept_tour_requests_pending.count, 'request') %>
-  <%= @dept_tour_requests_pending.count == 1 ? 'is' : 'are' %> 
-  pending:
+  <%= @dept_tour_requests_pending.count == 1 ? 'is' : 'are' %> pending:
 </h2>
 <table>
   <%= render "show_group_of_dept_tours", :group => @dept_tour_requests_pending %>

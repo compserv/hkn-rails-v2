@@ -62,7 +62,7 @@
     <% if current_user && (user_session[:alum].nil? ? user_session[:alum] = !current_user.alum.nil? : user_session[:alum]) %>
       <li><%= link_to "View My Alumnus/Alumna Information", edit_alum_path(current_user.alum) %></li>
     <% else %>
-      <li><%= link_to "Create Alumnus/Alumna", new_alum_path %></li>
+      <li><%= link_to "Alumni Contact Information", new_alum_path %></li>
     <% end %>
   </ul>
 </div>
