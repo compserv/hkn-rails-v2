@@ -112,7 +112,7 @@
         <li><%= link_to 'Rsec Admin', 'admin_rsec_path', :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:deprel) %>
-        <li><%= link_to 'Deprel Admin' + '[controller.num_deprel_requests]', dept_tours_path, :class => 'navigation_sublevel_item'  %></li>
+        <li><%= link_to "Deprel Admin [#{get_num_deprel_requests}]", dept_tours_path, :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:indrel) %>
         <li><%= link_to 'Indrel Admin', admin_indrel_path, :class => 'navigation_sublevel_item'  %></li>

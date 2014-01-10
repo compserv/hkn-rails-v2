@@ -40,6 +40,7 @@ class DeptToursController < ApplicationController
       mail = DeptTourMailer.dept_tour_email dept_tour_params[:name], @dept_tour.date, dept_tour_params[:email],
           dept_tour_params[:phone], dept_tour_params[:comments]
       mail.deliver
+      User.update_all :should_reset_session => true # reload session for everybody... this is kinda lame but will update the session deptTour_number
       redirect_to dept_tours_success_path
     else
       flash.delete(:recaptcha_error)

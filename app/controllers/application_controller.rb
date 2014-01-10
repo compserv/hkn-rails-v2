@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:first_name, :last_name, :username, :email, :password, :password_confirmation)}
   end
 
-  helper_method :authorize, :candidate_authorize, :comm_authorize, :active_member_authorize
+  helper_method :authorize, :candidate_authorize, :comm_authorize, :active_member_authorize, :get_num_deprel_requests
 
   def method_missing(name, *args)
     case name.to_s
@@ -49,6 +49,11 @@ class ApplicationController < ActionController::Base
   def active_member_authorize
     return unless current_user
     user_session[:current_comm].nil? ? user_session[:current_comm] = current_user.is_active_member? : user_session[:current_comm]
+  end
+
+  def get_num_deprel_requests
+    return unless current_user
+    user_session[:deptTour_number].nil? ? user_session[:deptTour_number] = DeptTour.all.count.to_s : user_session[:deptTour_number]
   end
 
   def authenticate!(group)
