@@ -20,20 +20,50 @@ class ResumeBooksController < ApplicationController
   def edit
   end
 
+  def do_erb(input_file_name, output_file_name, bindings)
+    template_string = File.new(input_file_name).readlines.join("")
+    template = ERB.new(template_string)
+    f = File.new(output_file_name, "w")
+    f.write(template.result(bindings))
+    f.close
+  end
+  
+  def do_tex(directory, file_name)
+    Dir.chdir(directory) do  # move to directory
+      raise "Failed to pdflatex #{file_name}" unless system "pdflatex #{file_name}" # execute the pdflatex command on the file
+    end
+  end
+
+  def process_tex_template(input_file_name, bindings)
+    # @scratch_dir is a directory created before this function should be called
+    file_base_name_tex_erb = File.basename(input_file_name)
+    file_base_name_tex = file_base_name_tex_erb[0..-5] # strip off .erb
+    file_base_name_pdf = file_base_name_tex[0..-5] + ".pdf" # strip off .tex.erb and add .pdf
+    do_erb(input_file_name, "#{@scratch_dir}/#{file_base_name_tex}", bindings) # convert the .tex.erb into a .tex file
+    do_tex("#{@scratch_dir}", file_base_name_tex) # convert the .tex to a .pdf
+    "#{@scratch_dir}/#{file_base_name_pdf}" # return the path to the pdf
+  end
+
   # POST /resume_books
   def create
     @resume_book = ResumeBook.new(resume_book_params)
-    @cutoff_date = params[:date] ? params[:date].map{|k,v| v}.join("-").to_date : Date.today
-    resumes = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
-    pdf_paths = [Rails.root.join('private', 'cover.pdf')]
-    resumes.each do |x|
-      pdf_paths << x.file.path
+
+    indrel_officers = Role.semester_filter(MemberSemester.current).position(:indrel).officers.all_users
+    time = Time.new.strftime("%Y%m%d%H%M%S%L")
+    @scratch_dir = Rails.root.join('private', 'scratch', time)
+    raise "Failed to make scratch dir" unless system "mkdir #{@scratch_dir}"
+
+    pdf_paths = [Rails.root.join('private', 'cover.pdf'), process_tex_template(Rails.root.join('private', 'indrel_letter.tex.erb'), binding)]
+
+    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
+    resumes_to_use.each do |resume|
+      pdf_paths << resume.file.path
     end
 
-    merge_pdfs(pdf_paths, Rails.root.join('private', 'temp_resume_book.pdf'))
+    merge_pdfs(pdf_paths, Rails.root.join('private', 'temp_resume_book.pdf')) # creates pdf as /private/temp_resume_book.pdf
     template = File.read(Rails.root.join('private', 'temp_resume_book.pdf'))
 
-    file = StringIO.new(template) #mimic a real upload file
+    file = StringIO.new(template) # mimic a real upload file for paperclip
     file.class.class_eval { attr_accessor :original_filename, :content_type } #add attr's that paperclip needs
     file.original_filename = "resume_book.pdf"
     file.content_type = "application/pdf"
@@ -41,6 +71,7 @@ class ResumeBooksController < ApplicationController
     #now just use the file object to save to the Paperclip association.
     @resume_book.pdf = file
     File.delete(Rails.root.join('private', 'temp_resume_book.pdf')) # clean up
+    #raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}"
 
     @resume_book.title = "HI"
     @resume_book.details = "NONE"
