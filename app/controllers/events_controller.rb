@@ -80,8 +80,8 @@ class EventsController < ApplicationController
   end
 
   def calendar
-    month = (params[:month] || Time.now.month)
-    year = (params[:year] || Time.now.year)
+    month = (params[:month] || Time.now.month).to_i
+    year = (params[:year] || Time.now.year).to_i
     @start_date = Date.new(year, month, 1) 
     @end_date = Date.new(year, month, 1).end_of_month
     @events = Event.with_permission(current_user).all.select { |event| (@start_date.to_time..@end_date.at_end_of_day).cover? event.start_time }
