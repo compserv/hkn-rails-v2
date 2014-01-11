@@ -1,5 +1,5 @@
 class ResumeBooksController < ApplicationController
-  before_action :set_resume_book, only: [:show, :edit, :update, :destroy, :download_pdf, :download_iso]
+  before_action :set_resume_book, only: [:show, :update, :destroy, :download_pdf, :download_iso]
   before_filter :authenticate_indrel!, :except => [:download_pdf]
 
   # GET /resume_books
@@ -16,14 +16,10 @@ class ResumeBooksController < ApplicationController
     @resume_book = ResumeBook.new
   end
 
-  # GET /resume_books/1/edit
-  def edit
-  end
-
-
   # POST /resume_books
   def create
     @resume_book = ResumeBook.new(resume_book_params)
+    @resume_book.title = MemberSemester.current.name + " Resume Book"
 
     @scratch_dir = Rails.root.join('private', Time.new.strftime("%Y%m%d%H%M%S%L"))
     @skeletons = Rails.root.join('private', 'template')
@@ -40,7 +36,6 @@ class ResumeBooksController < ApplicationController
 
     raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}" # clean up
 
-    @resume_book.title = MemberSemester.current.name
     if @resume_book.save
       redirect_to @resume_book, notice: 'Resume book was successfully created.'
     else
@@ -85,8 +80,8 @@ class ResumeBooksController < ApplicationController
       end
     end
     system "cp #{res_book_pdf} #{iso_dir}/HKNResumeBook.pdf"
-    raise "Filed to genisoimage" unless system "hdiutil makehybrid -iso -joliet -o #{@scratch_dir}/HKNResumeBook.iso #{iso_dir}"
-    #raise "Filed to genisoimage" unless system "genisoimage -V 'HKN Resume Book' -o #{@scratch_dir}/HKNResumeBook.iso -R -J #{iso_dir}"
+    #raise "Filed to genisoimage" unless system "hdiutil makehybrid -iso -joliet -o #{@scratch_dir}/HKNResumeBook.iso #{iso_dir}"  # usage for mac without genisoimage but with hduitil makehybrid
+    raise "Filed to genisoimage" unless system "genisoimage -V 'HKN Resume Book' -o #{@scratch_dir}/HKNResumeBook.iso -R -J #{iso_dir}"
     "#{@scratch_dir}/HKNResumeBook.iso"
   end
 
@@ -103,10 +98,10 @@ class ResumeBooksController < ApplicationController
     file.class.class_eval { attr_accessor :original_filename, :content_type } # add attr's that paperclip needs
     file.content_type = type
     if type == "application/pdf"
-      file.original_filename = "Resume_Book.pdf"
+      file.original_filename = "#{@resume_book.title}.pdf"
       @resume_book.pdf = file
     else
-      file.original_filename = "Resume_Book.iso"
+      file.original_filename = "#{@resume_book.title}.iso"
       @resume_book.iso = file
     end
   end
@@ -178,15 +173,6 @@ class ResumeBooksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /resume_books/1
-  def update
-    if @resume_book.update(resume_book_params)
-      redirect_to @resume_book, notice: 'Resume book was successfully updated.'
-    else
-      render action: 'edit'
-    end
-  end
-
   # DELETE /resume_books/1
   def destroy
     @resume_book.destroy
@@ -194,13 +180,11 @@ class ResumeBooksController < ApplicationController
   end
 
   def download_pdf
-    send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type,
-                                 filename: @resume_book.pdf_file_name,
-                                 disposition: 'inline' # loads file in browser for now.
+    send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type, filename: @resume_book.pdf_file_name
   end
 
   def download_iso
-    send_file @resume_book.iso.path, :type => 'application/octet-stream', filename: @resume_book.iso_file_name, :x_sendfile => true
+    send_file @resume_book.iso.path, type: @resume_book.iso_content_type, filename: @resume_book.iso_file_name
   end
 
   # Missing gives the emails of officers and current candidates who are missing

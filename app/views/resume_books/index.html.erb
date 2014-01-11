@@ -10,25 +10,26 @@
 <table>
   <thead>
     <tr>
-      <th>Title</th>
+      <th>Creation Date</th>
       <th>Remarks</th>
-      <th>Details</th>
+      <th>PDF File</th>
+      <th>Iso File</th>
       <th>Cutoff date</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th>Details</th>
+      <th colspan="2">Actions</th>
     </tr>
   </thead>
 
   <tbody>
     <% @resume_books.each do |resume_book| %>
       <tr>
-        <td><%= resume_book.title %></td>
+        <td><%= resume_book.created_at %></td>
         <td><%= resume_book.remarks %></td>
-        <td><%= resume_book.details %></td>
+        <td><%= link_to "Download PDF", resume_book_download_pdf_path(resume_book.id) %></td>
+        <td><%= link_to "Download ISO", resume_book_download_iso_path(resume_book.id) %></td>
         <td><%= resume_book.cutoff_date %></td>
+        <td><%= resume_book.details %></td>
         <td><%= link_to 'Show', resume_book %></td>
-        <td><%= link_to 'Edit', edit_resume_book_path(resume_book) %></td>
         <td><%= link_to 'Destroy', resume_book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

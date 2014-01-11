@@ -30,7 +30,7 @@ HknRails::Application.routes.draw do
   resources :dept_tours
   resources :exams
   resources :resumes
-  resources :resume_books
+  resources :resume_books, except: [:edit, :update]
   resources :users, except: [:new, :create, :index]
 
   scope "candidate" do
