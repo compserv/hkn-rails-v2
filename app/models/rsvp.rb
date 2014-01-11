@@ -15,7 +15,8 @@
 #
 
 class Rsvp < ActiveRecord::Base
-  after_save :rsvp_count, :set_default_transportation  
+  before_validation :set_default_transportation
+  after_save :rsvp_count 
 
   TRANSPORT_ENUM = [
     [ 'I need a ride', -1 ],
