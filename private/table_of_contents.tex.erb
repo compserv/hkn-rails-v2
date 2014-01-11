@@ -35,7 +35,7 @@
 \begin{multicols}{3}
 	\begin{list}{}{\setlength{\itemsep}{-2mm} \setlength{\leftmargin}{0pt}}
 <%   resumes[year].each do |resume| %>
-		\item{<%= "#{resume.person.last_name}, #{resume.person.first_name}" %>}
+		\item{<%= "#{resume.user.last_name}, #{resume.user.first_name}" %>}
 <%   end %>
 	\end{list}
 \end{multicols}

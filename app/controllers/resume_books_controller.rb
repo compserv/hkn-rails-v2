@@ -20,6 +20,79 @@ class ResumeBooksController < ApplicationController
   def edit
   end
 
+
+  # POST /resume_books
+  def create
+    @resume_book = ResumeBook.new(resume_book_params)
+
+    @scratch_dir = Rails.root.join('private', 'scratch', Time.new.strftime("%Y%m%d%H%M%S%L"))
+    raise "Failed to make scratch dir" unless system "mkdir #{@scratch_dir}"
+
+    indrel_officers = Role.semester_filter(MemberSemester.current).position(:indrel).officers.all_users # for use in binding.
+
+    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
+    graduation_year = MemberSemester.current.year + (MemberSemester.current.season == "Fall" ? 1 : 0) # 2014 Fall means class of 2014 has graduated, have to add an extra 1
+    resumes = group_resumes(resumes_to_use, graduation_year)
+    sorted_yrs = sorted_years(resumes) # used in table of contents template
+    system "cp #{Rails.root.join('private', 'hkn_emblem.png')} #{@scratch_dir}/"
+
+    pdf_paths = [Rails.root.join('private', 'cover.pdf')]
+    pdf_paths << process_tex_template(Rails.root.join('private', 'indrel_letter.tex.erb'), binding)
+    pdf_paths << process_tex_template(Rails.root.join('private', 'table_of_contents.tex.erb'), binding)
+    sorted_yrs.each do |year|
+      pdf_paths << section_cover_page(year)
+      resumes[year].each do |resume|
+        pdf_paths << resume.file.path
+      end
+    end
+
+    merge_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
+    template = File.read("#{@scratch_dir}/temp_resume_book.pdf") # grab this created pdf, going to save w/ paperclip
+
+    file = StringIO.new(template) # mimic a real upload file for paperclip
+    file.class.class_eval { attr_accessor :original_filename, :content_type } #add attr's that paperclip needs
+    file.original_filename = "resume_book.pdf"
+    file.content_type = "application/pdf"
+
+    #now just use the file object to save to the Paperclip association.
+    @resume_book.pdf = file
+    raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}" # clean up
+
+    @resume_book.title = "HI"
+    @resume_book.details = "NONE"
+    if @resume_book.save
+      redirect_to @resume_book, notice: 'Resume book was successfully created.'
+    else
+      render action: 'new'
+    end
+  end
+
+  # year will be a year i.e. 2011 or :grads
+  def section_cover_page(year)
+    do_erb(Rails.root.join('private', 'section_title.tex.erb'),
+           "#{@scratch_dir}/#{year.to_s}title.tex",
+           binding)
+    do_tex("#{@scratch_dir}","#{year.to_s}title.tex")
+    "#{@scratch_dir}/#{year.to_s}title.pdf"
+  end
+
+  def group_resumes(unsorted_resumes, graduating_class)
+    resumes = Hash.new
+
+    unsorted_resumes.each do |resume|
+      # append to correct array
+      if resume.graduation_year < graduating_class
+        resumes[:grads] ||= []
+      else
+        resumes[resume.graduation_year] ||= []
+      end << resume
+    end
+
+    # Now sort the resumes in each group by Last Name
+    resumes.values.each { |a| a.sort_by! {|r| r.user.last_name} }
+    return resumes
+  end
+
   def do_erb(input_file_name, output_file_name, bindings)
     template_string = File.new(input_file_name).readlines.join("")
     template = ERB.new(template_string)
@@ -44,41 +117,21 @@ class ResumeBooksController < ApplicationController
     "#{@scratch_dir}/#{file_base_name_pdf}" # return the path to the pdf
   end
 
-  # POST /resume_books
-  def create
-    @resume_book = ResumeBook.new(resume_book_params)
+  # get the keys of resumes hash in correct order so we have increasing years
+  # in resume book
+  def sorted_years(resumes)
+    grad_flag = resumes.keys.include?(:grads)
+    sorted_yrs = resumes.keys.reject{|x| x.class == Symbol}
+    sorted_yrs.sort!
+    sorted_yrs << :grads if grad_flag
+    sorted_yrs
+  end
 
-    indrel_officers = Role.semester_filter(MemberSemester.current).position(:indrel).officers.all_users
-    time = Time.new.strftime("%Y%m%d%H%M%S%L")
-    @scratch_dir = Rails.root.join('private', 'scratch', time)
-    raise "Failed to make scratch dir" unless system "mkdir #{@scratch_dir}"
-
-    pdf_paths = [Rails.root.join('private', 'cover.pdf'), process_tex_template(Rails.root.join('private', 'indrel_letter.tex.erb'), binding)]
-
-    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
-    resumes_to_use.each do |resume|
-      pdf_paths << resume.file.path
-    end
-
-    merge_pdfs(pdf_paths, Rails.root.join('private', 'temp_resume_book.pdf')) # creates pdf as /private/temp_resume_book.pdf
-    template = File.read(Rails.root.join('private', 'temp_resume_book.pdf'))
-
-    file = StringIO.new(template) # mimic a real upload file for paperclip
-    file.class.class_eval { attr_accessor :original_filename, :content_type } #add attr's that paperclip needs
-    file.original_filename = "resume_book.pdf"
-    file.content_type = "application/pdf"
-
-    #now just use the file object to save to the Paperclip association.
-    @resume_book.pdf = file
-    File.delete(Rails.root.join('private', 'temp_resume_book.pdf')) # clean up
-    #raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}"
-
-    @resume_book.title = "HI"
-    @resume_book.details = "NONE"
-    if @resume_book.save
-      redirect_to @resume_book, notice: 'Resume book was successfully created.'
+  def nice_class_name(year)
+    if year == :grads
+      "Graduates"
     else
-      render action: 'new'
+      "Class of #{year}"
     end
   end
 
