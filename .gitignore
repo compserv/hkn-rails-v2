@@ -35,3 +35,4 @@ config/initializers/environment_variables.rb
 /private/resumes
 /private/resume_books
 /private/scratch/*
+/private/2014*
