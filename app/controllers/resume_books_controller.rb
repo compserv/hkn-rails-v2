@@ -1,6 +1,6 @@
 class ResumeBooksController < ApplicationController
   before_action :set_resume_book, only: [:show, :update, :destroy, :download_pdf, :download_iso]
-  before_filter :authenticate_indrel!, :except => [:download_pdf]
+  before_filter :authenticate_indrel!, :except => [:download_pdf, :download_iso]
 
   # GET /resume_books
   def index
@@ -59,17 +59,18 @@ class ResumeBooksController < ApplicationController
       end
     end
     @resume_book.details = details.join(' ')
+    @resume_book.details = "NOTHING" if @resume_book.details.blank?
     concatenate_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
+    "#{@scratch_dir}/temp_resume_book.pdf" # return the path of the file we made
   end
 
   def generate_iso(resumes_to_use, res_book_pdf)
-    # TODO there's some really shady stuff going on here..
-    #      use Ruby libs to improve security
+    # TODO there's some really shady stuff going on here.. use Ruby libs to improve security <- Kevin: this is an old comment, but I haven't changed this function
     @gen_root = Rails.root.join('private', 'template', 'ResumeBookISO')
     dir_name_fn = lambda {|year| year == :grads ? "grads" : year.to_s }
     iso_dir = "#{@scratch_dir}/ResumeBookISO"
     raise "Failed to copy ISO dir" unless system "cp -R #{@gen_root} #{iso_dir}"
-    system "sed \"s/SEMESTER/#{MemberSemester.current.name}/g\" #{iso_dir}/Welcome.html > #{iso_dir}/Welcome.html.tmp"
+    system "sed \"s/SEMESTER/#{MemberSemester.current.name}/g\" #{iso_dir}/Welcome.html > #{iso_dir}/Welcome.html.tmp" # sed replaces all instances of SEMESTER with the current semester's name
     system "mv #{iso_dir}/Welcome.html.tmp #{iso_dir}/Welcome.html"
     system "mkdir #{iso_dir}/Resumes"
     resumes_to_use.each_key do |year|
@@ -80,19 +81,18 @@ class ResumeBooksController < ApplicationController
       end
     end
     system "cp #{res_book_pdf} #{iso_dir}/HKNResumeBook.pdf"
-    #raise "Filed to genisoimage" unless system "hdiutil makehybrid -iso -joliet -o #{@scratch_dir}/HKNResumeBook.iso #{iso_dir}"  # usage for mac without genisoimage but with hduitil makehybrid
-    raise "Filed to genisoimage" unless system "genisoimage -V 'HKN Resume Book' -o #{@scratch_dir}/HKNResumeBook.iso -R -J #{iso_dir}"
-    "#{@scratch_dir}/HKNResumeBook.iso"
+    #raise "Failed to genisoimage" unless system "hdiutil makehybrid -iso -joliet -o #{@scratch_dir}/HKNResumeBook.iso #{iso_dir}"  # usage for mac without genisoimage but with hduitil makehybrid
+    raise "Failed to genisoimage" unless system "genisoimage -V 'HKN Resume Book' -o #{@scratch_dir}/HKNResumeBook.iso -R -J #{iso_dir}"
+    "#{@scratch_dir}/HKNResumeBook.iso" # return the path of the file we made
   end
 
   def concatenate_pdfs(pdf_file_list, output_file_name)
-    concat_cmd = "pdftk #{pdf_file_list.join(' ')} cat output #{output_file_name}"
+    concat_cmd = "pdftk #{pdf_file_list.join(' ')} cat output #{output_file_name}" # pdftk = pdf ToolKit. Merges the pdfs (make sure the pdfs have no spaces)
     logger.error "Failed to concat pdfs (#{concat_cmd})" unless system concat_cmd
-    output_file_name
   end
 
   def save_for_paperclip(path, type)
-    template = File.read(path) # grab the created pdf, going to save w/ paperclip
+    template = File.read(path) # grab the created file, going to save w/ paperclip
 
     file = StringIO.new(template) # mimic a real upload file for paperclip
     file.class.class_eval { attr_accessor :original_filename, :content_type } # add attr's that paperclip needs
@@ -109,7 +109,7 @@ class ResumeBooksController < ApplicationController
   # year will be a year i.e. 2011 or :grads
   def section_cover_page(year)
     do_erb("#{@skeletons}/section_title.tex.erb", "#{@scratch_dir}/#{year.to_s}title.tex", binding)
-    do_tex("#{@scratch_dir}","#{year.to_s}title.tex")
+    do_tex("#{@scratch_dir}", "#{year.to_s}title.tex")
     "#{@scratch_dir}/#{year.to_s}title.pdf"
   end
 
@@ -141,7 +141,7 @@ class ResumeBooksController < ApplicationController
     "#{@scratch_dir}/#{file_base_name_pdf}" # return the path to the pdf
   end
 
-  def do_erb(input_file_name, output_file_name, bindings) # evaluates a .?.erb file into a .?, saves into new location
+  def do_erb(input_file_name, output_file_name, bindings) # evaluates a .?.erb file into a .?, saves into output_file_name
     template_string = File.new(input_file_name).readlines.join("")
     template = ERB.new(template_string)
     f = File.new(output_file_name, "w")
@@ -149,7 +149,7 @@ class ResumeBooksController < ApplicationController
     f.close
   end
   
-  def do_tex(directory, file_name) # converts .tex to a .pdf in same directory
+  def do_tex(directory, file_name) # converts .tex to a .pdf in same directory with same file_name
     Dir.chdir(directory) do  # move to directory
       raise "Failed to pdflatex #{file_name}" unless system "pdflatex #{file_name}" # execute the pdflatex command on the file
     end
@@ -165,6 +165,7 @@ class ResumeBooksController < ApplicationController
     sorted_yrs
   end
 
+  # this is used by section_title.tex.erb
   def nice_class_name(year)
     if year == :grads
       "Graduates"
@@ -180,6 +181,13 @@ class ResumeBooksController < ApplicationController
   end
 
   def download_pdf
+    # Needs to be authorized
+    # One way to do this is to allow an optional authorization in the routes. E.g. "resume_books/:id/download_pdf(/:authorization_string)"
+    # Each resume_book could have a hash of accepted strings (maybe identified by company name) and additionally keep track of download
+    # count here.  When someone orders a company book I could just generate an epic password with SecureRandom.hex(number_of_digits)
+    # and email/show this url and save the password into the resume_book
+    # The last feature Donny requested was some kind of automatic email 2 weeks later to ask for feedback could save another date w/ hash.
+    # just would need to run some function nightly or something.
     send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type, filename: @resume_book.pdf_file_name
   end
 
@@ -212,7 +220,7 @@ class ResumeBooksController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def resume_book_params
-      params.require(:resume_book).permit(:title, :remarks, :details, :cutoff_date)
+      params.require(:resume_book).permit(:remarks, :cutoff_date)
     end
 
 end
