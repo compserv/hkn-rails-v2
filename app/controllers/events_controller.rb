@@ -47,6 +47,12 @@ class EventsController < ApplicationController
     else
       @events = @events.paginate options
     end
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @events }
+      format.js { render :partial => 'list' }
+    end
   end
 
   def new
@@ -90,6 +96,13 @@ class EventsController < ApplicationController
     @calendar_start_date = (@start_date.wday == 0) ? @start_date : @start_date.next_week.ago(8.days).to_date
     #Last Saturday
     @calendar_end_date = (@end_date.wday == 0) ? @end_date.since(6.days) : @end_date.next_week.ago(2.days).to_date
+
+    respond_to do |format|
+      format.html
+      format.js {
+        render :partial => 'calendar'
+      }
+    end
   end
 
   private
