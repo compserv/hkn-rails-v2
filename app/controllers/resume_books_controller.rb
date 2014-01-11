@@ -26,40 +26,14 @@ class ResumeBooksController < ApplicationController
     @resume_book = ResumeBook.new(resume_book_params)
 
     @scratch_dir = Rails.root.join('private', 'scratch', Time.new.strftime("%Y%m%d%H%M%S%L"))
+    @skeletons = Rails.root.join('private', 'skeletons')
     raise "Failed to make scratch dir" unless system "mkdir #{@scratch_dir}"
+    system "cp #{@skeletons}/hkn_emblem.png #{@scratch_dir}/"
 
-    indrel_officers = Role.semester_filter(MemberSemester.current).position(:indrel).officers.all_users # for use in binding.
-
-    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
-    graduation_year = MemberSemester.current.year + (MemberSemester.current.season == "Fall" ? 1 : 0) # 2014 Fall means class of 2014 has graduated, have to add an extra 1
-    resumes = group_resumes(resumes_to_use, graduation_year)
-    sorted_yrs = sorted_years(resumes) # used in table of contents template
-    system "cp #{Rails.root.join('private', 'hkn_emblem.png')} #{@scratch_dir}/"
-
-    pdf_paths = [Rails.root.join('private', 'cover.pdf')]
-    pdf_paths << process_tex_template(Rails.root.join('private', 'indrel_letter.tex.erb'), binding)
-    pdf_paths << process_tex_template(Rails.root.join('private', 'table_of_contents.tex.erb'), binding)
-    sorted_yrs.each do |year|
-      pdf_paths << section_cover_page(year)
-      resumes[year].each do |resume|
-        pdf_paths << resume.file.path
-      end
-    end
-
-    merge_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
-    template = File.read("#{@scratch_dir}/temp_resume_book.pdf") # grab this created pdf, going to save w/ paperclip
-
-    file = StringIO.new(template) # mimic a real upload file for paperclip
-    file.class.class_eval { attr_accessor :original_filename, :content_type } #add attr's that paperclip needs
-    file.original_filename = "resume_book.pdf"
-    file.content_type = "application/pdf"
-
-    #now just use the file object to save to the Paperclip association.
-    @resume_book.pdf = file
-    raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}" # clean up
+    generate_pdf
+    save_for_paperclip
 
     @resume_book.title = "HI"
-    @resume_book.details = "NONE"
     if @resume_book.save
       redirect_to @resume_book, notice: 'Resume book was successfully created.'
     else
@@ -67,17 +41,57 @@ class ResumeBooksController < ApplicationController
     end
   end
 
+  def generate_pdf
+    indrel_officers = Role.semester_filter(MemberSemester.current).position(:indrel).officers.all_users.sort(&:full_name) # for use in binding on indrel_letter
+    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
+    resumes = group_resumes(resumes_to_use)
+    sorted_yrs = sorted_years(resumes)
+    pdf_paths = ["#{@skeletons}/cover.pdf"]
+    pdf_paths << process_tex_template("#{@skeletons}/indrel_letter.tex.erb", binding)
+    if sorted_yrs != [] # gracefully dodge if no resumes chosen.
+      pdf_paths << process_tex_template("#{@skeletons}/table_of_contents.tex.erb", binding)
+    end
+    details = []
+    sorted_yrs.each do |year|
+      details << year.to_s + ": " + resumes[year].count.to_s
+      pdf_paths << section_cover_page(year)
+      resumes[year].each do |resume|
+        pdf_paths << resume.file.path
+      end
+    end
+    @resume_book.details = details.join(' ')
+    debugger
+    concatenate_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
+  end
+
+  def concatenate_pdfs(pdf_file_list, output_file_name)
+    concat_cmd = "pdftk #{pdf_file_list.join(' ')} cat output #{output_file_name}"
+    logger.error "Failed to concat pdfs (#{concat_cmd})" unless system concat_cmd
+    output_file_name
+  end
+
+  def save_for_paperclip
+    template = File.read("#{@scratch_dir}/temp_resume_book.pdf") # grab the created pdf, going to save w/ paperclip
+
+    file = StringIO.new(template) # mimic a real upload file for paperclip
+    file.class.class_eval { attr_accessor :original_filename, :content_type } # add attr's that paperclip needs
+    file.original_filename = "resume_book.pdf"
+    file.content_type = "application/pdf"
+
+    @resume_book.pdf = file # now just use the file object to save to the Paperclip association.
+    raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}" # clean up
+  end
+
   # year will be a year i.e. 2011 or :grads
   def section_cover_page(year)
-    do_erb(Rails.root.join('private', 'section_title.tex.erb'),
-           "#{@scratch_dir}/#{year.to_s}title.tex",
-           binding)
+    do_erb("#{@skeletons}/section_title.tex.erb", "#{@scratch_dir}/#{year.to_s}title.tex", binding)
     do_tex("#{@scratch_dir}","#{year.to_s}title.tex")
     "#{@scratch_dir}/#{year.to_s}title.pdf"
   end
 
-  def group_resumes(unsorted_resumes, graduating_class)
+  def group_resumes(unsorted_resumes)
     resumes = Hash.new
+    graduating_class = MemberSemester.current.year + (MemberSemester.current.season == "Fall" ? 1 : 0) # 2014 Fall means class of 2014 has graduated, have to add an extra 1
 
     unsorted_resumes.each do |resume|
       # append to correct array
@@ -93,7 +107,7 @@ class ResumeBooksController < ApplicationController
     return resumes
   end
 
-  def do_erb(input_file_name, output_file_name, bindings)
+  def do_erb(input_file_name, output_file_name, bindings) # evaluates a .?.erb file into a .?, saves into new location
     template_string = File.new(input_file_name).readlines.join("")
     template = ERB.new(template_string)
     f = File.new(output_file_name, "w")
@@ -101,7 +115,7 @@ class ResumeBooksController < ApplicationController
     f.close
   end
   
-  def do_tex(directory, file_name)
+  def do_tex(directory, file_name) # converts .tex to a .pdf in same directory
     Dir.chdir(directory) do  # move to directory
       raise "Failed to pdflatex #{file_name}" unless system "pdflatex #{file_name}" # execute the pdflatex command on the file
     end
@@ -157,30 +171,6 @@ class ResumeBooksController < ApplicationController
                                  disposition: 'inline' # loads file in browser for now.
   end
 
-  def merge_pdfs(pdf_paths, destination)
-    
-    first_pdf_path = pdf_paths.delete_at(0)
-    
-    a = Prawn::Document.generate(destination, :template => first_pdf_path) do |pdf|
-      
-      pdf_paths.each do |pdf_path|
-        pdf.go_to_page(pdf.page_count)
-        
-        template_page_count = count_pdf_pages(pdf_path)
-        (1..template_page_count).each do |template_page_number|
-          pdf.start_new_page(:template => pdf_path, :template_page => template_page_number)
-        end
-      end
-      
-    end
-    
-  end
-    
-  def count_pdf_pages(pdf_file_path)
-    pdf = Prawn::Document.new(:template => pdf_file_path)
-    pdf.page_count
-  end
-
   def download_pdf
     send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type,
                                  filename: @resume_book.pdf_file_name,
@@ -214,4 +204,5 @@ class ResumeBooksController < ApplicationController
     def resume_book_params
       params.require(:resume_book).permit(:title, :remarks, :details, :cutoff_date)
     end
+
 end

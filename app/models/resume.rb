@@ -48,7 +48,7 @@ class Resume < ActiveRecord::Base
   end
 
   def normalized_file_name
-    "#{self.user.username}/#{self.created_at}"
+    "#{self.user.username}"
   end
 
   def get_username
