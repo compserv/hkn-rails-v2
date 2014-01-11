@@ -1,5 +1,5 @@
 class ResumeBooksController < ApplicationController
-  before_action :set_resume_book, only: [:show, :edit, :update, :destroy, :download_pdf]
+  before_action :set_resume_book, only: [:show, :edit, :update, :destroy, :download_pdf, :download_iso]
   before_filter :authenticate_indrel!, :except => [:download_pdf]
 
   # GET /resume_books
@@ -26,7 +26,7 @@ class ResumeBooksController < ApplicationController
     @resume_book = ResumeBook.new(resume_book_params)
 
     @scratch_dir = Rails.root.join('private', Time.new.strftime("%Y%m%d%H%M%S%L"))
-    @skeletons = Rails.root.join('private', 'skeletons')
+    @skeletons = Rails.root.join('private', 'template')
     raise "Failed to make scratch dir" unless system "mkdir #{@scratch_dir}"
     system "cp #{@skeletons}/hkn_emblem.png #{@scratch_dir}/"
 
@@ -34,8 +34,11 @@ class ResumeBooksController < ApplicationController
     resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
     grouped_resumes = group_resumes(resumes_to_use)
     path_to_pdf = generate_pdf(grouped_resumes, indrel_officers)
-    generate_iso(grouped_resumes, path_to_pdf)
-    save_for_paperclip(path_to_pdf)
+    path_to_iso = generate_iso(grouped_resumes, path_to_pdf)
+    save_for_paperclip(path_to_pdf, 'application/pdf')
+    save_for_paperclip(path_to_iso, 'application/octet-stream')
+
+    raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}" # clean up
 
     @resume_book.title = MemberSemester.current.name
     if @resume_book.save
@@ -93,16 +96,19 @@ class ResumeBooksController < ApplicationController
     output_file_name
   end
 
-  def save_for_paperclip(path)
+  def save_for_paperclip(path, type)
     template = File.read(path) # grab the created pdf, going to save w/ paperclip
 
     file = StringIO.new(template) # mimic a real upload file for paperclip
     file.class.class_eval { attr_accessor :original_filename, :content_type } # add attr's that paperclip needs
-    file.original_filename = "resume_book.pdf"
-    file.content_type = "application/pdf"
-
-    @resume_book.pdf = file # now just use the file object to save to the Paperclip association.
-    #raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}" # clean up
+    file.content_type = type
+    if type == "application/pdf"
+      file.original_filename = "Resume_Book.pdf"
+      @resume_book.pdf = file
+    else
+      file.original_filename = "Resume_Book.iso"
+      @resume_book.iso = file
+    end
   end
 
   # year will be a year i.e. 2011 or :grads
@@ -187,17 +193,14 @@ class ResumeBooksController < ApplicationController
     redirect_to resume_books_url, notice: 'Resume book was successfully destroyed.'
   end
 
-  def download
-    @resume = ResumeBook.find(params[:id])
-    send_file @resume.file.path, type: @resume.file_content_type,
-                                 filename: @resume.file_file_name,
-                                 disposition: 'inline' # loads file in browser for now.
-  end
-
   def download_pdf
     send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type,
                                  filename: @resume_book.pdf_file_name,
                                  disposition: 'inline' # loads file in browser for now.
+  end
+
+  def download_iso
+    send_file @resume_book.iso.path, :type => 'application/octet-stream', filename: @resume_book.iso_file_name, :x_sendfile => true
   end
 
   # Missing gives the emails of officers and current candidates who are missing

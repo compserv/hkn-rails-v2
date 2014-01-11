@@ -34,5 +34,4 @@ config/initializers/environment_variables.rb
 /public/pictures
 /private/resumes
 /private/resume_books
-/private/scratch/*
-/private/2014*
+/private/201*
