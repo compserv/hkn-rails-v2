@@ -30,7 +30,11 @@ class ResumeBooksController < ApplicationController
     raise "Failed to make scratch dir" unless system "mkdir #{@scratch_dir}"
     system "cp #{@skeletons}/hkn_emblem.png #{@scratch_dir}/"
 
-    path_to_pdf = generate_pdf
+    indrel_officers = Role.semester_filter(MemberSemester.current).position(:indrel).officers.all_users.sort(&:full_name) # for use in binding on indrel_letter
+    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
+    grouped_resumes = group_resumes(resumes_to_use)
+    path_to_pdf = generate_pdf(grouped_resumes, indrel_officers)
+    generate_iso(grouped_resumes, path_to_pdf)
     save_for_paperclip(path_to_pdf)
 
     @resume_book.title = MemberSemester.current.name
@@ -41,10 +45,7 @@ class ResumeBooksController < ApplicationController
     end
   end
 
-  def generate_pdf
-    indrel_officers = Role.semester_filter(MemberSemester.current).position(:indrel).officers.all_users.sort(&:full_name) # for use in binding on indrel_letter
-    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
-    resumes = group_resumes(resumes_to_use)
+  def generate_pdf(resumes, indrel_officers)
     sorted_yrs = sorted_years(resumes)
     pdf_paths = ["#{@skeletons}/cover.pdf"]
     pdf_paths << process_tex_template("#{@skeletons}/indrel_letter.tex.erb", binding)
@@ -63,6 +64,29 @@ class ResumeBooksController < ApplicationController
     concatenate_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
   end
 
+  def generate_iso(resumes_to_use, res_book_pdf)
+    # TODO there's some really shady stuff going on here..
+    #      use Ruby libs to improve security
+    @gen_root = Rails.root.join('private', 'template', 'ResumeBookISO')
+    dir_name_fn = lambda {|year| year == :grads ? "grads" : year.to_s }
+    iso_dir = "#{@scratch_dir}/ResumeBookISO"
+    raise "Failed to copy ISO dir" unless system "cp -R #{@gen_root} #{iso_dir}"
+    system "sed \"s/SEMESTER/#{MemberSemester.current.name}/g\" #{iso_dir}/Welcome.html > #{iso_dir}/Welcome.html.tmp"
+    system "mv #{iso_dir}/Welcome.html.tmp #{iso_dir}/Welcome.html"
+    system "mkdir #{iso_dir}/Resumes"
+    resumes_to_use.each_key do |year|
+      year_dir_name = "#{iso_dir}/Resumes/#{dir_name_fn.call(year)}"
+      system "mkdir #{year_dir_name}"
+      resumes_to_use[year].each do |resume|
+        system "cp #{resume.file.path} \"#{year_dir_name}/#{resume.user.last_name}, #{resume.user.first_name}.pdf\""
+      end
+    end
+    system "cp #{res_book_pdf} #{iso_dir}/HKNResumeBook.pdf"
+    raise "Filed to genisoimage" unless system "hdiutil makehybrid -iso -joliet -o #{@scratch_dir}/HKNResumeBook.iso #{iso_dir}"
+    #raise "Filed to genisoimage" unless system "genisoimage -V 'HKN Resume Book' -o #{@scratch_dir}/HKNResumeBook.iso -R -J #{iso_dir}"
+    "#{@scratch_dir}/HKNResumeBook.iso"
+  end
+
   def concatenate_pdfs(pdf_file_list, output_file_name)
     concat_cmd = "pdftk #{pdf_file_list.join(' ')} cat output #{output_file_name}"
     logger.error "Failed to concat pdfs (#{concat_cmd})" unless system concat_cmd
@@ -78,7 +102,7 @@ class ResumeBooksController < ApplicationController
     file.content_type = "application/pdf"
 
     @resume_book.pdf = file # now just use the file object to save to the Paperclip association.
-    raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}" # clean up
+    #raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}" # clean up
   end
 
   # year will be a year i.e. 2011 or :grads
