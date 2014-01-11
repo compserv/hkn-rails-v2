@@ -90,7 +90,7 @@ class EventsController < ApplicationController
     year = (params[:year] || Time.now.year).to_i
     @start_date = Date.new(year, month, 1) 
     @end_date = Date.new(year, month, 1).end_of_month
-    @events = Event.with_permission(current_user).all.select { |event| (@start_date.to_time..@end_date.at_end_of_day).cover? event.start_time }
+    @events = Event.with_permission(current_user).all.select { |event| (@start_date.to_time..@end_date.at_end_of_day).cover? event.start_time }.sort_by { |event| event.start_time }
     @event_types = Event.pluck(:event_type)
     #First Sunday
     @calendar_start_date = (@start_date.wday == 0) ? @start_date : @start_date.next_week.ago(8.days).to_date
