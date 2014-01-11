@@ -15,6 +15,8 @@
 #
 
 class Rsvp < ActiveRecord::Base
+  after_save :rsvp_count, :set_default_transportation  
+
   TRANSPORT_ENUM = [
     [ 'I need a ride', -1 ],
     [ "Don't worry about me", 0 ],
@@ -35,19 +37,21 @@ class Rsvp < ActiveRecord::Base
   validates :comment, length: { maximum: 300 }
   validates_inclusion_of :confirmed, :in => [Confirmed, Unconfirmed, Rejected, nil]
 
-  attr_accessible :comment, :transportation
-
   def need_transportation
-    event and event.need_transportation
+    event and event.need_transportation?
   end
 
   private
-
     def set_default_transportation
       if self.need_transportation
-        self.transportation ||= TRANSPORT_ENUM.first.last
+        self.transportation_ability ||= TRANSPORT_ENUM.first.last
       end
     end
 
+    def rsvp_count
+      if event.max_rsvps
+        event.rsvp_count += 1
+      end
+    end
 
 end

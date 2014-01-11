@@ -65,6 +65,18 @@ class EventsController < ApplicationController
   end
 
   def show
+    begin
+      # Only show event if user has permission to
+      @event = Event.with_permission(current_user).find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to :root, :notice => "Event not found"
+      return
+    end
+    @current_user_rsvp = @event.rsvps.find_by_user_id(current_user.id) if current_user
+    if @event.need_transportation?
+      @total_transportation = @event.rsvps.collect{|r| r.transportation_ability || -1}.sum
+    end
+    @auth_event_owner = (@event.event_type == "Service" ? authorize(:serv) : authorize(:act))
   end
 
   def calendar

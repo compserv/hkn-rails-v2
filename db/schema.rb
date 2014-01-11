@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140108011216) do
+ActiveRecord::Schema.define(version: 20140110233040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,6 +146,7 @@ ActiveRecord::Schema.define(version: 20140108011216) do
     t.boolean  "need_transportation?"
     t.string   "view_permission_roles"
     t.string   "rsvp_permission_roles"
+    t.integer  "max_rsvps"
   end
 
   create_table "exams", force: true do |t|

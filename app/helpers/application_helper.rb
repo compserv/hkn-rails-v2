@@ -20,7 +20,6 @@ module ApplicationHelper
   end
 
   # This is for the pagination sort links
-  # This could probably be cleaned up a bit more...
   def sort_link(inner_text, sort_variable, opts = {})
     sort_direction = (sort_variable == @search_opts['sort'] and @search_opts['sort_direction'] != 'down') ? 'down' : 'up'
     arrow = (sort_variable == @search_opts['sort']) ? (@search_opts['sort_direction'] == 'down') ? image_tag('site/arrow_desc.gif') : image_tag('site/arrow_asc.gif') : ''

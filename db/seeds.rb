@@ -106,12 +106,16 @@ end
 initialize_mobile_carriers
 
 events = [
-  ["Picnic", "Lots of fun", DateTime.yesterday, DateTime.now, "Big Fun", nil, nil],
-  ["HM1", "hm1", DateTime.tomorrow, DateTime.tomorrow, "Meeting", :members, :members]
+  ["Picnic", "Lots of fun", DateTime.yesterday, DateTime.now, "Big Fun", nil, nil, false],
+  ["HM1", "hm1", DateTime.tomorrow, DateTime.tomorrow, "Miscellaneous", :committee_members, :committee_members, true],
+  ["Paintball", "paintball", DateTime.now.in(3.hours), DateTime.now.in(4.hours), "Fun", :officers, :officers, true]
 ]
 
 events.each do |event|
   Event.create(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
-               event_type: event[4], view_permission_roles: event[5], rsvp_permission_roles: event[6])
+               event_type: event[4], view_permission_roles: event[5], rsvp_permission_roles: event[6],
+               need_transportation?: event[7])
   puts "Created event #{event[0]}"
+  User.first.rsvp! Event.last.id
+  puts "First user RSVP'd to event #{Event.last.title}"
 end
