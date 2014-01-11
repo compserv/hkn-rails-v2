@@ -27,7 +27,7 @@ class ResumeBooksController < ApplicationController
     system "cp #{@skeletons}/hkn_emblem.png #{@scratch_dir}/"
 
     indrel_officers = Role.semester_filter(MemberSemester.current).position(:indrel).officers.all_users.sort(&:full_name) # for use in binding on indrel_letter
-    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
+    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user)
     grouped_resumes = group_resumes(resumes_to_use)
     path_to_pdf = generate_pdf(grouped_resumes, indrel_officers)
     path_to_iso = generate_iso(grouped_resumes, path_to_pdf)
@@ -58,7 +58,7 @@ class ResumeBooksController < ApplicationController
         pdf_paths << resume.file.path
       end
     end
-    @resume_book.details = details.join(' ')
+    @resume_book.details = details.join(', ')
     @resume_book.details = "NOTHING" if @resume_book.details.blank?
     concatenate_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
     "#{@scratch_dir}/temp_resume_book.pdf" # return the path of the file we made
@@ -81,8 +81,8 @@ class ResumeBooksController < ApplicationController
       end
     end
     system "cp #{res_book_pdf} #{iso_dir}/HKNResumeBook.pdf"
-    #raise "Failed to genisoimage" unless system "hdiutil makehybrid -iso -joliet -o #{@scratch_dir}/HKNResumeBook.iso #{iso_dir}"  # usage for mac without genisoimage but with hduitil makehybrid
-    raise "Failed to genisoimage" unless system "genisoimage -V 'HKN Resume Book' -o #{@scratch_dir}/HKNResumeBook.iso -R -J #{iso_dir}"
+    raise "Failed to genisoimage" unless system "hdiutil makehybrid -iso -joliet -o #{@scratch_dir}/HKNResumeBook.iso #{iso_dir}"  # usage for mac without genisoimage but with hduitil makehybrid
+    #raise "Failed to genisoimage" unless system "genisoimage -V 'HKN Resume Book' -o #{@scratch_dir}/HKNResumeBook.iso -R -J #{iso_dir}"
     "#{@scratch_dir}/HKNResumeBook.iso" # return the path of the file we made
   end
 
