@@ -25,15 +25,15 @@ class ResumeBooksController < ApplicationController
   def create
     @resume_book = ResumeBook.new(resume_book_params)
 
-    @scratch_dir = Rails.root.join('private', 'scratch', Time.new.strftime("%Y%m%d%H%M%S%L"))
+    @scratch_dir = Rails.root.join('private', Time.new.strftime("%Y%m%d%H%M%S%L"))
     @skeletons = Rails.root.join('private', 'skeletons')
     raise "Failed to make scratch dir" unless system "mkdir #{@scratch_dir}"
     system "cp #{@skeletons}/hkn_emblem.png #{@scratch_dir}/"
 
-    generate_pdf
-    save_for_paperclip
+    path_to_pdf = generate_pdf
+    save_for_paperclip(path_to_pdf)
 
-    @resume_book.title = "HI"
+    @resume_book.title = MemberSemester.current.name
     if @resume_book.save
       redirect_to @resume_book, notice: 'Resume book was successfully created.'
     else
@@ -48,7 +48,7 @@ class ResumeBooksController < ApplicationController
     sorted_yrs = sorted_years(resumes)
     pdf_paths = ["#{@skeletons}/cover.pdf"]
     pdf_paths << process_tex_template("#{@skeletons}/indrel_letter.tex.erb", binding)
-    if sorted_yrs != [] # gracefully dodge if no resumes chosen.
+    if sorted_yrs != [] # gracefully dodge if there are no resumes
       pdf_paths << process_tex_template("#{@skeletons}/table_of_contents.tex.erb", binding)
     end
     details = []
@@ -60,7 +60,6 @@ class ResumeBooksController < ApplicationController
       end
     end
     @resume_book.details = details.join(' ')
-    debugger
     concatenate_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
   end
 
@@ -70,8 +69,8 @@ class ResumeBooksController < ApplicationController
     output_file_name
   end
 
-  def save_for_paperclip
-    template = File.read("#{@scratch_dir}/temp_resume_book.pdf") # grab the created pdf, going to save w/ paperclip
+  def save_for_paperclip(path)
+    template = File.read(path) # grab the created pdf, going to save w/ paperclip
 
     file = StringIO.new(template) # mimic a real upload file for paperclip
     file.class.class_eval { attr_accessor :original_filename, :content_type } # add attr's that paperclip needs
@@ -107,6 +106,16 @@ class ResumeBooksController < ApplicationController
     return resumes
   end
 
+  def process_tex_template(input_file_name, bindings)
+    # @scratch_dir is a directory created before this function should be called
+    file_base_name_tex_erb = File.basename(input_file_name)
+    file_base_name_tex = file_base_name_tex_erb[0..-5] # strip off .erb
+    file_base_name_pdf = file_base_name_tex[0..-5] + ".pdf" # strip off .tex.erb and add .pdf
+    do_erb(input_file_name, "#{@scratch_dir}/#{file_base_name_tex}", bindings) # convert the .tex.erb into a .tex file
+    do_tex("#{@scratch_dir}", file_base_name_tex) # convert the .tex to a .pdf
+    "#{@scratch_dir}/#{file_base_name_pdf}" # return the path to the pdf
+  end
+
   def do_erb(input_file_name, output_file_name, bindings) # evaluates a .?.erb file into a .?, saves into new location
     template_string = File.new(input_file_name).readlines.join("")
     template = ERB.new(template_string)
@@ -119,16 +128,6 @@ class ResumeBooksController < ApplicationController
     Dir.chdir(directory) do  # move to directory
       raise "Failed to pdflatex #{file_name}" unless system "pdflatex #{file_name}" # execute the pdflatex command on the file
     end
-  end
-
-  def process_tex_template(input_file_name, bindings)
-    # @scratch_dir is a directory created before this function should be called
-    file_base_name_tex_erb = File.basename(input_file_name)
-    file_base_name_tex = file_base_name_tex_erb[0..-5] # strip off .erb
-    file_base_name_pdf = file_base_name_tex[0..-5] + ".pdf" # strip off .tex.erb and add .pdf
-    do_erb(input_file_name, "#{@scratch_dir}/#{file_base_name_tex}", bindings) # convert the .tex.erb into a .tex file
-    do_tex("#{@scratch_dir}", file_base_name_tex) # convert the .tex to a .pdf
-    "#{@scratch_dir}/#{file_base_name_pdf}" # return the path to the pdf
   end
 
   # get the keys of resumes hash in correct order so we have increasing years
