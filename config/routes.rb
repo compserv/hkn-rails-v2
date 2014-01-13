@@ -4,10 +4,6 @@ HknRails::Application.routes.draw do
 
   devise_for :users, controllers: { registrations: "registrations" }
 
-  match "about/contact", to: "pages#contact", via: :get, as: "contact"
-  match "about/officers(/:semester)", to: "pages#officers", via: :get, as: "about_officers"
-  match "about/committee_members(/:semester)", to: "pages#committee_members", via: :get, as: "about_committee_members"
-
 
   match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
@@ -51,6 +47,15 @@ HknRails::Application.routes.draw do
       match "registration", to: "infosession_requests#new", via: :get, as: "new_infosession_request"
       match "registration", to: "infosession_requests#create", via: :post, as: "create_infosession_request"
     end
+  end
+
+  #About HKN
+  scope 'about' do
+    match 'contact', to: "pages#contact", via: :get, as: "contact"
+    match 'slideshow', to: 'pages#slideshow', via: 'get', as: 'bridge_slideshow'
+    match 'yearbook', to: 'pages#yearbook', via: 'get', as: 'bridge_yearbook'
+    match 'officers(/:semester)', to: "pages#officers", via: :get, as: "about_officers"
+    match 'committee_members(/:semester)', to: "pages#committee_members", via: :get, as: "about_committee_members"
   end
 
   namespace :admin do
