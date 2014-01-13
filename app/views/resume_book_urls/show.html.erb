@@ -4,6 +4,11 @@
 </p>
 
 <p>
+  <strong>Created at:</strong>
+  <%= @resume_book_url.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+</p>
+
+<p>
   <strong>Expiration date:</strong>
   <%= @resume_book_url.expiration_date.strftime("%B %d, %Y at %I:%M %p") %>
 </p>

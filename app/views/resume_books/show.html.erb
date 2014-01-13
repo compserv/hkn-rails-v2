@@ -33,6 +33,7 @@
     <tr>
       <th>Download Count</th>
       <th>Expiration</th>
+      <th>Created</th>
       <th>Download Link</th>
       <th>Expired?</th>
       <th>Company</th>
@@ -45,6 +46,7 @@
       <tr>
         <td><%= url.download_count %></td>
         <td><%= url.expiration_date.strftime("%B %d, %Y at %I:%M %p") %></td>
+        <td><%= url.created_at.strftime("%B %d, %Y at %I:%M %p") %></td>
         <td><%= link_to 'Test Download from the URL', resume_book_download_pdf_url(url.resume_book_id, string: url.password) %></td>
         <td><%= url.expired? %></td>
         <td><%= url.company %></td>

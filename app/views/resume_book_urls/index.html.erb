@@ -9,6 +9,7 @@
       <th>Downloads</th>
       <th>Transaction id</th>
       <th>Expired?</th>
+      <th>Created</th>
       <th colspan="3">Actions</th>
     </tr>
   </thead>
@@ -16,12 +17,13 @@
   <tbody>
     <% @resume_book_urls.each do |resume_book_url| %>
       <tr>
-        <td><%= resume_book_url.resume_book_id %></td>
+        <td><%= link_to resume_book_url.resume_book_id, resume_book_path(resume_book_url.resume_book_id) %></td>
         <td><%= resume_book_url.expiration_date.strftime("%B %d, %Y at %I:%M %p") %></td>
         <td><%= resume_book_url.company %></td>
         <td><%= resume_book_url.download_count %></td>
         <td><%= resume_book_url.transaction_id %></td>
         <td><%= resume_book_url.expired? %></td>
+        <td><%= resume_book_url.created_at.strftime("%B %d, %Y at %I:%M %p") %></td>
         <td><%= link_to 'Show', resume_book_url %></td>
         <td><%= link_to 'Edit', edit_resume_book_url_path(resume_book_url) %></td>
         <td><%= link_to 'Destroy', resume_book_url, method: :delete, data: { confirm: 'Are you sure?' } %></td>
