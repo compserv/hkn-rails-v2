@@ -35,3 +35,6 @@ config/initializers/environment_variables.rb
 /private/resumes
 /private/resume_books
 /private/201*
+
+# hidden certificates
+/certs

@@ -28,7 +28,7 @@
         <td><%= link_to "Download PDF", resume_book_download_pdf_path(resume_book.id) %></td>
         <td><%= link_to "Download ISO", resume_book_download_iso_path(resume_book.id) %></td>
         <td><%= resume_book.cutoff_date %></td>
-        <td><%= resume_book.details %></td>
+        <td><%= resume_book.details.map{|k,v| "#{k}=#{v}"}.join(', ') %></td>
         <td><%= link_to 'Show', resume_book %></td>
         <td><%= link_to 'Destroy', resume_book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
