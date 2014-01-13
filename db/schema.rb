@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140110233040) do
+ActiveRecord::Schema.define(version: 20140113223743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,7 +117,6 @@ ActiveRecord::Schema.define(version: 20140110233040) do
     t.datetime "date"
     t.string   "email"
     t.string   "phone"
-    t.datetime "submitted"
     t.text     "comments"
     t.boolean  "responded"
     t.datetime "created_at"
@@ -258,6 +257,23 @@ ActiveRecord::Schema.define(version: 20140110233040) do
   add_index "quiz_responses", ["candidate_quiz_id"], name: "index_quiz_responses_on_candidate_quiz_id", using: :btree
   add_index "quiz_responses", ["quiz_question_id"], name: "index_quiz_responses_on_quiz_question_id", using: :btree
 
+  create_table "resume_books", force: true do |t|
+    t.string   "title"
+    t.string   "remarks"
+    t.text     "details"
+    t.date     "cutoff_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "pdf_file_name"
+    t.string   "pdf_content_type"
+    t.integer  "pdf_file_size"
+    t.datetime "pdf_updated_at"
+    t.string   "iso_file_name"
+    t.string   "iso_content_type"
+    t.integer  "iso_file_size"
+    t.datetime "iso_updated_at"
+  end
+
   create_table "resumes", force: true do |t|
     t.decimal  "overall_gpa"
     t.decimal  "major_gpa"
@@ -291,7 +307,7 @@ ActiveRecord::Schema.define(version: 20140110233040) do
   create_table "rsvps", force: true do |t|
     t.integer  "user_id"
     t.integer  "event_id"
-    t.boolean  "confirmed"
+    t.string   "confirmed"
     t.integer  "confirmed_by"
     t.datetime "confirmed_at"
     t.datetime "created_at"
@@ -382,6 +398,7 @@ ActiveRecord::Schema.define(version: 20140110233040) do
     t.boolean  "sms_alerts"
     t.integer  "candidate_quiz_id"
     t.integer  "mobile_carrier_id"
+    t.boolean  "should_reset_session"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree

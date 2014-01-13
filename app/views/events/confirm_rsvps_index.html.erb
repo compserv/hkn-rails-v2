@@ -1,0 +1,15 @@
+<h1>Confirm RSVPs</h1>
+
+<table>
+  <tr>
+    <th>Event Name</th>
+    <th>Date</th>
+  </tr>
+
+<% @events.each do |event| %>  
+  <tr>
+    <td><%= link_to event.title, confirm_rsvps_path(event, role: @role) %></td>
+    <td><%= event.start_time.strftime('%a %m/%d/%Y') %></td>
+  </tr>
+<% end %>
+</table>

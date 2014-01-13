@@ -100,14 +100,14 @@ class RsvpsController < ApplicationController
     @rsvp = Rsvp.find(params[:id])
     @rsvp.confirmed = Rsvp::Confirmed
 
-    group = params[:group] || "candidates"
+    role = params[:role] || :candidate
 
     respond_to do |format|
-      if @rsvp.update_attribute :confirmed, Rsvp::Confirmed   # TODO (jonko) this bypasses validation
-        format.html { redirect_to(confirm_rsvps_path(@rsvp.event_id, :group => group), :notice => 'Rsvp was confirmed.') }
+      if @rsvp.update_attribute :confirmed, Rsvp::Confirmed  
+        format.html { redirect_to(confirm_rsvps_path(@rsvp.event_id, :role => role), :notice => 'Rsvp was confirmed.') }
         format.xml  { render :xml => @rsvp }
       else
-        format.html { redirect_to confirm_rsvps_path(@rsvp.event_id, :group => group), :notice => 'Something went wrong.' }
+        format.html { redirect_to confirm_rsvps_path(@rsvp.event_id, :role => role), :notice => 'Something went wrong.' }
         format.xml  { render :xml => @rsvp.errors, :status => :unprocessable_entity }
       end
     end
@@ -115,24 +115,24 @@ class RsvpsController < ApplicationController
 
   def unconfirm
     @rsvp = Rsvp.find(params[:id])
-    @rsvp.update_attribute :confirmed, Rsvp::Unconfirmed # TODO (jonko)
+    @rsvp.update_attribute :confirmed, Rsvp::Unconfirmed 
 
-    group = params[:group] || "candidates"
+    role = params[:role] || "candidates"
 
     respond_to do |format|
-      format.html { redirect_to(confirm_rsvps_path(@rsvp.event_id, :group => group), :notice => 'Confirmation was removed.') }
+      format.html { redirect_to(confirm_rsvps_path(@rsvp.event_id, :role => role), :notice => 'Confirmation was removed.') }
       format.xml { render :xml => @rsvp }
     end
   end
 
   def reject
     @rsvp = Rsvp.find(params[:id])
-    @rsvp.update_attribute :confirmed, Rsvp::Rejected # TODO (jonko)
+    @rsvp.update_attribute :confirmed, Rsvp::Rejected 
     
-    group = params[:group] || "candidates"
+    role = params[:role] || "candidates"
 
     respond_to do |format|
-      format.html { redirect_to(confirm_rsvps_path(@rsvp.event_id, :group => group), :notice => 'Confirmation was rejected.') }
+      format.html { redirect_to(confirm_rsvps_path(@rsvp.event_id, :role => role), :notice => 'Confirmation was rejected.') }
       format.xml { render :xml => @rsvp }
     end
   end

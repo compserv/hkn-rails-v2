@@ -7,7 +7,6 @@
 #  date       :datetime
 #  email      :string(255)
 #  phone      :string(255)
-#  submitted  :datetime
 #  comments   :text
 #  responded  :boolean
 #  created_at :datetime

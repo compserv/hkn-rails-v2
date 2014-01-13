@@ -22,13 +22,14 @@
 #  picture_content_type   :string(255)
 #  picture_file_size      :integer
 #  picture_updated_at     :datetime
-#  candidate_quiz_id      :integer
 #  approved               :boolean          default(FALSE), not null
 #  private                :boolean
 #  date_of_birth          :date
 #  phone_number           :string(255)
 #  sms_alerts             :boolean
+#  candidate_quiz_id      :integer
 #  mobile_carrier_id      :integer
+#  should_reset_session   :boolean
 #
 
 class User < ActiveRecord::Base

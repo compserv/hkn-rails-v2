@@ -5,7 +5,7 @@
 #  id                     :integer          not null, primary key
 #  user_id                :integer
 #  event_id               :integer
-#  confirmed              :boolean
+#  confirmed              :string(255)
 #  confirmed_by           :integer
 #  confirmed_at           :datetime
 #  created_at             :datetime
