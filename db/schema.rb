@@ -266,6 +266,16 @@ ActiveRecord::Schema.define(version: 20140113223743) do
   add_index "quiz_responses", ["candidate_quiz_id"], name: "index_quiz_responses_on_candidate_quiz_id", using: :btree
   add_index "quiz_responses", ["quiz_question_id"], name: "index_quiz_responses_on_quiz_question_id", using: :btree
 
+  create_table "resume_book_urls", force: true do |t|
+    t.integer  "resume_book_id"
+    t.datetime "expiration_date"
+    t.text     "feedback"
+    t.string   "password"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "download_count"
+  end
+
   create_table "resume_books", force: true do |t|
     t.string   "title"
     t.string   "remarks"

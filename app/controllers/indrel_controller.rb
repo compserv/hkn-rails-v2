@@ -54,12 +54,12 @@ class IndrelController < ApplicationController
     end
 
     if p["payment_status"] == "Completed" && p["receiver_email"] == "kcasey9111@yahoo.com" && p["item_number"] == "9001" && p["mc_gross"] == "250.00"
-      
+      # successful. generate a resume_book_url
+      r = ResumeBookUrl.create(password: SecureRandom.urlsafe_base64(100), resume_book_id: ResumeBook.last.id, expiration_date: 2.weeks.from_now, download_count: 0)
+      @link = resume_book_download_pdf_url(r.resume_book_id, string: r.password)
     else
-      
+      @link = "STOP HACKING"
     end
-
-    
   end
 
   def paypal_encrypted(return_url)

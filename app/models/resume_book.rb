@@ -22,6 +22,7 @@
 class ResumeBook < ActiveRecord::Base
   serialize :details
   validates_presence_of :cutoff_date, :title, :details
+  has_many :resume_book_urls
 
   has_attached_file :pdf, :default_url => '/',
       :path => ":rails_root/private/resume_books/:normalized_file_name.:extension",
@@ -43,6 +44,14 @@ class ResumeBook < ActiveRecord::Base
 
   def normalized_file_name
     "#{self.title}/#{self.updated_at}"
+  end
+
+  def total_download_count
+    sum = 0
+    self.resume_book_urls.each do |url|
+      sum = sum + url.download_count
+    end
+    sum
   end
 
 end

@@ -4,7 +4,7 @@ class ResumeBooksController < ApplicationController
 
   # GET /resume_books
   def index
-    @resume_books = ResumeBook.all.reverse # display most recently created at the top, works b/c can't update a resume book
+    @resume_books = ResumeBook.includes(:resume_book_urls).all.reverse # display most recently created at the top, works b/c can't update a resume book
   end
 
   # GET /resume_books/1
@@ -181,14 +181,18 @@ class ResumeBooksController < ApplicationController
   end
 
   def download_pdf
-    # Needs to be authorized
-    # One way to do this is to allow an optional authorization in the routes. E.g. "resume_books/:id/download_pdf(/:authorization_string)"
-    # Each resume_book could have a hash of accepted strings (maybe identified by company name) and additionally keep track of download
-    # count here.  When someone orders a company book I could just generate an epic password with SecureRandom.hex(number_of_digits)
-    # and email/show this url and save the password into the resume_book
-    # The last feature Donny requested was some kind of automatic email 2 weeks later to ask for feedback could save another date w/ hash.
-    # just would need to run some function nightly or something.
-    send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type, filename: @resume_book.pdf_file_name
+    authorized = false
+    if params[:string]
+      @resume_book.resume_book_urls.each do |url|
+        if url.password == params[:string]
+          authorized = true
+          url.download_count = url.download_count + 1
+          url.save
+        end
+      end
+    end
+    authenticate_indrel! unless authorized == true
+    send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type, filename: @resume_book.pdf_file_name, disposition: 'inline'
   end
 
   def download_iso
