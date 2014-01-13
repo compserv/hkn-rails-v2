@@ -16,7 +16,6 @@
 
 class Rsvp < ActiveRecord::Base
   before_validation :set_default_transportation
-  after_save :rsvp_count 
 
   TRANSPORT_ENUM = [
     [ 'I need a ride', -1 ],
@@ -48,11 +47,4 @@ class Rsvp < ActiveRecord::Base
         self.transportation_ability ||= TRANSPORT_ENUM.first.last
       end
     end
-
-    def rsvp_count
-      if event.max_rsvps
-        event.rsvp_count += 1
-      end
-    end
-
 end

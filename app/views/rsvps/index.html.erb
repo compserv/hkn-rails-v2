@@ -1,0 +1,37 @@
+<h1>Listing RSVPs for <%= @event.title %></h1>
+
+<table>
+  <tr>
+    <th>Person</th>
+    <th>Comment</th>
+    <th>RSVP Date</th>
+    <% if @event.need_transportation? %>
+      <th>Transportation</th>
+    <% end %>
+    <th></th>
+    <% if user_session[:comm] %>
+    <th></th>
+    <th></th>
+    <% end %>
+  </tr>
+
+<% @rsvps.each do |rsvp| %>
+  <tr>
+    <td><%= rsvp.user.full_name %></td>
+    <td><%= rsvp.comment %></td>
+    <td><%= rsvp.created_at.strftime('%a %m/%d/%y %I:%M%p') %></td>
+    <% if @event.need_transportation? %>    
+      <td><%= rsvp.transportation_ability %></td>
+    <% end %>
+    <td><%= link_to 'Show', rsvp_path(rsvp) %></td>
+    <% if user_session[:compserv] %>
+    <td class='admin'><%= link_to 'Edit', edit_rsvp_path(rsvp) %></td>
+    <td class='admin'><%= link_to 'Destroy', rsvp_path(rsvp), :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Rsvp', new_event_rsvp_path(@event) %>

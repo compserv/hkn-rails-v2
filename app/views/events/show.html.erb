@@ -63,13 +63,13 @@
     |
   <% end %>
   <% if @current_user_rsvp %>
-    <%= link_to 'Change RSVP', edit_event_rsvp_path(@event, @current_user_rsvp), :id=>'edit_rsvp', "data-rsvp_id" => @current_user_rsvp.id.to_s %>
+    <%= link_to 'Change RSVP', edit_rsvp_path(@current_user_rsvp), :id=>'edit_rsvp', "data-rsvp_id" => @current_user_rsvp.id.to_s %>
     |
-    <%= link_to 'Remove My RSVP', event_rsvp_path(@event, @current_user_rsvp), :confirm => 'Are you sure?', :method => :delete %>
+    <%= link_to 'Remove My RSVP', rsvp_path(@current_user_rsvp), :confirm => 'Are you sure?', :method => :delete %>
     |
   <% elsif @event.can_rsvp? current_user %>
     <% if @event.allows_rsvps? %>
-      <%= link_to 'RSVP', '/events/' + @event.id.to_s + '/rsvps/new' %>
+      <%= link_to 'RSVP', new_event_rsvp_path(@event) %>
       |
     <% elsif @event.max_rsvps == 0 %>
     <% else %>

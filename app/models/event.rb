@@ -98,9 +98,7 @@ class Event < ActiveRecord::Base
   end
 
   def allows_rsvps?
-    if rsvp_count and max_rsvps
-      rsvp_count <= max_rsvps
-    end
+    rsvps.count <= max_rsvps ? max_rsvps != 0 : false
   end
 
   def can_rsvp? user

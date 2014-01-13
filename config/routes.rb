@@ -31,7 +31,7 @@ HknRails::Application.routes.draw do
   end
 
   resources :events do
-    resources :rsvps
+    resources :rsvps, shallow: true
   end
 
   scope "candidate" do
