@@ -139,7 +139,7 @@ class UsersController < ApplicationController
       role = Role.find_by_name_and_resource_id_and_role_type(params[:position], semester.id, params[:role])
       flash[:notice] = @user.full_name + " has gained the title " + role.nice_position + " in " + role.nice_semester
     end
-    destroy_user_session_path(@user) # this appears to clear the user session of the user w/out signing them out, this is so user authentications go off again.
+    @user.update_attribute :should_reset_session, true
     redirect_to edit_roles_user_path(@user)
   end
 

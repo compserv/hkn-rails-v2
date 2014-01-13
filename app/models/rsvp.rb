@@ -2,15 +2,16 @@
 #
 # Table name: rsvps
 #
-#  id           :integer          not null, primary key
-#  user_id      :integer
-#  event_id     :integer
-#  confirmed    :boolean
-#  confirmed_by :integer
-#  confirmed_at :datetime
-#  created_at   :datetime
-#  updated_at   :datetime
-#  comment      :string(255)
+#  id                     :integer          not null, primary key
+#  user_id                :integer
+#  event_id               :integer
+#  confirmed              :boolean
+#  confirmed_by           :integer
+#  confirmed_at           :datetime
+#  created_at             :datetime
+#  updated_at             :datetime
+#  comment                :string(255)
+#  transportation_ability :integer
 #
 
 class Rsvp < ActiveRecord::Base

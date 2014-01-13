@@ -1,0 +1,27 @@
+<thead>
+  <tr>
+    <th>Requestee Name</th>
+    <th>Requested Date</th>
+    <th>Date Submitted</th>
+    <th>Contact e-mail</th>
+    <th>Contact phone</th>
+    <th>Additional Comments</th>
+    <th colspan="3">Actions</th>
+  </tr>
+</thead>
+
+<tbody>
+  <% group.each do |dept_tour| %>
+    <tr>
+      <td><%= dept_tour.name %></td>
+      <td><%= dept_tour.date.strftime("%A, %B %d, at %I:%M %p") %></td>
+      <td><%= dept_tour.created_at.strftime("%A, %B %d, at %I:%M %p") %></td>
+      <td><%= dept_tour.email %></td>
+      <td><%= dept_tour.phone %></td>
+      <td><%= dept_tour.comments %></td>
+      <td><%= link_to dept_tour.responded ? 'Show' : 'Show and Respond', dept_tour %></td>
+      <td><%= link_to 'Edit', edit_dept_tour_path(dept_tour) %></td>
+      <td><%= link_to 'Dismiss', dept_tour, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</tbody>

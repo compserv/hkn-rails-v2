@@ -62,7 +62,7 @@
     <% if current_user && (user_session[:alum].nil? ? user_session[:alum] = !current_user.alum.nil? : user_session[:alum]) %>
       <li><%= link_to "View My Alumnus/Alumna Information", edit_alum_path(current_user.alum) %></li>
     <% else %>
-      <li><%= link_to "Create Alumnus/Alumna", new_alum_path %></li>
+      <li><%= link_to "Alumni Contact Information", new_alum_path %></li>
     <% end %>
   </ul>
 </div>
@@ -112,7 +112,7 @@
         <li><%= link_to 'Rsec Admin', 'admin_rsec_path', :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:deprel) %>
-        <li><a href="/admin/deprel" class="navigation_sublevel_item">Deprel Admin [<%= 'controller.num_deprel_requests' %>]</a></li>
+        <li><%= link_to "Deprel Admin [#{get_num_deprel_requests}]", dept_tours_path, :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:indrel) %>
         <li><%= link_to 'Indrel Admin', admin_indrel_path, :class => 'navigation_sublevel_item'  %></li>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140108233116) do
+ActiveRecord::Schema.define(version: 20140110013917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,7 +117,6 @@ ActiveRecord::Schema.define(version: 20140108233116) do
     t.datetime "date"
     t.string   "email"
     t.string   "phone"
-    t.datetime "submitted"
     t.text     "comments"
     t.boolean  "responded"
     t.datetime "created_at"
@@ -139,6 +138,13 @@ ActiveRecord::Schema.define(version: 20140108233116) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "owner_id"
+    t.string   "location"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string   "event_type"
+    t.boolean  "need_transportation?"
+    t.string   "view_permission_roles"
+    t.string   "rsvp_permission_roles"
   end
 
   create_table "exams", force: true do |t|
@@ -302,9 +308,12 @@ ActiveRecord::Schema.define(version: 20140108233116) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "comment"
+    t.integer  "transportation_ability"
   end
 
+  add_index "rsvps", ["event_id"], name: "index_rsvps_on_event_id", using: :btree
   add_index "rsvps", ["user_id", "event_id"], name: "index_rsvps_on_user_id_and_event_id", using: :btree
+  add_index "rsvps", ["user_id"], name: "index_rsvps_on_user_id", using: :btree
 
   create_table "staff_members", force: true do |t|
     t.string   "first_name"
@@ -384,6 +393,7 @@ ActiveRecord::Schema.define(version: 20140108233116) do
     t.boolean  "sms_alerts"
     t.integer  "candidate_quiz_id"
     t.integer  "mobile_carrier_id"
+    t.boolean  "should_reset_session"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree
