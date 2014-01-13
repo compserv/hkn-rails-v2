@@ -13,6 +13,10 @@
 #  pdf_content_type :string(255)
 #  pdf_file_size    :integer
 #  pdf_updated_at   :datetime
+#  iso_file_name    :string(255)
+#  iso_content_type :string(255)
+#  iso_file_size    :integer
+#  iso_updated_at   :datetime
 #
 
 class ResumeBook < ActiveRecord::Base
@@ -20,11 +24,14 @@ class ResumeBook < ActiveRecord::Base
   validates_presence_of :cutoff_date, :title, :details
 
   has_attached_file :pdf, :default_url => '/',
-      :path => ":rails_root/private/resumes_book/:normalized_file_name.:extension",
+      :path => ":rails_root/private/resume_books/:normalized_file_name.:extension",
       :url => '/:class/:id/download_pdf'
 
+  has_attached_file :iso, :default_url => '/',
+      :path => ":rails_root/private/resume_books/:normalized_file_name.:extension",
+      :url => '/:class/:id/download_iso'
 
-  validates_attachment_presence :pdf
+  validates_attachment_presence :pdf, :iso
 
   validates_attachment_content_type :pdf,
       :content_type => "application/pdf",

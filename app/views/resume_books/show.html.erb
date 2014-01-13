@@ -1,4 +1,7 @@
-<%= link_to "[resume]", @resume_book.pdf.url %>
+<p><%= link_to "Download PDF", resume_book_download_pdf_path(@resume_book.id) %></p>
+<p><%= link_to "Download ISO", resume_book_download_iso_path(@resume_book.id) %></p>
+<p>Resume book cutoff date: <%= @resume_book.cutoff_date %></p>
+<p>Resume book generated on <%= @resume_book.created_at %></p>
 
 <p>
   <strong>Title:</strong>
@@ -15,10 +18,5 @@
   <%= @resume_book.details %>
 </p>
 
-<p>
-  <strong>Cutoff date:</strong>
-  <%= @resume_book.cutoff_date %>
-</p>
-
-<%= link_to 'Edit', edit_resume_book_path(@resume_book) %> |
+<%= link_to 'Destroy', @resume_book, method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Back', resume_books_path %>

@@ -36,12 +36,18 @@ class ResumesController < ApplicationController
     my_resume_or_indrel! # security verification.
 
     if @resume.save
-      redirect_to @resume, notice: 'Resume was successfully created.'
+      flash[:notice] = 'Resume was successfully created.'
+      if @resume.user.id != current_user.id # indrel is uploading, be nice and send them here
+        redirect_to resumes_status_list_path
+      else
+        redirect_to @resume
+      end
     else
       if @resume.user.id != current_user.id # save this silly indrel from havoc
-        redirect_to resumes_upload_for_path(@resume.user.id), alert: @resume.errors.full_messages.to_s and return
+        redirect_to resumes_upload_for_path(@resume.user.id), alert: @resume.errors.full_messages.to_s
+      else
+        render :new
       end
-      render :new
     end
   end
 

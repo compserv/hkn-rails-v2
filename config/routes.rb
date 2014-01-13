@@ -18,7 +18,8 @@ HknRails::Application.routes.draw do
   match "resumes/upload_for/:user_id" => "resumes#upload_for", via: :get, :as => :resumes_upload_for
   match "resumes/:id/download" => "resumes#download", via: :get, :as => :resume_download
   match "resumes/status_list" => "resumes#status_list", via: :get, :as => :resumes_status_list
-  match "resume_books/:id/download_pdf" => "resume_books#download_pdf", via: :get, :as => :resume_book_download
+  match "resume_books/:id/download_pdf" => "resume_books#download_pdf", via: :get, :as => :resume_book_download_pdf
+  match "resume_books/:id/download_iso" => "resume_books#download_iso", via: :get, :as => :resume_book_download_iso
   match "resume_books/missing" => "resume_books#missing", via: :post, :as => :resume_book_missing
   match "resume_books/missing" => "resume_books#missing", via: :get, :as => :resume_book_missing_get
   match 'resumes/include/:id' => "resumes#include", via: :post, :as => :resumes_include
@@ -29,7 +30,7 @@ HknRails::Application.routes.draw do
   resources :dept_tours
   resources :exams
   resources :resumes
-  resources :resume_books
+  resources :resume_books, except: [:edit, :update]
   resources :users, except: [:new, :create, :index]
 
   scope "candidate" do
