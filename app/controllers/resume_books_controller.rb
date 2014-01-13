@@ -4,7 +4,7 @@ class ResumeBooksController < ApplicationController
 
   # GET /resume_books
   def index
-    @resume_books = ResumeBook.includes(:resume_book_urls).all.reverse # display most recently created at the top, works b/c can't update a resume book
+    @resume_books = ResumeBook.includes(:resume_book_urls).reverse # display most recently created at the top, works b/c can't update a resume book
   end
 
   # GET /resume_books/1
@@ -185,13 +185,21 @@ class ResumeBooksController < ApplicationController
     if params[:string]
       @resume_book.resume_book_urls.each do |url|
         if url.password == params[:string]
+          if url.expired?
+            render json: "Oops, your link appears to have expired.  Please email indrel@hkn.eecs.berkeley.edu if this is a mistake!" and return
+          end
           authorized = true
           url.download_count = url.download_count + 1
           url.save
+          break
         end
       end
+      if !authorized
+        render json: "Oops, your link does not appear in our database.  Please email indrel@hkn.eecs.berkeley.edu if this is a mistake!" and return
+      end
+    else
+      authenticate_indrel!
     end
-    authenticate_indrel! unless authorized == true
     send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type, filename: @resume_book.pdf_file_name, disposition: 'inline'
   end
 
@@ -202,7 +210,12 @@ class ResumeBooksController < ApplicationController
   # Missing gives the emails of officers and current candidates who are missing
   # a resume book so indrel can bug them.
   def missing
-    @cutoff_date = params[:date] ? params[:date].map{|k,v| v}.join("-").to_date : Date.today
+    @cutoff_date = params[:date] ? params[:date].map{|k,v| v}.join("-").to_date : nil
+    if @cutoff_date
+      session[:cutoff_date] = @cutoff_date  # hack to hold the cutoff date on location.reload when including/excluding
+    else
+      @cutoff_date = session[:cutoff_date]
+    end
 
     officers = Role.semester_filter(MemberSemester.current).officers.all_users_resumes
     candidates = Role.semester_filter(MemberSemester.current).candidates.all_users_resumes

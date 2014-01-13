@@ -274,6 +274,10 @@ ActiveRecord::Schema.define(version: 20140113223743) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "download_count"
+    t.string   "company"
+    t.string   "name"
+    t.string   "email"
+    t.string   "transaction_id"
   end
 
   create_table "resume_books", force: true do |t|

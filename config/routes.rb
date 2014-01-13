@@ -59,7 +59,8 @@ HknRails::Application.routes.draw do
     match "career_fair", to: "indrel#career_fair", via: :get, as: "career_fair"
     match "resume_books", to: "indrel#resume_books", via: :get, as: "resume_books_about"
     match "resume_books/order", to: "indrel#resume_books_order", via: :get, :as => "resume_books_order"
-    match "resume_books/sucess", to: "indrel#resume_books_order_paypal_success", via: :get, :as => "resume_books_paypal_sucess"
+    match "resume_books/order", to: "indrel#resume_books_transaction_id", via: :post, :as => "resume_books_transaction_id"
+    match "resume_books/success", to: "indrel#resume_books_order_paypal_success", via: :get, :as => "resume_books_paypal_success"
 
     scope "infosessions" do
       match "/", to: "infosession_requests#about", via: :get, as: "infosessions"

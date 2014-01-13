@@ -10,6 +10,10 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  download_count  :integer
+#  company         :string(255)
+#  name            :string(255)
+#  email           :string(255)
+#  transaction_id  :string(255)
 #
 
 require 'spec_helper'

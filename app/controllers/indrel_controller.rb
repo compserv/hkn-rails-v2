@@ -26,26 +26,29 @@ class IndrelController < ApplicationController
   end
 
   def resume_books_order
-    @paypal = paypal_encrypted(resume_books_paypal_sucess_url(:secret => 'hihihihi'))
+    @paypal = paypal_encrypted(resume_books_paypal_success_url)
+  end
+
+  def resume_books_transaction_id
+    redirect_to resume_books_paypal_success_path(:tx => params[:transaction_id])
   end
 
   def resume_books_order_paypal_success
-    redirect_to root_path, alert: "don't hack" and return unless params[:secret] == 'hihihihi'
     check_transaction_params = {
       :tx => params[:tx],
-      :at => 'NKNku30eq5MOjRFmadxjNlk-f-nCMbKulQ0tidvoUIjCNvBQDCX1B8CKgDe',
+      :at => 'NKNku30eq5MOjRFmadxjNlk-f-nCMbKulQ0tidvoUIjCNvBQDCX1B8CKgDe', # hide this when we use a real paypal
       :cmd => '_notify-synch'
     }
     x = Net::HTTP.post_form(URI.parse('https://www.sandbox.paypal.com/cgi-bin/webscr'), check_transaction_params)
     response = URI.decode(x.body.gsub('+', ' ')).split("\n")
-    if response[0] != "SUCCESS"
+    if response[0] != "SUCCESS" # attempt one more time
       x = Net::HTTP.post_form(URI.parse('https://www.sandbox.paypal.com/cgi-bin/webscr'), check_transaction_params)
       response = URI.decode(x.body).split("\n")
       if response[0] != "SUCCESS"
-        render json: "SOMETHING WENT WRONG?"
+        render json: "Oops, the transaction id '#{params[:tx]}' didn't appear to be a valid transaction according to paypal.  Please try again if this is a mistake" and return
       end
     end
-    p = {}
+    p = {} # parse information about the transaction from paypal
     response.each do |element|
       a = element.split("=")
       if a.length == 2
@@ -53,19 +56,31 @@ class IndrelController < ApplicationController
       end
     end
 
-    if p["payment_status"] == "Completed" && p["receiver_email"] == "kcasey9111@yahoo.com" && p["item_number"] == "9001" && p["mc_gross"] == "250.00"
-      # successful. generate a resume_book_url
-      r = ResumeBookUrl.create(password: SecureRandom.urlsafe_base64(100), resume_book_id: ResumeBook.last.id, expiration_date: 2.weeks.from_now, download_count: 0)
-      @link = resume_book_download_pdf_url(r.resume_book_id, string: r.password)
+
+    if p["payment_status"] == "Completed" && p["receiver_email"] == "kcasey9111@yahoo.com" && p["item_number"] == "9001" && p["mc_gross"] == "250.00" && p["item_name"] == "Resume Book" && p["quantity"] == "1"
+      if ResumeBookUrl.find_by_transaction_id(p["txn_id"]).nil?
+        # transaction was successful. generate a resume_book_url
+        p["first_name"] ||= ""
+        p["last_name"] ||= ""
+        name = p["first_name"] + " " + p["last_name"]
+        url = ResumeBookUrl.create(password: SecureRandom.urlsafe_base64(100), resume_book_id: ResumeBook.last.id, expiration_date: 2.weeks.from_now, download_count: 0, email: p["payer_email"], name: name, transaction_id: p["txn_id"], company: p["payer_business_name"])
+        flash[:notice] = "Thank you for your purchase. Your transaction has been completed, and a receipt for your purchase has been emailed to you, as well as an email from hkn of your link. You may log into your account at www.sandbox.paypal.com/us to view details of this transaction."
+        @link = resume_book_download_pdf_url(url.resume_book_id, string: url.password)
+        IndrelMailer.resume_book_bought(url).deliver
+      else
+        flash[:notice] = "This transaction has already generated a download link, remember to check the email with your paypal account or email indrel@hkn.eecs.berkeley.edu with your paypal transaction id"
+        @link = root_path
+      end
     else
-      @link = "STOP HACKING"
+      flash[:alert] = "Something went wrong! A parameter of the transaction appears to have messed up.  You're link will not work. Please email indrel@hkn.eecs.berkeley.edu if this is a mistake"
+      @link = root_path
     end
   end
 
   def paypal_encrypted(return_url)
     values = {
       :cmd => '_xclick',
-      :business => 'kcasey9111@yahoo.com',
+      :business => 'kcasey9111@yahoo.com', # hide this
       :lc => 'US',
       :item_name => 'Resume Book',
       :amount => '250.00',
@@ -74,7 +89,7 @@ class IndrelController < ApplicationController
       :no_note => '1',
       :no_shipping => '1',
       :rm => '2',
-      :item_number => '9001',
+      :item_number => '9001', # optionally hide this, just for an additional check
       :return => return_url,
       :bn => 'PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted',
       :cert_id => "XASDKBEFML5YQ"
