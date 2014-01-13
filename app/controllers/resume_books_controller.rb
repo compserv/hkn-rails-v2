@@ -4,7 +4,7 @@ class ResumeBooksController < ApplicationController
 
   # GET /resume_books
   def index
-    @resume_books = ResumeBook.all
+    @resume_books = ResumeBook.all.reverse # display most recently created at the top, works b/c can't update a resume book
   end
 
   # GET /resume_books/1
@@ -50,16 +50,16 @@ class ResumeBooksController < ApplicationController
     if sorted_yrs != [] # gracefully dodge if there are no resumes
       pdf_paths << process_tex_template("#{@skeletons}/table_of_contents.tex.erb", binding)
     end
-    details = []
+    @resume_book.details = {}
     sorted_yrs.each do |year|
-      details << year.to_s + ": " + resumes[year].count.to_s
+      @resume_book.details[year] = resumes[year].count.to_s
       pdf_paths << section_cover_page(year)
       resumes[year].each do |resume|
         pdf_paths << resume.file.path
       end
     end
-    @resume_book.details = details.join(', ')
-    @resume_book.details = "NOTHING" if @resume_book.details.blank?
+
+    @resume_book.details = "NOTHING" if @resume_book.details.nil?
     concatenate_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
     "#{@scratch_dir}/temp_resume_book.pdf" # return the path of the file we made
   end

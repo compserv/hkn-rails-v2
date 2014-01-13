@@ -20,7 +20,7 @@
 #
 
 class ResumeBook < ActiveRecord::Base
-
+  serialize :details
   validates_presence_of :cutoff_date, :title, :details
 
   has_attached_file :pdf, :default_url => '/',

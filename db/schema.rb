@@ -210,6 +210,15 @@ ActiveRecord::Schema.define(version: 20140113223743) do
     t.datetime "updated_at"
   end
 
+  create_table "payment_notifications", force: true do |t|
+    t.text     "params"
+    t.string   "status"
+    t.string   "transaction_id"
+    t.string   "create"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "position_users", force: true do |t|
     t.integer  "user_id"
     t.integer  "position_id"
