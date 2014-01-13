@@ -63,8 +63,8 @@ class IndrelController < ApplicationController
         p["first_name"] ||= ""
         p["last_name"] ||= ""
         name = p["first_name"] + " " + p["last_name"]
-        url = ResumeBookUrl.create(password: SecureRandom.urlsafe_base64(100), resume_book_id: ResumeBook.last.id, expiration_date: 2.weeks.from_now, download_count: 0, email: p["payer_email"], name: name, transaction_id: p["txn_id"], company: p["payer_business_name"])
-        flash[:notice] = "Thank you for your purchase. Your transaction has been completed, and a receipt for your purchase has been emailed to you, as well as an email from hkn of your link. You may log into your account at www.sandbox.paypal.com/us to view details of this transaction."
+        url = ResumeBookUrl.create(password: SecureRandom.urlsafe_base64(100), resume_book_id: ResumeBook.last.id, expiration_date: 1.month.from_now, download_count: 0, email: p["payer_email"], name: name, transaction_id: p["txn_id"], company: p["payer_business_name"])
+        flash[:notice] = "Thank you for your purchase. Your transaction has been completed, and a receipt for your purchase has been emailed to you, additionally information has been sent to your paypal email from hkn. You may log into your account at www.sandbox.paypal.com/us to view details of this transaction."
         @link = resume_book_download_pdf_url(url.resume_book_id, string: url.password)
         IndrelMailer.resume_book_bought(url).deliver
       else
