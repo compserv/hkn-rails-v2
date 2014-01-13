@@ -174,4 +174,9 @@ class User < ActiveRecord::Base
     self.phone_number = "(#{n[0..2]}) #{n[3..5]}-#{n[6..9]}"
   end
 
+  def as_email
+    return "\"#{full_name}\" <#{email}>"
+  end
+
+
 end

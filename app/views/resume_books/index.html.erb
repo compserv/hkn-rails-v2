@@ -1,0 +1,39 @@
+<h1>Listing resume_books</h1>
+
+<ul>
+  <li><%= link_to "Generate a new resume book", new_resume_book_path  %></li>
+  <li><%= render 'missing_form' %></li>
+  <li><%= link_to "list of all HKN Members and their resume upload statuses.", resumes_status_list_path %>
+   (You can also use this page to upload a resume for a certain person)
+  </li>
+</ul>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Remarks</th>
+      <th>Details</th>
+      <th>Cutoff date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @resume_books.each do |resume_book| %>
+      <tr>
+        <td><%= resume_book.title %></td>
+        <td><%= resume_book.remarks %></td>
+        <td><%= resume_book.details %></td>
+        <td><%= resume_book.cutoff_date %></td>
+        <td><%= link_to 'Show', resume_book %></td>
+        <td><%= link_to 'Edit', edit_resume_book_path(resume_book) %></td>
+        <td><%= link_to 'Destroy', resume_book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

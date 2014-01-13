@@ -74,7 +74,7 @@ class DeptToursController < ApplicationController
 
     Looking forward to seeing you!
 
-    --#{'@current_user.first_name'}
+    --#{current_user.full_name}
     "
   end
 

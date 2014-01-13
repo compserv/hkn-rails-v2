@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140108011216) do
+ActiveRecord::Schema.define(version: 20140108233116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -249,6 +249,19 @@ ActiveRecord::Schema.define(version: 20140108011216) do
 
   add_index "quiz_responses", ["candidate_quiz_id"], name: "index_quiz_responses_on_candidate_quiz_id", using: :btree
   add_index "quiz_responses", ["quiz_question_id"], name: "index_quiz_responses_on_quiz_question_id", using: :btree
+
+  create_table "resume_books", force: true do |t|
+    t.string   "title"
+    t.string   "remarks"
+    t.text     "details"
+    t.date     "cutoff_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "pdf_file_name"
+    t.string   "pdf_content_type"
+    t.integer  "pdf_file_size"
+    t.datetime "pdf_updated_at"
+  end
 
   create_table "resumes", force: true do |t|
     t.decimal  "overall_gpa"

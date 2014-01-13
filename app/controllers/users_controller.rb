@@ -79,7 +79,6 @@ class UsersController < ApplicationController
 
     @search_opts = params # for use in #sort_link in application_helper
 
-    joinstr = 'INNER JOIN "users_roles" ON "users_roles"."user_id" = "users"."id" INNER JOIN "roles" ON "roles"."id" = "users_roles"."role_id"' # this looks terribad...
     if %w[officers committee_members candidates].include? params[:category]
       cond = ["role_type = ? AND resource_id = ?", params[:category].singularize, MemberSemester.current.id] # autos to current semester
     elsif params[:category] == "members"
@@ -88,19 +87,20 @@ class UsersController < ApplicationController
       cond = ["name = ?", params[:category]] # searching for other things...e.g. indrel
     end
 
-    opts = { :page       => params[:page],
-             :per_page   => params[:per_page] || 20,
-             :order      => "users." + params["sort"] + " " + sort_direction,
-             :joins      => joinstr,
-             :conditions => cond
-           }
+    opts = { page: params[:page], per_page: params[:per_page] || 20 }
+    ord = "users." + params["sort"] + " " + sort_direction
+    joinstr = 'INNER JOIN "users_roles" ON "users_roles"."user_id" = "users"."id" INNER JOIN "roles" ON "roles"."id" = "users_roles"."role_id"' # this looks terribad...
 
     user_selector = User.uniq(:id)
     if authenticate_vp and params[:approved] == 'false'
       user_selector = user_selector.where(:approved => false )
     end
 
-    @users = user_selector.paginate opts
+    if cond.nil?
+      @users = user_selector.order(ord).paginate opts
+    else
+      @users = user_selector.order(ord).joins(joinstr).where(cond).paginate opts
+    end
 
     respond_to do |format|
       format.html

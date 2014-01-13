@@ -1,0 +1,24 @@
+<%= link_to "[resume]", @resume_book.pdf.url %>
+
+<p>
+  <strong>Title:</strong>
+  <%= @resume_book.title %>
+</p>
+
+<p>
+  <strong>Remarks:</strong>
+  <%= @resume_book.remarks %>
+</p>
+
+<p>
+  <strong>Details:</strong>
+  <%= @resume_book.details %>
+</p>
+
+<p>
+  <strong>Cutoff date:</strong>
+  <%= @resume_book.cutoff_date %>
+</p>
+
+<%= link_to 'Edit', edit_resume_book_path(@resume_book) %> |
+<%= link_to 'Back', resume_books_path %>

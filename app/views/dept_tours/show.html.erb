@@ -38,13 +38,13 @@
       <h2>Response:</h2>
       <%= form_tag @dept_tour, :method=>:post do %>
         <%= label_tag :from, "From: "%> <br/>
-        <%= text_field_tag :from, 'kacasey@berkeley.edu', :size=>50 %>
+        <%= text_field_tag :from, current_user.email, :size=>50 %>
         <br/>
         <%= label_tag :ccs, "Additional CCs (you and deprel will automatically be added):" %> <br/>
         <%= text_field_tag :ccs, "", :size=>50 %>
         <br/>
         <%= label_tag :response, "Response text: " %><br/>
-        <%= text_area_tag :response, @default_response_text %>
+        <%= text_area_tag :response, @default_response_text, style: "width: 80%; height: 200px;" %>
         <br />
         <%= submit_tag "Send Response" %>
       <% end %>

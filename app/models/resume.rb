@@ -31,12 +31,11 @@ class Resume < ActiveRecord::Base
   validates :graduation_semester,
       inclusion: { in: %w(Spring Fall),
       message: "%{value} is not a valid semester" }
-  validates :included, :inclusion => [true,false]
   validates :user_id, presence: true, uniqueness: true
 
   has_attached_file :file, :default_url => '/resumes/new',
-      :path => ":rails_root/public/resumes/:normalized_file_name.:extension",
-      :url => "/resumes/:normalized_file_name.:extension"
+      :path => ":rails_root/private/resumes/:normalized_file_name.:extension",
+      :url => '/:class/:id/download'
 
   validates_attachment_presence :file
 
@@ -54,5 +53,9 @@ class Resume < ActiveRecord::Base
 
   def get_username
     self.user.username
+  end
+
+  def get_full_name
+    self.user.full_name
   end
 end

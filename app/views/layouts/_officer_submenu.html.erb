@@ -115,7 +115,7 @@
         <li><a href="/admin/deprel" class="navigation_sublevel_item">Deprel Admin [<%= 'controller.num_deprel_requests' %>]</a></li>
       <% end %>
       <% if authorize(:indrel) %>
-        <li><a href="/admin/indrel/" class="navigation_sublevel_item">Indrel Admin</a></li>
+        <li><%= link_to 'Indrel Admin', admin_indrel_path, :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:bridge) %>
         <li><%= link_to 'Bridge Admin', admin_bridge_path, :class => 'navigation_sublevel_item'  %></li>
