@@ -26,6 +26,7 @@ class IndrelController < ApplicationController
   end
 
   def resume_books_order
+    debugger
     @paypal = paypal_encrypted(resume_books_paypal_success_url)
   end
 
@@ -36,19 +37,19 @@ class IndrelController < ApplicationController
   def resume_books_order_paypal_success
     check_transaction_params = {
       :tx => params[:tx],
-      :at => 'NKNku30eq5MOjRFmadxjNlk-f-nCMbKulQ0tidvoUIjCNvBQDCX1B8CKgDe', # hide this when we use a real paypal
+      :at => ENV["paypal_identity_token"],
       :cmd => '_notify-synch'
     }
     x = Net::HTTP.post_form(URI.parse('https://www.sandbox.paypal.com/cgi-bin/webscr'), check_transaction_params)
     response = URI.decode(x.body.gsub('+', ' ')).split("\n")
-    if response[0] != "SUCCESS" # attempt one more time
+    if response[0] != "SUCCESS" # attempt one more time, in case paypal just missed it or something
       x = Net::HTTP.post_form(URI.parse('https://www.sandbox.paypal.com/cgi-bin/webscr'), check_transaction_params)
       response = URI.decode(x.body).split("\n")
       if response[0] != "SUCCESS"
         render json: "Oops, the transaction id '#{params[:tx]}' didn't appear to be a valid transaction according to paypal.  Please try again if this is a mistake" and return
       end
     end
-    p = {} # parse information about the transaction from paypal
+    p = {} # parse information about the transaction from paypal into a hash that's easier to use
     response.each do |element|
       a = element.split("=")
       if a.length == 2
@@ -57,7 +58,7 @@ class IndrelController < ApplicationController
     end
 
 
-    if p["payment_status"] == "Completed" && p["receiver_email"] == "kcasey9111@yahoo.com" && p["item_number"] == "9001" && p["mc_gross"] == "250.00" && p["item_name"] == "Resume Book" && p["quantity"] == "1"
+    if p["payment_status"] == "Completed" && p["receiver_email"] == ENV["paypal_email"] && p["item_number"] == ENV["paypal_item_number"] && p["mc_gross"] == "250.00" && p["item_name"] == "Resume Book" && p["quantity"] == "1"
       if ResumeBookUrl.find_by_transaction_id(p["txn_id"]).nil?
         # transaction was successful. generate a resume_book_url
         p["first_name"] ||= ""
@@ -72,7 +73,7 @@ class IndrelController < ApplicationController
         @link = root_path
       end
     else
-      flash[:alert] = "Something went wrong! A parameter of the transaction appears to have messed up.  You're link will not work. Please email indrel@hkn.eecs.berkeley.edu if this is a mistake"
+      flash[:alert] = "Something went wrong! It appears like that transaction doesn't correspond to buying a resume book with us.  You're link will not work. Please email indrel@hkn.eecs.berkeley.edu if this is a mistake"
       @link = root_path
     end
   end
@@ -80,7 +81,7 @@ class IndrelController < ApplicationController
   def paypal_encrypted(return_url)
     values = {
       :cmd => '_xclick',
-      :business => 'kcasey9111@yahoo.com', # hide this
+      :business => ENV["paypal_email"],
       :lc => 'US',
       :item_name => 'Resume Book',
       :amount => '250.00',
@@ -89,7 +90,7 @@ class IndrelController < ApplicationController
       :no_note => '1',
       :no_shipping => '1',
       :rm => '2',
-      :item_number => '9001', # optionally hide this, just for an additional check
+      :item_number => ENV["paypal_item_number"],
       :return => return_url,
       :bn => 'PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted',
       :cert_id => "XASDKBEFML5YQ"
@@ -97,13 +98,9 @@ class IndrelController < ApplicationController
     encrypt_for_paypal(values)
   end
 
-  PAYPAL_CERT_PEM = File.read("#{Rails.root}/certs/paypal_cert.pem")
-  APP_CERT_PEM = File.read("#{Rails.root}/certs/app_cert.pem")
-  APP_KEY_PEM = File.read("#{Rails.root}/certs/app_key.pem")
-
   def encrypt_for_paypal(values)
-    signed = OpenSSL::PKCS7::sign(OpenSSL::X509::Certificate.new(APP_CERT_PEM), OpenSSL::PKey::RSA.new(APP_KEY_PEM, ''), values.map { |k, v| "#{k}=#{v}" }.join("\n"), [], OpenSSL::PKCS7::BINARY)
-    OpenSSL::PKCS7::encrypt([OpenSSL::X509::Certificate.new(PAYPAL_CERT_PEM)], signed.to_der, OpenSSL::Cipher::Cipher::new("DES3"), OpenSSL::PKCS7::BINARY).to_s.gsub("\n", "")
+    signed = OpenSSL::PKCS7::sign(OpenSSL::X509::Certificate.new(ENV["APP_CERT_PEM"]), OpenSSL::PKey::RSA.new(ENV["APP_KEY_PEM"], ''), values.map { |k, v| "#{k}=#{v}" }.join("\n"), [], OpenSSL::PKCS7::BINARY)
+    OpenSSL::PKCS7::encrypt([OpenSSL::X509::Certificate.new(ENV["PAYPAL_CERT_PEM"])], signed.to_der, OpenSSL::Cipher::Cipher::new("DES3"), OpenSSL::PKCS7::BINARY).to_s.gsub("\n", "")
   end
 
 end

@@ -3,7 +3,7 @@ Link to HKN Resume Book Download
 ==========================================================================
 
 Your link is here <%= resume_book_download_pdf_url(@url.resume_book_id, string: @url.password) %>.
-Note that this link will expire by default at <%= @url.expiration_date.strftime("%B %d, %Y at %I:%M %p") %>,
+Note that this link will expire by default on <%= @url.expiration_date.strftime("%B %d, %Y at %I:%M %p") %>,
 and that for security purposes your paypal transaction id of <%= @url.transaction_id %> has been saved to our database and will not allow for another generation of a download link.  However feel free to share the link above to your company!
 
 Thank you once again, and if you encounter any problems please email indrel@hkn.eecs.berkeley.edu
