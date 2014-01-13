@@ -1,6 +1,6 @@
 <h1><%= @event.name %></h1>
 
-<%= link_to raw('&larr;back'), confirm_rsvps_index_path(@group) %>
+<%= link_to raw('&larr;back'), confirm_rsvps_index_path(@role) %>
 
 <table>
   <tr>
@@ -17,20 +17,20 @@
     <% if rsvp.confirmed == "t" %>
     <td>Confirmed</td>
     <td>
-      <%= link_to "Unconfirm", unconfirm_rsvp_path(rsvp.id, :group => @group) %> |
-      <%= link_to "Reject", reject_rsvp_path(rsvp.id, :group => @group) %>
+      <%= link_to "Unconfirm", unconfirm_rsvp_path(rsvp.id, :role => @role) %> |
+      <%= link_to "Reject", reject_rsvp_path(rsvp.id, :role => @role) %>
     </td>
     <% elsif rsvp.confirmed == "r" %>
     <td>Rejected</td>
     <td>
-      <%= link_to "Confirm", confirm_rsvp_path(rsvp.id, :group => @group) %> |
-      <%= link_to "Unconfirm", unconfirm_rsvp_path(rsvp.id, :group => @group) %>
+      <%= link_to "Confirm", confirm_rsvp_path(rsvp.id, :role => @role) %> |
+      <%= link_to "Unconfirm", unconfirm_rsvp_path(rsvp.id, :role => @role) %>
     </td>
     <% else %>
     <td>Not Confirmed</td>
     <td>
-      <%= link_to "Confirm", confirm_rsvp_path(rsvp.id, :group => @group) %> |
-      <%= link_to "Reject", reject_rsvp_path(rsvp.id, :group => @group) %>
+      <%= link_to "Confirm", confirm_rsvp_path(rsvp.id, :role => @role) %> |
+      <%= link_to "Reject", reject_rsvp_path(rsvp.id, :role => @role) %>
     </td>
     <% end %>
   </tr>

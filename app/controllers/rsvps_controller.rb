@@ -51,6 +51,7 @@ class RsvpsController < ApplicationController
     @rsvp = Rsvp.new(rsvp_params)
     @rsvp.event = @event
     @rsvp.user = current_user
+    @rsvp.confirmed = Rsvp::Unconfirmed
 
     respond_to do |format|
       if @rsvp.save
