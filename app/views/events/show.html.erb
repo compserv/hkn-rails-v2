@@ -71,6 +71,7 @@
     <% if @event.allows_rsvps? %>
       <%= link_to 'RSVP', '/events/' + @event.id.to_s + '/rsvps/new' %>
       |
+    <% elsif @event.max_rsvps == 0 %>
     <% else %>
       <strong>RSVPs FULL</strong>
       |

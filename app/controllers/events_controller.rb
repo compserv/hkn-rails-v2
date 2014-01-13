@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
   before_filter :event_authorize
+  before_filter :comm_authorize!, except: [:index, :show, :calendar]
 
   def index
     per_page = 20
@@ -65,10 +66,13 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(params[:event])
+    @event = Event.new(event_params)
+    valid = true
 
     if @event.valid?
       @event.save!
+    else
+      valid = false
     end
 
     respond_to do |format|
@@ -83,9 +87,34 @@ class EventsController < ApplicationController
   end
 
   def update
+    @event = Event.find(params[:id])
+    valid = @event.update_attributes(event_params)
+
+    respond_to do |format|
+      if valid
+        format.html { redirect_to(@event, :notice => 'Event was successfully updated.') }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
+    unless @event = Event.find(params[:id])
+      # no such event
+      flash[:notice] = "Invalid event #{params[:id]}"
+      redirect_to events_path
+      return
+    end
+
+    @event.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(events_url) }
+      format.xml  { head :ok }
+    end
   end
 
   def edit
@@ -132,5 +161,10 @@ class EventsController < ApplicationController
   private
     def event_authorize
       @event_auth = comm_authorize
+    end
+
+    def event_params
+      params.require(:event).permit(:title, :description, :location, :start_time, :end_time, :event_type,
+                    :view_permission_roles, :rsvp_permission_roles, :max_rsvps, :need_transportation?)
     end
 end
