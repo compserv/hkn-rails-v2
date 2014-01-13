@@ -27,6 +27,7 @@ HknRails::Application.routes.draw do
   resources :exams
   resources :resumes
   resources :resume_books, except: [:edit, :update]
+  resources :resume_book_urls
   resources :users, except: [:new, :create, :index]
 
   scope "candidate" do

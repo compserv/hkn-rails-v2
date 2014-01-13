@@ -16,6 +16,7 @@
       <th>Iso File</th>
       <th>Cutoff date</th>
       <th>Details</th>
+      <th>Total Company Downloads</th>
       <th colspan="2">Actions</th>
     </tr>
   </thead>
@@ -29,6 +30,7 @@
         <td><%= link_to "Download ISO", resume_book_download_iso_path(resume_book.id) %></td>
         <td><%= resume_book.cutoff_date %></td>
         <td><%= resume_book.details.map{|k,v| "#{k}=#{v}"}.join(', ') %></td>
+        <td><%= resume_book.total_download_count %></td>
         <td><%= link_to 'Show', resume_book %></td>
         <td><%= link_to 'Destroy', resume_book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

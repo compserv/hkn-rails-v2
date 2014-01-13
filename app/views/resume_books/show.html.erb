@@ -20,3 +20,23 @@
 
 <%= link_to 'Destroy', @resume_book, method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Back', resume_books_path %>
+
+<h2>URLS for this book</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Download Count</th>
+      <th>Expiration</th>
+      <th colspan="3">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @resume_book.resume_book_urls.each do |url| %>
+      <tr>
+        <td><%= url.download_count %></td>
+        <td><%= url.expiration_date.strftime("%A, %B %d, at %I:%M %p") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
