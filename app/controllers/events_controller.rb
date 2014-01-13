@@ -56,9 +56,30 @@ class EventsController < ApplicationController
   end
 
   def new
+    @event = Event.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @event }
+    end
   end
 
   def create
+    @event = Event.new(params[:event])
+
+    if @event.valid?
+      @event.save!
+    end
+
+    respond_to do |format|
+      if valid
+        format.html { redirect_to(@event, :notice => 'Event was successfully created.') }
+        format.xml  { render :xml => @event, :status => :created, :location => @event }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
+      end
+    end
   end
 
   def update
@@ -68,6 +89,9 @@ class EventsController < ApplicationController
   end
 
   def edit
+    @event = Event.find(params[:id])
+    @event.start_time = @event.start_time.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d %I:%M %P")
+    @event.end_time = @event.end_time.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d %I:%M %P")
   end
 
   def show

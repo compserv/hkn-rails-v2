@@ -28,10 +28,21 @@ class Event < ActiveRecord::Base
   validates :event_type, :presence => true
   validates :start_time, :presence => true
   validates :end_time, :presence => true
+  validates :max_rsvps, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates_inclusion_of :rsvp_permission_roles, in: [:candidates, :committee_members, :officers, nil]
   validates_inclusion_of :view_permission_roles, in: [:candidates, :committee_members, :officers, nil] 
   validates_inclusion_of :event_type, in: ["Big Fun", "Fun", "Industry", "Mandatory for Candidates",
                                            "Miscellaneous", "Service"]
+
+  def self.event_types
+    ["Big Fun", "Fun", "Industry", "Mandatory for Candidates",
+     "Miscellaneous", "Service"]
+  end
+
+  def self.permission_options
+    [["Candidates and Members", :candidates], ["Committee Members", :committee_members], ["Officers", :officers],
+     ["Everyone", nil]]
+  end
 
   scope :with_permission, Proc.new { |user| 
     if user.nil?

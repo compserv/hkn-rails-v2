@@ -1,0 +1,66 @@
+<%= form_for(@event) do |f| %>
+  <% if @event.errors.any? %>
+    <div id="errorExplanation">
+      <h2>
+        <%= pluralize(@event.errors.count, "error") %>
+        prohibited this event from being saved:
+      </h2>
+      <ul>
+        <% @event.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :location %>
+    <%= f.text_field :location %>
+  </div>
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :event_type %>
+    <%= f.select :event_type, Event.event_types.map { |type| [type, type] } %>
+  </div>
+  <div class="field">
+    <%= f.label :start_time %>
+    <%= f.text_field :start_time, size: 20, class: "datetimepicker" %>
+  </div>
+  <div class="field">
+    <%= f.label :end_time %>
+    <%= f.text_field :end_time, size: 20, class: "datetimepicker" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :view_permission_roles, 'View Permission' %>
+    <%= f.select :view_permission_roles, Event.permission_options %>
+  </div>
+
+  <div class="field" id="rsvp_permission_group_id_div">
+    <%= f.label :rsvp_permission_roles, 'RSVP Permission' %>
+    <%= f.select :rsvp_permission_roles, Event.permission_options %>
+  </div>
+
+  <div class="field" id="rsvp_cap_div">
+    <%= f.label :max_rsvps, 'Maximum # of RSVPs' %>
+    <%= f.text_field :max_rsvps %>
+  </div>
+
+  <div class="field">
+    <%= f.label :need_transportation? %>
+    <%= f.check_box :need_transportation? %>
+  </div>
+  <div class="field-submit">
+    <%= f.submit %>
+  </div>
+<% end %>
+
