@@ -7,4 +7,11 @@ class IndrelMailer < ActionMailer::Base
          subject: "Infosession registration from #{@infosession_request.company_name}"
   end
 
+  def resume_book_bought(url)
+    @url = url
+    mail to: "#{url.email}",
+         from: "indrel@hkn.eecs.berkeley.edu",
+         subject: "Resume Book Information"
+  end
+
 end

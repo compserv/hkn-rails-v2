@@ -16,3 +16,15 @@
   <input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
   <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
 <% end %>
+
+<p>By paying with paypal you will immediately recieve a uniquely generated download link to our resume book</p>
+<p>If something goes wrong but you have your paypal transaction ID please submit it through this form</p>
+<%= form_tag resume_books_transaction_id_path do |f| %>
+  <div class="field">
+    <%= label_tag "transaction_id", "Paypal Transaction ID" %>
+    <%= text_field_tag :transaction_id %>
+  </div>
+  <div class="field-submit">
+    <%= submit_tag "Submit"%>
+  </div>
+<% end %>

@@ -1,0 +1,44 @@
+<%= form_for(@resume_book_url) do |f| %>
+  <% if @resume_book_url.errors.any? %>
+    <h2><%= pluralize(@resume_book_url.errors.count, "error") %> prohibited this resume_book_url from being saved:</h2>
+
+    <div class="alert alert-danger">
+      <% @resume_book_url.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :resume_book_id %>Set this to largest number for most recent resume book<br>
+    <%= f.select :resume_book_id, ResumeBook.pluck(:id) %>
+  </div>
+  <div class="field">
+    <%= f.label :expiration_date %><br>
+    <%= f.datetime_select :expiration_date %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br>
+    <%= f.text_field :password %>
+  </div>
+  <p>NOTE: these are optional</p>
+  <div class="field">
+    <%= f.label :download_count %><br>
+    <%= f.number_field :download_count %>
+  </div>
+  <div class="field">
+    <%= f.label :company %><br>
+    <%= f.text_field :company %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :email %><br>
+    <%= f.text_field :email, :style => "width: 300px;" %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
