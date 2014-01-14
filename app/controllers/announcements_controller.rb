@@ -28,16 +28,16 @@ class AnnouncementsController < ApplicationController
     if @announcement.save
       redirect_to @announcement, notice: 'Announcement was successfully created.'
     else
-      format.html { render action: 'new' }
+      render action: 'new'
     end
   end
 
   # PATCH/PUT /announcements/1
   def update
     if @announcement.update(announcement_params)
-      format.html { redirect_to @announcement, notice: 'Announcement was successfully updated.' }
+      redirect_to @announcement, notice: 'Announcement was successfully updated.'
     else
-      format.html { render action: 'edit' }
+      render action: 'edit'
     end
   end
 
