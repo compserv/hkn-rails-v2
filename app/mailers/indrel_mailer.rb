@@ -14,4 +14,11 @@ class IndrelMailer < ActionMailer::Base
          subject: "Resume Book Information"
   end
 
+  def resume_book_bought_to_indrel(url)
+    @url = url
+    mail to: "indrel@hkn.eecs.berkeley.edu",
+         from: "indrel@hkn.eecs.berkeley.edu",
+         subject: "Resume Book Bought"
+  end
+
 end

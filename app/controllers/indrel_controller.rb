@@ -26,7 +26,6 @@ class IndrelController < ApplicationController
   end
 
   def resume_books_order
-    debugger
     @paypal = paypal_encrypted(resume_books_paypal_success_url)
   end
 
@@ -68,6 +67,7 @@ class IndrelController < ApplicationController
         flash[:notice] = "Thank you for your purchase. Your transaction has been completed, and a receipt for your purchase has been emailed to you, additionally information has been sent to your paypal email from hkn. You may log into your account at www.sandbox.paypal.com/us to view details of this transaction."
         @link = resume_book_download_pdf_url(url.resume_book_id, string: url.password)
         IndrelMailer.resume_book_bought(url).deliver
+        IndrelMailer.resume_book_bought_to_indrel(url).deliver
       else
         flash[:notice] = "This transaction has already generated a download link, remember to check the email with your paypal account or email indrel@hkn.eecs.berkeley.edu with your paypal transaction id"
         @link = root_path
