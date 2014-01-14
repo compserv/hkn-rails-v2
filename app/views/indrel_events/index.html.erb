@@ -1,0 +1,47 @@
+<h1>Listing Indrel Events</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Location</th>
+      <th>Indrel event type</th>
+      <th>Food</th>
+      <th>Prizes</th>
+      <th>Turnout</th>
+      <th>Company</th>
+      <th>Contact</th>
+      <th>Officer</th>
+      <th>Feedback</th>
+      <th>Comments</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @indrel_events.each do |indrel_event| %>
+      <tr>
+        <td><%= indrel_event.time %></td>
+        <td><%= indrel_event.location_name %></td>
+        <td><%= indrel_event.indrel_event_type_name %></td>
+        <td><%= indrel_event.food %></td>
+        <td><%= indrel_event.prizes %></td>
+        <td><%= indrel_event.turnout %></td>
+        <td><%= indrel_event.company_name %></td>
+        <td><%= indrel_event.contact_name %></td>
+        <td><%= indrel_event.officer %></td>
+        <td><%= indrel_event.feedback %></td>
+        <td><%= indrel_event.comments %></td>
+        <td><%= link_to 'Show', indrel_event %></td>
+        <td><%= link_to 'Edit', edit_indrel_event_path(indrel_event) %></td>
+        <td><%= link_to 'Destroy', indrel_event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Indrel event', new_indrel_event_path %> | <%= link_to 'Indrel Admin Index', admin_indrel_path %>

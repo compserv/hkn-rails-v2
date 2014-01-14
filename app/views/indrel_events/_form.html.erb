@@ -1,0 +1,58 @@
+<%= form_for(@indrel_event) do |f| %>
+  <% if @indrel_event.errors.any? %>
+    <h2><%= pluralize(@indrel_event.errors.count, "error") %> prohibited this indrel_event from being saved:</h2>
+    <div id="alert alert-danger">
+      <% @indrel_event.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :time %>
+    <%= f.datetime_select :time %>
+  </div>
+  <div class="field">
+    <%= f.label :location %>
+    <%= collection_select :indrel_event, :location_id, Location.all, :id, :name, {:include_blank => "None"} %>
+  </div>
+  <div class="field">
+    <%= f.label :indrel_event_type %>
+    <%= collection_select :indrel_event, :indrel_event_type_id, IndrelEventType.all, :id, :name, {:include_blank => "None"} %>
+  </div>
+  <div class="field">
+    <%= f.label :food %>
+    <%= f.text_area :food %>
+  </div>
+  <div class="field">
+    <%= f.label :prizes %>
+    <%= f.text_area :prizes %>
+  </div>
+  <div class="field">
+    <%= f.label :turnout %>
+    <%= f.number_field :turnout %>
+  </div>
+  <div class="field">
+    <%= f.label :company %>
+    <%= collection_select :indrel_event, :company_id, Company.all, :id, :name %>
+  </div>
+  <div class="field">
+    <%= f.label :contact %>
+    <%= collection_select :indrel_event, :contact_id, Contact.all, :id, :name, {:include_blank => "None"} %>
+  </div>
+  <div class="field">
+    <%= f.label :officer %>
+    <%= f.text_field :officer %>
+  </div>
+  <div class="field">
+    <%= f.label :feedback %>
+    <%= f.text_area :feedback %>
+  </div>
+  <div class="field">
+    <%= f.label :comments %>
+    <%= f.text_area :comments %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,57 @@
+<p>
+  <strong>Time:</strong>
+  <%= @indrel_event.time %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @indrel_event.location_name %>
+</p>
+
+<p>
+  <strong>Indrel event type:</strong>
+  <%= @indrel_event.indrel_event_type_name %>
+</p>
+
+<p>
+  <strong>Food:</strong>
+  <%= @indrel_event.food %>
+</p>
+
+<p>
+  <strong>Prizes:</strong>
+  <%= @indrel_event.prizes %>
+</p>
+
+<p>
+  <strong>Turnout:</strong>
+  <%= @indrel_event.turnout %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @indrel_event.company_name %>
+</p>
+
+<p>
+  <strong>Contact:</strong>
+  <%= @indrel_event.contact_name %>
+</p>
+
+<p>
+  <strong>Officer:</strong>
+  <%= @indrel_event.officer %>
+</p>
+
+<p>
+  <strong>Feedback:</strong>
+  <%= @indrel_event.feedback %>
+</p>
+
+<p>
+  <strong>Comments:</strong>
+  <%= @indrel_event.comments %>
+</p>
+
+<%= link_to 'Edit', edit_indrel_event_path(@indrel_event) %> |
+<%= link_to 'Back', indrel_events_path %>

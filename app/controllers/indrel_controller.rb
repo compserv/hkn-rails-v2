@@ -68,6 +68,17 @@ class IndrelController < ApplicationController
         @link = resume_book_download_pdf_url(url.resume_book_id, string: url.password)
         IndrelMailer.resume_book_bought(url).deliver
         IndrelMailer.resume_book_bought_to_indrel(url).deliver
+        comm = "bought resume book on #{url.created_at.strftime("%B %d, %Y at %I:%M %p")}"
+        debugger
+        if !url.company.nil?
+          company = Company.where(name: url.company).first_or_create
+          company.update_attribute :comments, company.comments.to_s + " " + comm
+          contact = Contact.where(name: url.name, email: url.email, company_id: company.id).first_or_create
+          contact.update_attribute :comments, contact.comments.to_s + " " + comm
+        else
+          contact = Contact.where(name: url.name, email: url.email).first_or_create
+          contact.update_attribute :comments, contact.comments.to_s + " " + comm
+        end
       else
         flash[:notice] = "This transaction has already generated a download link, remember to check the email with your paypal account or email indrel@hkn.eecs.berkeley.edu with your paypal transaction id"
         @link = root_path
