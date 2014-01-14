@@ -123,11 +123,13 @@ span.label{
   padding: 0px 1em;   
 }
 
-#main{
+#main-home{
   max-width: 968px;
+  width: 65%;
+  float: left;
 }
 
-#main h1{
+#main-home h1{
   text-shadow: none;
   font-family: "Cuprum";
   text-transform: uppercase;
@@ -135,7 +137,7 @@ span.label{
   font-weight: normal;
 }
 
-#main h2{
+#main-home h2{
   text-shadow: none;
   font-family: "Cuprum";
   text-transform: uppercase;
@@ -145,16 +147,16 @@ span.label{
   font-weight: normal;
 }
 
-#main .section-header{
+#main-home .section-header{
   background: #403f3f;
 }
 
-#main .section{
+#main-home .section{
   width: 100%;
   height: 400px;
 }
 
-#main .section .text{
+#main-home .section .text{
   background: rgba(0,0,0, 0.6);
   color: white;
   height: 100%;
@@ -162,49 +164,49 @@ span.label{
   float: left;
 }
 
-#main .section .text div{
+#main-home .section .text div{
   padding: 1em;
 }
 
-#main .section .text a{
+#main-home .section .text a{
   color: #f7e26b;
 }
 
-#main .current-section{
+#main-home .current-section{
   display: block;
 }
 
-#main .section-header{
+#main-home .section-header{
   color: white;
   cursor: pointer;
 }
 
-#main .section-header .text{
+#main-home .section-header .text{
   padding: 0.8em;
 }
 
-#main .section-header h1{
+#main-home .section-header h1{
   margin: 0px;
 }
 
-#main .current-header, .section-header:hover{
+#main-home .current-header, .section-header:hover{
   color: #403f3f;
   background: #f7e26b;
 }
 
-#main #what_sec{
+#main-home #what_sec{
   background: url('site/hkn_members.png');
 }
 
-#main #student-services_sec{
+#main-home #student-services_sec{
   background: url('site/hkn_tutoring.png');
 }
 
-#main #ind_rel_sec{
+#main-home #ind_rel_sec{
   background: url('site/hkn_faculty.png')
 }
 
-#main #membership_sec{
+#main-home #membership_sec{
   background: url('site/hkn_banquet.png')
 }
 

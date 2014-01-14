@@ -1,5 +1,4 @@
 HknRails::Application.routes.draw do
-
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -24,6 +23,7 @@ HknRails::Application.routes.draw do
   match 'resumes/exclude/:id' => "resumes#exclude", via: :post, :as => :resumes_exclude
 
   resources :alum
+  resources :announcements
   resources :challenges, only: [:create, :update, :index]
   resources :dept_tours
   resources :exams
