@@ -26,7 +26,7 @@
           <span id="username" style="display:none;">guest</span>
         <% end %>
 
-        <%#= render 'notifications/notifications' if @auth['comms'] %>
+        <%= render 'notifications/notifications' if comm_authorize %>
 
         <ul>
           <li><a class="navigation_toplevel_item" id="services" href="#">Student Services</a></li>

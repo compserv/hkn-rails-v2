@@ -4,6 +4,7 @@ HknRails::Application.routes.draw do
 
   devise_for :users, controllers: { registrations: "registrations" }
 
+  match 'notifications/read', to: 'notifications#index', via: :get, as: "notifications"
 
   match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post

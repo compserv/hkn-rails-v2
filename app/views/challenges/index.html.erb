@@ -3,11 +3,11 @@
 <h2>Pending Challenges</h2>
 <% @pending.each do |challenge| %>
   <li id='list'>
-    <%= link_to "Confirm", challenge_path(id: challenge.id, confirmed: true, rejected: false),
-        :method => 'patch', :class => 'btn btn-success' %>
-    <%= link_to "Reject", challenge_path(id: challenge.id, rejected: true, confirmed: false),
-        :method => 'patch', :class => 'btn btn-danger' %>
-    <span class="challenge_name"><%= challenge.name %></span> (requested by <%= 'kacasey' %>)
+    <%= link_to "[Confirm]", challenge_path(id: challenge.id, confirmed: true, rejected: false),
+        :method => 'patch' %>
+    <%= link_to "[Reject]", challenge_path(id: challenge.id, rejected: true, confirmed: false),
+        :method => 'patch' %>
+    <span class="challenge_name"><%= challenge.name %></span> (requested by <%= challenge.candidate_name %>)
     <span> <%= challenge.description %></span>
   </li>
 <% end %>
@@ -15,9 +15,9 @@
 <h2>Confirmed Challenges</h2>
 <% @confirmed.each do |challenge| %>
   <li id='list'>
-    <%= link_to "Reject instead?", challenge_path(id: challenge.id, rejected: true, confirmed: false),
-        :method => 'patch', :class => 'btn btn-danger' %>
-    <span class="challenge_name"><%= challenge.name %></span> (requested by <%= 'kacasey' %>)
+    <%= link_to "[Reject instead?]", challenge_path(id: challenge.id, rejected: true, confirmed: false),
+        :method => 'patch' %>
+    <span class="challenge_name"><%= challenge.name %></span> (requested by <%= challenge.candidate_name %>)
     <span> <%= challenge.description %></span>
   </li>
 <% end %>
@@ -25,9 +25,9 @@
 <h2>Rejected Challenges</h2>
 <% @rejected.each do |challenge| %>
   <li id='list'>
-    <%= link_to "Confirm instead?", challenge_path(id: challenge.id, confirmed: true, rejected: false),
-        :method => 'patch', :class => 'btn btn-success' %>
-    <span class="challenge_name"><%= challenge.name %></span> (requested by <%= 'kacasey' %>)
+    <%= link_to "[Confirm instead?]", challenge_path(id: challenge.id, confirmed: true, rejected: false),
+        :method => 'patch' %>
+    <span class="challenge_name"><%= challenge.name %></span> (requested by <%= challenge.candidate_name %>)
     <span> <%= challenge.description %></span>
   </li>
 <% end %>
