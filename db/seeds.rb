@@ -99,11 +99,36 @@ def initialize_mobile_carriers
     {:name => "Virgin Mobile USA",  :sms_email => "@vmobl.com"},
   ]
   mobile_carriers.each do |mobile_carrier|
-    MobileCarrier.find_or_create_by_name_and_sms_email(mobile_carrier)
+    MobileCarrier.where(mobile_carrier).first_or_create
+  end
+end
+
+def initialize_locations
+  locations = [
+    {name: '10 Evans', capacity: 200, comments: 'Largest lecture hall with a projector but never available.'},
+    {name: '3117 Etcheverry', capacity: 30},
+    {name: '3 Evans', capacity: 35},
+    {name: '45 Evans', capacity: 25, comments: 'Not recommended, too small.'},
+    {name: '60 Evans', capacity: 150, comments: 'A large room on the back of Evans with a nice projector'},
+    {name: '75 Evans', capacity: 30},
+    {name: '81 Evans', capacity: 30},
+    {name: 'Wozniak Lounge', capacity: 100}
+  ]
+  locations.each do |location|
+    Location.where(location).first_or_create
+  end
+end
+
+def initialize_event_types
+  event_types = [{name: 'Infosession'}, {name: 'Resume Book Sale'}, {name: 'Tech Talk'}]
+  event_types.each do |event|
+    IndrelEventType.where(event).first_or_create
   end
 end
 
 initialize_mobile_carriers
+initialize_locations
+initialize_event_types
 
 events = [
   ["Picnic", "Lots of fun", DateTime.yesterday, DateTime.now, "Big Fun", nil, nil, false, 999],

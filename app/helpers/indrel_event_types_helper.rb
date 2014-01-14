@@ -1,0 +1,2 @@
+module IndrelEventTypesHelper
+end

@@ -202,10 +202,30 @@ class ResumeBooksController < ApplicationController
     else
       authenticate_indrel!
     end
-    send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type, filename: @resume_book.pdf_file_name
+    send_file @resume_book.iso.path, type: @resume_book.iso_content_type, filename: @resume_book.iso_file_name
   end
 
   def download_iso
+    authorized = false
+    if params[:string]
+      @resume_book.resume_book_urls.each do |url|
+        if url.password == params[:string]
+          if url.expired?
+            render json: "Oops, your link appears to have expired.  Please email indrel@hkn.eecs.berkeley.edu if this is a mistake!" and return
+          end
+          authorized = true
+          url.download_count = url.download_count + 1
+          url.save
+          break
+        end
+      end
+      if !authorized
+        # maybe email someone that a hack attempt went off? tbh there are 62^100 possibilities and they need to match up the id of the resume book with an active string, it will be absurdly difficult to hack
+        render json: "Oops, your link does not appear in our database.  Please email indrel@hkn.eecs.berkeley.edu if this is a mistake!" and return
+      end
+    else
+      authenticate_indrel!
+    end
     send_file @resume_book.iso.path, type: @resume_book.iso_content_type, filename: @resume_book.iso_file_name
   end
 

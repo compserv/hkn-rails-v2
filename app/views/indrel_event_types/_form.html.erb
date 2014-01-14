@@ -1,0 +1,18 @@
+<%= form_for(@indrel_event_type) do |f| %>
+  <% if @indrel_event_type.errors.any? %>
+    <h2><%= pluralize(@indrel_event_type.errors.count, "error") %> prohibited this indrel_event_type from being saved:</h2>
+    <div class="alert alert-danger">
+      <% @indrel_event_type.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </p>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

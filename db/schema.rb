@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140114053024) do
+ActiveRecord::Schema.define(version: 20140114212237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,15 @@ ActiveRecord::Schema.define(version: 20140114053024) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "companies", force: true do |t|
+    t.string   "name"
+    t.text     "address"
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "website"
   end
 
   create_table "course_offerings", force: true do |t|
@@ -173,6 +182,12 @@ ActiveRecord::Schema.define(version: 20140114053024) do
 
   add_index "exams", ["course_id"], name: "index_exams_on_course_id", using: :btree
 
+  create_table "indrel_event_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "infosession_requests", force: true do |t|
     t.string   "company_name"
     t.string   "address1"
@@ -191,6 +206,14 @@ ActiveRecord::Schema.define(version: 20140114053024) do
     t.text     "pref_date"
     t.text     "pref_food"
     t.text     "pref_ad"
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "locations", force: true do |t|
+    t.string   "name"
+    t.integer  "capacity"
     t.text     "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
