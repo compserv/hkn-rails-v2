@@ -46,6 +46,10 @@ class ExamsController < ApplicationController
     redirect_to exams_url, notice: 'Exam was successfully destroyed.'
   end
 
+  def search
+    @query = sanitize_query(params[:q])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_exam
