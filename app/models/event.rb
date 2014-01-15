@@ -69,6 +69,11 @@ class Event < ActiveRecord::Base
     Event.where(['start_time > ?', Time.now])
   end
 
+  def self.current
+    #Events within 4 months
+    Event.where(start_time: (DateTime.now.ago(4.months)..DateTime.now.in(1.months)))
+  end
+
   def short_start_time
     ampm = (start_time.hour >= 12) ? "p" : "a"
     min = (start_time.min > 0) ? start_time.strftime('%M') : ""

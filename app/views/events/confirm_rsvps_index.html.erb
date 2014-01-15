@@ -8,7 +8,7 @@
 
 <% @events.each do |event| %>  
   <tr>
-    <td><%= link_to event.title, confirm_rsvps_path(event, role: @role) %></td>
+    <td><%= link_to event.title, confirm_rsvps_path(@role, event) %></td>
     <td><%= event.start_time.strftime('%a %m/%d/%Y') %></td>
   </tr>
 <% end %>

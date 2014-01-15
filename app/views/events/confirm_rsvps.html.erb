@@ -1,4 +1,4 @@
-<h1><%= @event.name %></h1>
+<h1><%= @event.title%></h1>
 
 <%= link_to raw('&larr;back'), confirm_rsvps_index_path(@role) %>
 
@@ -12,7 +12,7 @@
   <% @rsvps.each do |rsvp| %>
   <% if rsvp.user.has_role_for_current_semester? @role %>
   <tr>
-    <td><%= rsvp.person.full_name %></td>
+    <td><%= rsvp.user.full_name %></td>
 
     <% if rsvp.confirmed == "t" %>
     <td>Confirmed</td>

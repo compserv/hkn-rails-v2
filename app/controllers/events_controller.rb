@@ -165,21 +165,16 @@ class EventsController < ApplicationController
     @role = params[:role] || :candidate
     types = ["Mandatory for Candidates", "Big Fun", "Fun", "Service"]
 
-    #Filters for candidate events (enumerated in "types" variable)
-    candEventTypes = EventType.find(:all, :conditions => ["name IN (?)", types])
-    candEventTypeIDs = candEventTypes.map{|event_type| event_type.id}
-    #@events = Event.past.find(:all, :conditions => ["event_type_id IN (?)", candEventTypeIDs], :order => :start_time)
-    # Sorry, this is kind of a bad query
-    @events = Event.current.find(:all, :joins => { :rsvps => {:person => :roles} }, :conditions => "(rsvps.confirmed IS NULL OR rsvps.confirmed = 'f') AND roles.id = #{Group.find_by_name(@group).id}").uniq
+    @events = Event.current.find(:all, :joins => { :rsvps => {:user => :roles} }, :conditions => "(rsvps.confirmed IS NULL OR rsvps.confirmed = 'f') AND roles.id = #{Role.find_by_name(@role).id}").uniq
     @events.sort!{|x, y| x.start_time <=> y.end_time }.reverse!
   end
 
   # RSVP confirmation for an individual event
   def confirm_rsvps
-    authorize ['pres', 'vp']
+    redirect_to root_path unless authorize(:pres) or authorize(:vp)
     @role = params[:role] || :candidate
     @event = Event.find(params[:id])
-    @rsvps = @event.rsvps.sort_by { |rsvp| rsvp.user.full_name }
+    @rsvps = @event.rsvps.includes(:user).sort_by { |rsvp| rsvp.user.full_name }
   end
 
   private

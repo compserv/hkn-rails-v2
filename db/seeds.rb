@@ -106,16 +106,22 @@ end
 initialize_mobile_carriers
 
 events = [
-  ["Picnic", "Lots of fun", DateTime.yesterday, DateTime.now, "Big Fun", nil, nil, false],
-  ["HM1", "hm1", DateTime.tomorrow, DateTime.tomorrow, "Miscellaneous", :committee_members, :committee_members, true],
-  ["Paintball", "paintball", DateTime.now.in(3.hours), DateTime.now.in(4.hours), "Fun", :officers, :officers, true]
+  ["Picnic", "Lots of fun", DateTime.yesterday, DateTime.now, "Big Fun", nil, nil, false, 999],
+  ["GM2", "Must see!", DateTime.now.ago(2.days), DateTime.now, "Mandatory for Candidates", 'candidates', 'candidates', false, 999],
+  ["HM1", "hm1", DateTime.tomorrow, DateTime.tomorrow, "Miscellaneous", 'committee_members', 'committee_members', true, 0],
+  ["Paintball", "paintball", DateTime.now.in(3.hours), DateTime.now.in(4.hours), "Fun", 'officers', 'officers', true, 999]
 ]
 
 events.each do |event|
   Event.create(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
                event_type: event[4], view_permission_roles: event[5], rsvp_permission_roles: event[6],
-               need_transportation?: event[7])
+               need_transportation?: event[7], max_rsvps: event[8])
   puts "Created event #{event[0]}"
   User.first.rsvp! Event.last.id
-  puts "First user RSVP'd to event #{Event.last.title}"
+  puts "First user tried to RSVP to event #{Event.last.title}"
+  #Candidate tries to rsvp
+  if Event.last.can_rsvp? User.find_by_username('approved')
+    User.find_by_username('approved').rsvp! Event.last.id
+  end
 end
+
