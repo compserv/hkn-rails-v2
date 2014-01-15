@@ -79,7 +79,6 @@ class UsersController < ApplicationController
 
     @search_opts = params # for use in #sort_link in application_helper
 
-    joinstr = 'INNER JOIN "users_roles" ON "users_roles"."user_id" = "users"."id" INNER JOIN "roles" ON "roles"."id" = "users_roles"."role_id"' # this looks terribad...
     if %w[officers committee_members candidates].include? params[:category]
       cond = ["role_type = ? AND resource_id = ?", params[:category].singularize, MemberSemester.current.id] # autos to current semester
     elsif params[:category] == "members"
@@ -88,19 +87,20 @@ class UsersController < ApplicationController
       cond = ["name = ?", params[:category]] # searching for other things...e.g. indrel
     end
 
-    opts = { :page       => params[:page],
-             :per_page   => params[:per_page] || 20,
-             :order      => "users." + params["sort"] + " " + sort_direction,
-             :joins      => joinstr,
-             :conditions => cond
-           }
+    opts = { page: params[:page], per_page: params[:per_page] || 20 }
+    ord = "users." + params["sort"] + " " + sort_direction
+    joinstr = 'INNER JOIN "users_roles" ON "users_roles"."user_id" = "users"."id" INNER JOIN "roles" ON "roles"."id" = "users_roles"."role_id"' # this looks terribad...
 
     user_selector = User.uniq(:id)
     if authenticate_vp and params[:approved] == 'false'
       user_selector = user_selector.where(:approved => false )
     end
 
-    @users = user_selector.paginate opts
+    if cond.nil?
+      @users = user_selector.order(ord).paginate opts
+    else
+      @users = user_selector.order(ord).joins(joinstr).where(cond).paginate opts
+    end
 
     respond_to do |format|
       format.html
@@ -139,7 +139,7 @@ class UsersController < ApplicationController
       role = Role.find_by_name_and_resource_id_and_role_type(params[:position], semester.id, params[:role])
       flash[:notice] = @user.full_name + " has gained the title " + role.nice_position + " in " + role.nice_semester
     end
-    destroy_user_session_path(@user) # this appears to clear the user session of the user w/out signing them out, this is so user authentications go off again.
+    @user.update_attribute :should_reset_session, true
     redirect_to edit_roles_user_path(@user)
   end
 

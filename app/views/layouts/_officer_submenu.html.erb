@@ -62,7 +62,7 @@
     <% if current_user && (user_session[:alum].nil? ? user_session[:alum] = !current_user.alum.nil? : user_session[:alum]) %>
       <li><%= link_to "View My Alumnus/Alumna Information", edit_alum_path(current_user.alum) %></li>
     <% else %>
-      <li><%= link_to "Create Alumnus/Alumna", new_alum_path %></li>
+      <li><%= link_to "Alumni Contact Information", new_alum_path %></li>
     <% end %>
   </ul>
 </div>
@@ -71,10 +71,10 @@
   <ul class="plain">
     <li><%= link_to 'Contact Information', contact_path, :class => 'navigation_sublevel_item'  %></li>
     <li><%= link_to "Photo Gallery", "/gallery3/", :class=>"navigation_sublevel_item" %></li>
-    <li><%= link_to "Yearbooks",     "/about/yearbook/",            :class=>"navigation_sublevel_item" %></li>
+    <li><%= link_to "Yearbooks", bridge_yearbook_path %></li>
   </ul>
   <ul class="plain">
-    <li><a href="/about/slideshow/" class="navigation_sublevel_item">Slideshows</a></li>
+    <li><%= link_to "Slideshows", bridge_slideshow_path %></li>
     <li><%= link_to "Current Officers", about_officers_path, :class=>"navigation_sublevel_item" %></li>
     <li><%= link_to "Current Committee Members", about_committee_members_path, :class=>"navigation_sublevel_item" %></li>
   </ul>
@@ -112,10 +112,10 @@
         <li><%= link_to 'Rsec Admin', 'admin_rsec_path', :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:deprel) %>
-        <li><a href="/admin/deprel" class="navigation_sublevel_item">Deprel Admin [<%= 'controller.num_deprel_requests' %>]</a></li>
+        <li><%= link_to "Deprel Admin [#{get_num_deprel_requests}]", dept_tours_path, :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:indrel) %>
-        <li><a href="/admin/indrel/" class="navigation_sublevel_item">Indrel Admin</a></li>
+        <li><%= link_to 'Indrel Admin', admin_indrel_path, :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:bridge) %>
         <li><%= link_to 'Bridge Admin', admin_bridge_path, :class => 'navigation_sublevel_item'  %></li>

@@ -1,21 +1,16 @@
 class DeptToursController < ApplicationController
   before_action :set_dept_tour, only: [:show, :edit, :update, :destroy, :respond_to_tour]
-  # before_action :authorize_indrel, only: [:show, :edit, :update, :destroy, :respond_to_tour]
+  before_filter :authenticate_deprel!, only: [:show, :index, :edit, :update, :destroy, :respond_to_tour]
 
   # GET /dept_tours
   def index
-    @dept_tours = DeptTour.order(:responded)
-    @dept_tours_requests_length = DeptTour.where(:responded => false).count
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @dept_tours }
-    end
+    @dept_tour_requests_pending = DeptTour.where(responded: true)
+    @dept_tour_requests_unresponded = DeptTour.where(responded: false)
+    @dept_tour_num = get_num_deprel_requests
   end
 
   # GET /dept_tours/1
   def show
-    @default_response_text = get_default_response_text(@dept_tour)
   end
 
   # GET /dept_tours/new
@@ -29,17 +24,18 @@ class DeptToursController < ApplicationController
 
   # POST /dept_tours
   def create
-    params[:dept_tour][:responded] = false
-    params[:dept_tour][:submitted] = Time.now
     @dept_tour = DeptTour.new(dept_tour_params)
+    @dept_tour.responded = false  # when created they can't be responded to already
     unless params[:email_confirmation] == params[:dept_tour][:email]
       @dept_tour.errors[:base] << "Email confirmation doesn't match"
+      @dept_tour.email = nil # force them to retype both email fields, they probably messed up.
       render :new and return
     end
     if verify_recaptcha(:model => @dept_tour, :message => "oops recaptcha failed!") && @dept_tour.save
       mail = DeptTourMailer.dept_tour_email dept_tour_params[:name], @dept_tour.date, dept_tour_params[:email],
           dept_tour_params[:phone], dept_tour_params[:comments]
       mail.deliver
+      reload_sessions
       redirect_to dept_tours_success_path
     else
       flash.delete(:recaptcha_error)
@@ -56,26 +52,19 @@ class DeptToursController < ApplicationController
     end
   end
 
+  def reload_sessions
+    User.update_all :should_reset_session => true # reload session for everybody...this is kind of shady but will force everyone to reload how many requests they see on the header
+    # Could restrict this to current officers/deprel and compserv/something, idk what the best solution is
+  end
+
   # DELETE /dept_tours/1
   def destroy
+    reload_sessions
     @dept_tour.destroy
-    redirect_to dept_tours_url, notice: 'Dept tour was successfully destroyed.'
+    redirect_to dept_tours_path, notice: "The request has been dismissed. I hope you're happy."
   end
 
   def success
-  end
-
-  def get_default_response_text(dept_tour_request)
-    "Hello #{dept_tour_request.name},
-
-    This email is a confirmation of your requested department tour on #{dept_tour_request.date.strftime("%A, %B %d, at %I:%M %p")}.
-
-    Please meet me, or one of our other officers, at 345 Soda Hall at that time.
-
-    Looking forward to seeing you!
-
-    --#{'@current_user.first_name'}
-    "
   end
 
   def respond_to_tour
@@ -94,6 +83,6 @@ class DeptToursController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def dept_tour_params
-      params.require(:dept_tour).permit(:name, :date, :email, :phone, :submitted, :comments, :responded)
+      params.require(:dept_tour).permit(:name, :date, :email, :phone, :comments, :responded)
     end
 end

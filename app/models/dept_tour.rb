@@ -14,11 +14,10 @@
 #
 
 class DeptTour < ActiveRecord::Base
-  validates_presence_of :name
+  validates_presence_of :name, :date
   validates_presence_of :date
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates_inclusion_of :responded, in: [true,false]
-  validates_presence_of :submitted
   validate :valid_date?
 
   def valid_date?
@@ -29,7 +28,7 @@ class DeptTour < ActiveRecord::Base
       errors[:base] << "Date must be in the future"
     end
     unless (1..5).include?(date.wday)
-      errors[:base] << "Date must be on a weekday"
+      errors[:base] << "Date must be on a weekday, #{date.strftime('%A, %B %d')} was chosen"
     end
   end
 end

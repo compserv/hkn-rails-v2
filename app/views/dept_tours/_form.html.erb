@@ -20,10 +20,12 @@
     <%= f.label :email, "Contact email address", :class => 'required-field' %>
     <%= f.text_field :email %>
   </div>
-  <div class="field">
-    <%= label_tag :email_confirmation, "Re-type email", :class => 'required-field' %>
-    <%= text_field_tag :email_confirmation %>
-  </div>
+  <% if !@dept_tour.id? %>
+    <div class="field">
+      <%= label_tag :email_confirmation, "Re-type email", :class => 'required-field' %>
+      <%= text_field_tag :email_confirmation, @dept_tour.email %>
+    </div>
+  <% end %>
   <div class="field">
     <%= f.label :phone, "Contact phone number", :class => 'required-field' %>
     <%= f.text_field :phone %>

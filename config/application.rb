@@ -26,5 +26,6 @@ module HknRails
       g.view_specs      false
       g.helper_specs    false
     end
+    config.i18n.enforce_available_locales = false # shut up warning...idk anything about this
   end
 end

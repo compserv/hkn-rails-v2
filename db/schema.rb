@@ -145,7 +145,10 @@ ActiveRecord::Schema.define(version: 20140113223743) do
     t.boolean  "need_transportation?"
     t.string   "view_permission_roles"
     t.string   "rsvp_permission_roles"
+<<<<<<< HEAD
     t.integer  "max_rsvps"
+=======
+>>>>>>> master
   end
 
   create_table "exams", force: true do |t|

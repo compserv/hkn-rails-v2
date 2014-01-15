@@ -35,7 +35,7 @@
 class User < ActiveRecord::Base
   rolify
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  # :confirmable, :lockable, :timeoutable, and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -177,6 +177,10 @@ class User < ActiveRecord::Base
     n = self.phone_number.gsub /[^\d]/, ''
     return unless n && n.length == 10
     self.phone_number = "(#{n[0..2]}) #{n[3..5]}-#{n[6..9]}"
+  end
+
+  def as_email
+    return "\"#{full_name}\" <#{email}>"
   end
 
 end

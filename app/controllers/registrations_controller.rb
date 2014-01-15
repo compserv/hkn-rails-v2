@@ -11,12 +11,4 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
-  def new
-    super
-  end
-
-  def update
-    super
-  end
-
 end
