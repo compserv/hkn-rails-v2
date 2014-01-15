@@ -4,7 +4,7 @@ class IndrelEventsController < ApplicationController
 
   # GET /indrel_events
   def index
-    @indrel_events = IndrelEvent.includes(:location, :indrel_event_type, :company, :contact).all.sort_by(&:time)
+    @indrel_events = IndrelEvent.includes(:location, :indrel_event_type, :company, :contact).all.sort_by(&:time).reverse
   end
 
   # GET /indrel_events/1

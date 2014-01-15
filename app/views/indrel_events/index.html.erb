@@ -14,16 +14,14 @@
       <th>Officer</th>
       <th>Feedback</th>
       <th>Comments</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th colspan="3">Actions</th>
     </tr>
   </thead>
 
   <tbody>
     <% @indrel_events.each do |indrel_event| %>
       <tr>
-        <td><%= indrel_event.time %></td>
+        <td><%= indrel_event.time.strftime("%b %d, %Y, %I:%M %p") %></td>
         <td><%= indrel_event.location_name %></td>
         <td><%= indrel_event.indrel_event_type_name %></td>
         <td><%= indrel_event.food %></td>

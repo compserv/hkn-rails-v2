@@ -3,7 +3,7 @@ class ContactsController < ApplicationController
 
   # GET /contacts
   def index
-    @contacts = Contact.includes(:company).all
+    @contacts = Contact.includes(:company).all.sort_by(&:name)
   end
 
   # GET /contacts/1

@@ -4,7 +4,7 @@ class ResumeBookUrlsController < ApplicationController
 
   # GET /resume_book_urls
   def index
-    @resume_book_urls = ResumeBookUrl.all.sort_by(&:created_at)
+    @resume_book_urls = ResumeBookUrl.all.sort_by(&:created_at).reverse
   end
 
   # GET /resume_book_urls/1
