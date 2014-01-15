@@ -1,12 +1,13 @@
 HknRails::Application.routes.draw do
-
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
 
+  match 'notifications/read', to: 'notifications#index', via: :get, as: "notifications"
 
   match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
+  match "exams/search(/:q)", to: "exams#search", via: :get, :as => :exams_search
   match "users/approve/:id", to: "users#approve", via: :post, as: "users_approve"
   match "users/list(/:category)", to: "users#list", via: :get, as: "users_list"
   match "users/roles/:id", to: "users#roles", via: :get, as: "edit_roles_user"
@@ -22,11 +23,13 @@ HknRails::Application.routes.draw do
   match 'resumes/exclude/:id' => "resumes#exclude", via: :post, :as => :resumes_exclude
 
   resources :alum
+  resources :announcements
   resources :challenges, only: [:create, :update, :index]
   resources :dept_tours
   resources :exams
   resources :resumes
   resources :resume_books, except: [:edit, :update]
+  resources :resume_book_urls
   resources :users, except: [:new, :create, :index]
 
   scope "candidate" do
@@ -41,6 +44,9 @@ HknRails::Application.routes.draw do
     match "contact_us", to: "indrel#contact_us", via: :get, as: "indrel_contact_us"
     match "career_fair", to: "indrel#career_fair", via: :get, as: "career_fair"
     match "resume_books", to: "indrel#resume_books", via: :get, as: "resume_books_about"
+    match "resume_books/order", to: "indrel#resume_books_order", via: :get, :as => "resume_books_order"
+    match "resume_books/order", to: "indrel#resume_books_transaction_id", via: :post, :as => "resume_books_transaction_id"
+    match "resume_books/success", to: "indrel#resume_books_order_paypal_success", via: :get, :as => "resume_books_paypal_success"
 
     scope "infosessions" do
       match "/", to: "infosession_requests#about", via: :get, as: "infosessions"

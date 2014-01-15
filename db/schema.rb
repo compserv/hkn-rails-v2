@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140111061240) do
+ActiveRecord::Schema.define(version: 20140114053024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,14 @@ ActiveRecord::Schema.define(version: 20140111061240) do
   end
 
   add_index "alumni", ["user_id"], name: "index_alumni_on_user_id", using: :btree
+
+  create_table "announcements", force: true do |t|
+    t.string   "title"
+    t.string   "body"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "candidate_quizzes", force: true do |t|
     t.integer  "user_id"
@@ -209,6 +217,15 @@ ActiveRecord::Schema.define(version: 20140111061240) do
     t.datetime "updated_at"
   end
 
+  create_table "payment_notifications", force: true do |t|
+    t.text     "params"
+    t.string   "status"
+    t.string   "transaction_id"
+    t.string   "create"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "position_users", force: true do |t|
     t.integer  "user_id"
     t.integer  "position_id"
@@ -255,6 +272,20 @@ ActiveRecord::Schema.define(version: 20140111061240) do
 
   add_index "quiz_responses", ["candidate_quiz_id"], name: "index_quiz_responses_on_candidate_quiz_id", using: :btree
   add_index "quiz_responses", ["quiz_question_id"], name: "index_quiz_responses_on_quiz_question_id", using: :btree
+
+  create_table "resume_book_urls", force: true do |t|
+    t.integer  "resume_book_id"
+    t.datetime "expiration_date"
+    t.text     "feedback"
+    t.string   "password"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "download_count"
+    t.string   "company"
+    t.string   "name"
+    t.string   "email"
+    t.string   "transaction_id"
+  end
 
   create_table "resume_books", force: true do |t|
     t.string   "title"

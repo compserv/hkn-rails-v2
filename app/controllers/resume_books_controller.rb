@@ -4,7 +4,7 @@ class ResumeBooksController < ApplicationController
 
   # GET /resume_books
   def index
-    @resume_books = ResumeBook.all
+    @resume_books = ResumeBook.includes(:resume_book_urls).reverse # display most recently created at the top, works b/c can't update a resume book
   end
 
   # GET /resume_books/1
@@ -27,7 +27,7 @@ class ResumeBooksController < ApplicationController
     system "cp #{@skeletons}/hkn_emblem.png #{@scratch_dir}/"
 
     indrel_officers = Role.semester_filter(MemberSemester.current).position(:indrel).officers.all_users.sort(&:full_name) # for use in binding on indrel_letter
-    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user).all
+    resumes_to_use = Resume.where(included: true).where('file_updated_at >= ?', @resume_book.cutoff_date).includes(:user)
     grouped_resumes = group_resumes(resumes_to_use)
     path_to_pdf = generate_pdf(grouped_resumes, indrel_officers)
     path_to_iso = generate_iso(grouped_resumes, path_to_pdf)
@@ -50,16 +50,17 @@ class ResumeBooksController < ApplicationController
     if sorted_yrs != [] # gracefully dodge if there are no resumes
       pdf_paths << process_tex_template("#{@skeletons}/table_of_contents.tex.erb", binding)
     end
-    details = []
+    @resume_book.details = {}
     sorted_yrs.each do |year|
-      details << year.to_s + ": " + resumes[year].count.to_s
+      @resume_book.details[year] = resumes[year].count.to_s
       pdf_paths << section_cover_page(year)
       resumes[year].each do |resume|
         pdf_paths << resume.file.path
       end
     end
-    @resume_book.details = details.join(' ')
-    @resume_book.details = "NOTHING" if @resume_book.details.blank?
+    if @resume_book.details == {}
+      @resume_book.details = {info: "NOTHING"}
+    end
     concatenate_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
     "#{@scratch_dir}/temp_resume_book.pdf" # return the path of the file we made
   end
@@ -81,8 +82,8 @@ class ResumeBooksController < ApplicationController
       end
     end
     system "cp #{res_book_pdf} #{iso_dir}/HKNResumeBook.pdf"
-    #raise "Failed to genisoimage" unless system "hdiutil makehybrid -iso -joliet -o #{@scratch_dir}/HKNResumeBook.iso #{iso_dir}"  # usage for mac without genisoimage but with hduitil makehybrid
-    raise "Failed to genisoimage" unless system "genisoimage -V 'HKN Resume Book' -o #{@scratch_dir}/HKNResumeBook.iso -R -J #{iso_dir}"
+    raise "Failed to genisoimage" unless system "hdiutil makehybrid -iso -joliet -o #{@scratch_dir}/HKNResumeBook.iso #{iso_dir}"  # usage for mac without genisoimage but with hduitil makehybrid
+    #raise "Failed to genisoimage" unless system "genisoimage -V 'HKN Resume Book' -o #{@scratch_dir}/HKNResumeBook.iso -R -J #{iso_dir}"
     "#{@scratch_dir}/HKNResumeBook.iso" # return the path of the file we made
   end
 
@@ -181,13 +182,26 @@ class ResumeBooksController < ApplicationController
   end
 
   def download_pdf
-    # Needs to be authorized
-    # One way to do this is to allow an optional authorization in the routes. E.g. "resume_books/:id/download_pdf(/:authorization_string)"
-    # Each resume_book could have a hash of accepted strings (maybe identified by company name) and additionally keep track of download
-    # count here.  When someone orders a company book I could just generate an epic password with SecureRandom.hex(number_of_digits)
-    # and email/show this url and save the password into the resume_book
-    # The last feature Donny requested was some kind of automatic email 2 weeks later to ask for feedback could save another date w/ hash.
-    # just would need to run some function nightly or something.
+    authorized = false
+    if params[:string]
+      @resume_book.resume_book_urls.each do |url|
+        if url.password == params[:string]
+          if url.expired?
+            render json: "Oops, your link appears to have expired.  Please email indrel@hkn.eecs.berkeley.edu if this is a mistake!" and return
+          end
+          authorized = true
+          url.download_count = url.download_count + 1
+          url.save
+          break
+        end
+      end
+      if !authorized
+        # maybe email someone that a hack attempt went off? tbh there are 62^100 possibilities and they need to match up the id of the resume book with an active string, it will be absurdly difficult to hack
+        render json: "Oops, your link does not appear in our database.  Please email indrel@hkn.eecs.berkeley.edu if this is a mistake!" and return
+      end
+    else
+      authenticate_indrel!
+    end
     send_file @resume_book.pdf.path, type: @resume_book.pdf_content_type, filename: @resume_book.pdf_file_name
   end
 
@@ -198,7 +212,12 @@ class ResumeBooksController < ApplicationController
   # Missing gives the emails of officers and current candidates who are missing
   # a resume book so indrel can bug them.
   def missing
-    @cutoff_date = params[:date] ? params[:date].map{|k,v| v}.join("-").to_date : Date.today
+    @cutoff_date = params[:date] ? params[:date].map{|k,v| v}.join("-").to_date : nil
+    if @cutoff_date
+      session[:cutoff_date] = @cutoff_date  # hack to hold the cutoff date on location.reload when including/excluding
+    else
+      @cutoff_date = session[:cutoff_date]
+    end
 
     officers = Role.semester_filter(MemberSemester.current).officers.all_users_resumes
     candidates = Role.semester_filter(MemberSemester.current).candidates.all_users_resumes

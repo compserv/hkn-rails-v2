@@ -1,7 +1,13 @@
+<p>
+  <strong>ID (for use in creating resume book links):</strong>
+  <%= @resume_book.id %>
+</p>
+
 <p><%= link_to "Download PDF", resume_book_download_pdf_path(@resume_book.id) %></p>
 <p><%= link_to "Download ISO", resume_book_download_iso_path(@resume_book.id) %></p>
-<p>Resume book cutoff date: <%= @resume_book.cutoff_date %></p>
-<p>Resume book generated on <%= @resume_book.created_at %></p>
+<p>Resume book cutoff date: <%= @resume_book.cutoff_date.strftime("%B %d, %Y") %></p>
+<p>Resume book generated at: <%= @resume_book.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+
 
 <p>
   <strong>Title:</strong>
@@ -15,8 +21,39 @@
 
 <p>
   <strong>Details:</strong>
-  <%= @resume_book.details %>
+  <%= @resume_book.details.map{|k,v| "#{k}=#{v}"}.join(', ') %>
 </p>
 
 <%= link_to 'Destroy', @resume_book, method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Back', resume_books_path %>
+
+<h2>URLS for this book</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Download Count</th>
+      <th>Expiration</th>
+      <th>Created</th>
+      <th>Download Link</th>
+      <th>Expired?</th>
+      <th>Company</th>
+      <th colspan="3">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @resume_book.resume_book_urls.each do |url| %>
+      <tr>
+        <td><%= url.download_count %></td>
+        <td><%= url.expiration_date.strftime("%B %d, %Y at %I:%M %p") %></td>
+        <td><%= url.created_at.strftime("%B %d, %Y at %I:%M %p") %></td>
+        <td><%= link_to 'Test Download from the URL', resume_book_download_pdf_url(url.resume_book_id, string: url.password) %></td>
+        <td><%= url.expired? %></td>
+        <td><%= url.company %></td>
+        <td><%= link_to 'Show', url %></td>
+        <td><%= link_to 'Edit', edit_resume_book_url_path(url) %></td>
+        <td><%= link_to 'Destroy', url, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
