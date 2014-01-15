@@ -54,4 +54,19 @@ class ResumeBook < ActiveRecord::Base
     sum
   end
 
+  def save_for_paperclip(path, type)
+    template = File.read(path) # grab the created file, going to save w/ paperclip
+
+    file = StringIO.new(template) # mimic a real upload file for paperclip
+    file.class.class_eval { attr_accessor :original_filename, :content_type } # add attr's that paperclip needs
+    file.content_type = type
+    if type == "application/pdf"
+      file.original_filename = "#{self.title}.pdf"
+      self.pdf = file
+    else
+      file.original_filename = "#{self.title}.iso"
+      self.iso = file
+    end
+  end
+
 end

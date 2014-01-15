@@ -26,7 +26,7 @@ class ContactsController < ApplicationController
     if @contact.save
       redirect_to @contact, notice: 'Contact was successfully created.'
     else
-      render action: 'new'
+      render :new
     end
   end
 
@@ -35,7 +35,7 @@ class ContactsController < ApplicationController
     if @contact.update(contact_params)
       redirect_to @contact, notice: 'Contact was successfully updated.'
     else
-      render action: 'edit'
+      render :edit
     end
   end
 

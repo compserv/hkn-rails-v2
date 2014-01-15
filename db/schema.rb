@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140114230054) do
+ActiveRecord::Schema.define(version: 20140115024252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 20140114230054) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "announcements", ["user_id"], name: "index_announcements_on_user_id", using: :btree
 
   create_table "candidate_quizzes", force: true do |t|
     t.integer  "user_id"
@@ -80,6 +82,8 @@ ActiveRecord::Schema.define(version: 20140114230054) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "contacts", ["company_id"], name: "index_contacts_on_company_id", using: :btree
 
   create_table "course_offerings", force: true do |t|
     t.integer  "course_id"
@@ -215,6 +219,11 @@ ActiveRecord::Schema.define(version: 20140114230054) do
     t.datetime "updated_at"
   end
 
+  add_index "indrel_events", ["company_id"], name: "index_indrel_events_on_company_id", using: :btree
+  add_index "indrel_events", ["contact_id"], name: "index_indrel_events_on_contact_id", using: :btree
+  add_index "indrel_events", ["indrel_event_type_id"], name: "index_indrel_events_on_indrel_event_type_id", using: :btree
+  add_index "indrel_events", ["location_id"], name: "index_indrel_events_on_location_id", using: :btree
+
   create_table "infosession_requests", force: true do |t|
     t.string   "company_name"
     t.string   "address1"
@@ -328,6 +337,8 @@ ActiveRecord::Schema.define(version: 20140114230054) do
     t.string   "email"
     t.string   "transaction_id"
   end
+
+  add_index "resume_book_urls", ["resume_book_id"], name: "index_resume_book_urls_on_resume_book_id", using: :btree
 
   create_table "resume_books", force: true do |t|
     t.string   "title"

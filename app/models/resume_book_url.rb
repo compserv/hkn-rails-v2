@@ -23,4 +23,17 @@ class ResumeBookUrl < ActiveRecord::Base
   def expired?
     Time.now > self.expiration_date
   end
+
+  def make_company_and_contact
+    comment = "bought resume book on #{self.created_at.strftime("%B %d, %Y at %I:%M %p")}"
+    if !self.company.nil?
+      company = Company.where(name: self.company).first_or_create
+      company.update_attribute :comments, company.comments.to_s + " " + comment
+      contact = Contact.where(name: self.name, email: self.email, company_id: company.id).first_or_create
+      contact.update_attribute :comments, contact.comments.to_s + " " + comment
+    else
+      contact = Contact.where(name: self.name, email: self.email).first_or_create
+      contact.update_attribute :comments, contact.comments.to_s + " " + comment
+    end
+  end
 end

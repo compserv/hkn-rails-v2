@@ -23,12 +23,12 @@ class AnnouncementsController < ApplicationController
   # POST /announcements
   def create
     @announcement = Announcement.new(announcement_params)
-    @announcement.user_id = current_user.id
+    @announcement.user = current_user
 
     if @announcement.save
       redirect_to @announcement, notice: 'Announcement was successfully created.'
     else
-      render action: 'new'
+      render :new
     end
   end
 
@@ -37,7 +37,7 @@ class AnnouncementsController < ApplicationController
     if @announcement.update(announcement_params)
       redirect_to @announcement, notice: 'Announcement was successfully updated.'
     else
-      render action: 'edit'
+      render :edit
     end
   end
 

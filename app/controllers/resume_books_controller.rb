@@ -31,15 +31,15 @@ class ResumeBooksController < ApplicationController
     grouped_resumes = group_resumes(resumes_to_use)
     path_to_pdf = generate_pdf(grouped_resumes, indrel_officers)
     path_to_iso = generate_iso(grouped_resumes, path_to_pdf)
-    save_for_paperclip(path_to_pdf, 'application/pdf')
-    save_for_paperclip(path_to_iso, 'application/octet-stream')
+    @resume_book.save_for_paperclip(path_to_pdf, 'application/pdf')
+    @resume_book.save_for_paperclip(path_to_iso, 'application/octet-stream')
 
     raise "Failed to kill scratch dir" unless system "rm -rf #{@scratch_dir}" # clean up
 
     if @resume_book.save
       redirect_to @resume_book, notice: 'Resume book was successfully created.'
     else
-      render action: 'new'
+      render :new
     end
   end
 
@@ -78,7 +78,7 @@ class ResumeBooksController < ApplicationController
       year_dir_name = "#{iso_dir}/Resumes/#{dir_name_fn.call(year)}"
       system "mkdir #{year_dir_name}"
       resumes_to_use[year].each do |resume|
-        system "cp #{resume.file.path} \"#{year_dir_name}/#{resume.user.last_name}, #{resume.user.first_name}.pdf\""
+        system "cp #{resume.file.path} \"#{year_dir_name}/#{resume.user_last_name}, #{resume.user_first_name}.pdf\""
       end
     end
     system "cp #{res_book_pdf} #{iso_dir}/HKNResumeBook.pdf"
@@ -90,21 +90,6 @@ class ResumeBooksController < ApplicationController
   def concatenate_pdfs(pdf_file_list, output_file_name)
     concat_cmd = "pdftk #{pdf_file_list.join(' ')} cat output #{output_file_name}" # pdftk = pdf ToolKit. Merges the pdfs (make sure the pdfs have no spaces)
     logger.error "Failed to concat pdfs (#{concat_cmd})" unless system concat_cmd
-  end
-
-  def save_for_paperclip(path, type)
-    template = File.read(path) # grab the created file, going to save w/ paperclip
-
-    file = StringIO.new(template) # mimic a real upload file for paperclip
-    file.class.class_eval { attr_accessor :original_filename, :content_type } # add attr's that paperclip needs
-    file.content_type = type
-    if type == "application/pdf"
-      file.original_filename = "#{@resume_book.title}.pdf"
-      @resume_book.pdf = file
-    else
-      file.original_filename = "#{@resume_book.title}.iso"
-      @resume_book.iso = file
-    end
   end
 
   # year will be a year i.e. 2011 or :grads
@@ -149,7 +134,7 @@ class ResumeBooksController < ApplicationController
     f.write(template.result(bindings))
     f.close
   end
-  
+
   def do_tex(directory, file_name) # converts .tex to a .pdf in same directory with same file_name
     Dir.chdir(directory) do  # move to directory
       raise "Failed to pdflatex #{file_name}" unless system "pdflatex #{file_name}" # execute the pdflatex command on the file
@@ -190,8 +175,7 @@ class ResumeBooksController < ApplicationController
             render json: "Oops, your link appears to have expired.  Please email indrel@hkn.eecs.berkeley.edu if this is a mistake!" and return
           end
           authorized = true
-          url.download_count = url.download_count + 1
-          url.save
+          url.update_attribute :download_count, url.download_count + 1
           break
         end
       end
@@ -214,8 +198,7 @@ class ResumeBooksController < ApplicationController
             render json: "Oops, your link appears to have expired.  Please email indrel@hkn.eecs.berkeley.edu if this is a mistake!" and return
           end
           authorized = true
-          url.download_count = url.download_count + 1
-          url.save
+          url.update_attribute :download_count, url.download_count + 1
           break
         end
       end

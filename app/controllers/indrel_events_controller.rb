@@ -27,7 +27,7 @@ class IndrelEventsController < ApplicationController
     if @indrel_event.save
       redirect_to @indrel_event, notice: 'Indrel event was successfully created.'
     else
-      render action: 'new'
+      render :new
     end
   end
 
@@ -36,7 +36,7 @@ class IndrelEventsController < ApplicationController
     if @indrel_event.update(indrel_event_params)
       redirect_to @indrel_event, notice: 'Indrel event was successfully updated.'
     else
-      render action: 'edit'
+      render :edit
     end
   end
 

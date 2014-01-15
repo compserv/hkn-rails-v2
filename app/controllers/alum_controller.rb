@@ -21,7 +21,7 @@ class AlumController < ApplicationController
 
   def alumni_duplication_filtration
     if current_user.alum
-      redirect_to edit_alum_path(current_user.alum), 
+      redirect_to edit_alum_path(current_user.alum),
           notice: "You already have an alumni record. I've helpfully brought it up for you."
     end
   end

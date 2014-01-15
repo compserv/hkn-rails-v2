@@ -58,4 +58,12 @@ class Resume < ActiveRecord::Base
   def get_full_name
     self.user.full_name
   end
+
+  def user_last_name
+    self.user.last_name
+  end
+
+  def user_first_name
+    self.user.first_name
+  end
 end
