@@ -58,8 +58,9 @@ class ResumeBooksController < ApplicationController
         pdf_paths << resume.file.path
       end
     end
-
-    @resume_book.details = "NOTHING" if @resume_book.details.nil?
+    if @resume_book.details == {}
+      @resume_book.details = {info: "NOTHING"}
+    end
     concatenate_pdfs(pdf_paths, "#{@scratch_dir}/temp_resume_book.pdf") # creates single pdf from all paths
     "#{@scratch_dir}/temp_resume_book.pdf" # return the path of the file we made
   end
