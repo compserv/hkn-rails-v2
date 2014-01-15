@@ -1,9 +1,10 @@
 class RsvpsController < ApplicationController
+  before_action :set_rsvp, only: [:show, :edit, :update, :destroy, :confirm, :unconfirm, :reject]
+  before_filter :validate_owner!, only: [:edit, :update, :destroy]
+  before_filter :vp_or_pres!, only: [:confirm, :unconfirm, :reject]
+  before_filter :authenticate_user!
   before_filter :get_event, except: :my_rsvps
-  before_filter :rsvp_permission, only: :new
-  #before_filter(:only => [:confirm, :unconfirm, :reject]) { |c| c.authorize(['pres', 'vp']) }
-  before_filter :comm_authorize
-  before_filter { |controller| controller.authorize(:compserv) }
+  before_filter :rsvp_permission!, only: [:new, :create]
 
   # GET /rsvps
   # GET /rsvps.xml
@@ -20,8 +21,6 @@ class RsvpsController < ApplicationController
   # GET /rsvps/1
   # GET /rsvps/1.xml
   def show
-    @rsvp = Rsvp.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @rsvp }
@@ -41,8 +40,6 @@ class RsvpsController < ApplicationController
 
   # GET /rsvps/1/edit
   def edit
-    @rsvp = Rsvp.find(params[:id])
-    validate_owner!(@rsvp)
   end
 
   # POST /rsvps
@@ -67,13 +64,9 @@ class RsvpsController < ApplicationController
   # PUT /rsvps/1
   # PUT /rsvps/1.xml
   def update
-    @rsvp = Rsvp.find(params[:id])
-    validate_owner!(@rsvp)
-
-    @rsvp.update_attributes(rsvp_params)
 
     respond_to do |format|
-      if @rsvp.save
+      if @rsvp.update_attributes(rsvp_params)
         format.html { redirect_to(@event, :notice => 'Rsvp was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -86,8 +79,6 @@ class RsvpsController < ApplicationController
   # DELETE /rsvps/1
   # DELETE /rsvps/1.xml
   def destroy
-    @rsvp = Rsvp.find(params[:id])
-    validate_owner!(@rsvp)
     @event = @rsvp.event
     @rsvp.destroy
 
@@ -98,13 +89,11 @@ class RsvpsController < ApplicationController
   end
 
   def confirm
-    @rsvp = Rsvp.find(params[:id])
-    @rsvp.confirmed = Rsvp::Confirmed
 
     role = params[:role] || :candidate
 
     respond_to do |format|
-      if @rsvp.update_attribute :confirmed, Rsvp::Confirmed  
+      if @rsvp.update_attribute :confirmed, Rsvp::Confirmed
         format.html { redirect_to(confirm_rsvps_path(@rsvp.event_id, :role => role), :notice => 'Rsvp was confirmed.') }
         format.xml  { render :xml => @rsvp }
       else
@@ -115,9 +104,7 @@ class RsvpsController < ApplicationController
   end
 
   def unconfirm
-    @rsvp = Rsvp.find(params[:id])
-    @rsvp.update_attribute :confirmed, Rsvp::Unconfirmed 
-
+    @rsvp.update_attribute :confirmed, Rsvp::Unconfirmed
     role = params[:role] || "candidates"
 
     respond_to do |format|
@@ -127,8 +114,7 @@ class RsvpsController < ApplicationController
   end
 
   def reject
-    @rsvp = Rsvp.find(params[:id])
-    @rsvp.update_attribute :confirmed, Rsvp::Rejected 
+    @rsvp.update_attribute :confirmed, Rsvp::Rejected
     
     role = params[:role] || "candidates"
 
@@ -144,10 +130,16 @@ class RsvpsController < ApplicationController
 
 private
 
-  def validate_owner!(rsvp)
-    unless current_user == rsvp.user || authorize(:compserv)
-      raise 'You do not have permission to modify this RSVP'
-    end
+  def set_rsvp
+    @rsvp = Rsvp.find(params[:id])
+  end
+
+  def vp_or_pres!
+    authorize(:vp) || authenticate_pres!
+  end
+
+  def validate_owner!
+    current_user == @rsvp.user || authenticate_superuser!
   end
 
   def get_event
@@ -157,10 +149,9 @@ private
     end
   end
 
-  def rsvp_permission
+  def rsvp_permission!
     if !@event.allows_rsvps? or !@event.can_rsvp? current_user
       redirect_to :root, :notice => "You do not have permission to RSVP for this event"
-      return false
     end
   end
 

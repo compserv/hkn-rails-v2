@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <b>Person:</b>
   <%= link_to @rsvp.user.full_name, @rsvp.user %>
@@ -22,8 +20,8 @@
 </p>
 <% end %>
 
-<% if @rsvp.user == current_user || user_session[:compserv] %>
-<%= link_to 'Edit', edit_rsvp_path(@rsvp) %> |
+<% if @rsvp.user == current_user || authorize(:compserv) %>
+	<%= link_to 'Edit', edit_rsvp_path(@rsvp) %> |
 <% end %>
 <%= link_to 'RSVPs Index', event_rsvps_path(@event) %> |
 <%= link_to 'Event Details', event_path(@event) %>

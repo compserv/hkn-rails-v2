@@ -41,13 +41,7 @@ class EventsController < ApplicationController
       @events = @events.select {|e| e.event_type.downcase == event_filter}
     end
 
-    if order == "event_type"
-      opts = { page: params[:page], per_page: per_page }
-      @events = @events.sort_by{|event| event.event_type }
-      @events = @events.paginate options
-    else
-      @events = @events.paginate options
-    end
+    @events = @events.paginate options
 
     respond_to do |format|
       format.html # index.html.erb
@@ -67,16 +61,9 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(event_params)
-    valid = true
-
-    if @event.valid?
-      @event.save!
-    else
-      valid = false
-    end
 
     respond_to do |format|
-      if valid
+      if @event.save
         format.html { redirect_to(@event, :notice => 'Event was successfully created.') }
         format.xml  { render :xml => @event, :status => :created, :location => @event }
       else
@@ -88,10 +75,9 @@ class EventsController < ApplicationController
 
   def update
     @event = Event.find(params[:id])
-    valid = @event.update_attributes(event_params)
 
     respond_to do |format|
-      if valid
+      if @event.update_attributes(event_params)
         format.html { redirect_to(@event, :notice => 'Event was successfully updated.') }
         format.xml  { head :ok }
       else

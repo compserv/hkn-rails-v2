@@ -5,9 +5,9 @@
     <th>Event</th>
     <th>Confirmed?</th>
     <th></th>
-    <% if user_session[:comm] %>
-    <th></th>
-    <th></th>
+    <% if comm_authorize %>
+      <th></th>
+      <th></th>
     <% end %>
   </tr>
 
@@ -16,9 +16,9 @@
     <td><%= rsvp.event.title %></td>
     <td><%= rsvp.confirmed == 't' ? "Yes" : "No" %></td>
     <td><%= link_to 'Show', rsvp_path(rsvp) %></td>
-    <% if user_session[:comm] %>
-    <td class='admin'><%= link_to 'Edit', edit_rsvp_path(rsvp.event, rsvp) %></td>
-    <td class='admin'><%= link_to 'Destroy', rsvp_path(rsvp), :confirm => 'Are you sure?', :method => :delete %></td>
+    <% if comm_authorize %>
+      <td class='admin'><%= link_to 'Edit', edit_rsvp_path(rsvp.event, rsvp) %></td>
+      <td class='admin'><%= link_to 'Destroy', rsvp_path(rsvp), :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>
   </tr>
 <% end %>

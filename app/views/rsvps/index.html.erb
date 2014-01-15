@@ -9,9 +9,9 @@
       <th>Transportation</th>
     <% end %>
     <th></th>
-    <% if user_session[:comm] %>
-    <th></th>
-    <th></th>
+    <% if authorize(:compserv) %>
+      <th></th>
+      <th></th>
     <% end %>
   </tr>
 
@@ -24,9 +24,9 @@
       <td><%= rsvp.transportation_ability %></td>
     <% end %>
     <td><%= link_to 'Show', rsvp_path(rsvp) %></td>
-    <% if user_session[:compserv] %>
-    <td class='admin'><%= link_to 'Edit', edit_rsvp_path(rsvp) %></td>
-    <td class='admin'><%= link_to 'Destroy', rsvp_path(rsvp), :confirm => 'Are you sure?', :method => :delete %></td>
+    <% if authorize(:compserv) %>
+      <td class='admin'><%= link_to 'Edit', edit_rsvp_path(rsvp) %></td>
+      <td class='admin'><%= link_to 'Destroy', rsvp_path(rsvp), :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>
   </tr>
 <% end %>

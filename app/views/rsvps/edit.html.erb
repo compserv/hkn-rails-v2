@@ -2,14 +2,12 @@
 
 <%= form_for @rsvp do |f| %>
   <% if @rsvp.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@rsvp.errors.count, "error") %> prohibited this rsvp from being saved:</h2>
+    <h2><%= pluralize(@rsvp.errors.count, "error") %> prohibited this rsvp from being saved:</h2>
 
-      <ul>
+    <div id="alert alert-danger">
       <% @rsvp.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
-      </ul>
     </div>
   <% end %>
 
@@ -25,8 +23,8 @@
 
   <% if @event.need_transportation? %>
   <div class="field">
-    <%= f.label :transportation %>
-    <%= f.select :transportation, Rsvp::TRANSPORT_ENUM %>
+    <%= f.label :transportation_ability %>
+    <%= f.select :transportation_ability, Rsvp::TRANSPORT_ENUM %>
   </div>
   <% end %>
 
