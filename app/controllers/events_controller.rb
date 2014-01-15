@@ -126,7 +126,7 @@ class EventsController < ApplicationController
   def show
     begin
       # Only show event if user has permission to
-      @event = Event.with_permission(current_user).find(params[:id], include: :rsvps)
+      @event = Event.with_permission(current_user).find(params[:id], include: { rsvps: :user } )
     rescue ActiveRecord::RecordNotFound
       redirect_to :root, :notice => "Event not found"
       return

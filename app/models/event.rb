@@ -90,6 +90,10 @@ class Event < ActiveRecord::Base
     event_type.gsub(/\s/, '-').downcase
   end
 
+  def start_date
+    start_time.strftime('%Y %m/%d')
+  end
+
   def nice_time_range(year = false)
     date_format = year ? '%a %m/%d/%y' : '%a %m/%d'
     time_format = '%I:%M%p'
@@ -100,6 +104,10 @@ class Event < ActiveRecord::Base
       end_format = "#{date_format} #{time_format}"
     end
     "#{start_time.strftime(start_format)} - #{end_time.strftime(end_format)}"
+  end
+
+  def can_view? user
+    Event.current.with_permission(user).include? self
   end
 
   def allows_rsvps?
