@@ -75,6 +75,10 @@ class User < ActiveRecord::Base
     Role.semester_filter(MemberSemester.current).members.all_users.include?(self)
   end
 
+  def is_member?
+    roles.members.count > 0
+  end
+
   def add_position_for_semester_and_role_type(position, semester, role)
     Role.find_or_create_by_name_and_resource_id_and_role_type(position, semester.id, role).users << self
   end
@@ -128,7 +132,7 @@ class User < ActiveRecord::Base
     roles_for_semester(semester).officers.count > 0
   end
 
-  def is_candidate?
+  def is_currently_candidate?
     roles_for_semester(MemberSemester.current).candidates.count > 0
   end
 

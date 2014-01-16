@@ -3,7 +3,7 @@ class CandidateController < ApplicationController
   before_filter :is_candidate?
 
   def is_candidate?
-    unless current_user.has_role? :candidate, MemberSemester.current
+    unless current_user.is_currently_candidate
       flash[:notice] = "You're not a candidate, so this information may not apply to you"
     end
   end
