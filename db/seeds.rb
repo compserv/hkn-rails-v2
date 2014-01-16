@@ -174,7 +174,7 @@ events = [
 events.each do |event|
   Event.create(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
                event_type: event[4], view_permission_roles: event[5], rsvp_permission_roles: event[6],
-               need_transportation?: event[7], max_rsvps: event[8])
+               need_transportation?: event[7], max_rsvps: event[8], location: "Soda-Etchevery Breezeway")
   puts "Created event #{event[0]}"
   User.first.rsvp! Event.last.id
   puts "First user tried to RSVP to event #{Event.last.title}"

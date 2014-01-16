@@ -20,7 +20,7 @@
 #
 
 class Event < ActiveRecord::Base
-  EVENT_TYPES = ["Big Fun", "Fun", "Industry", "Mandatory for Candidates", "Miscellaneous", "Service"]
+  EVENT_TYPES = ["Big Fun", "Fun", "Industry", "Mandatory for Candidates", "Miscellaneous", "Service", "Exam", "Review Session"]
   has_many :rsvps, dependent: :destroy
   has_many :users, through: :rsvps
 

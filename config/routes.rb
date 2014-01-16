@@ -1,6 +1,4 @@
 HknRails::Application.routes.draw do
-  resources :indrel_events
-
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -32,6 +30,7 @@ HknRails::Application.routes.draw do
   resources :dept_tours
   resources :exams
   resources :indrel_event_types
+  resources :indrel_events
   resources :locations
   resources :resumes
   resources :resume_books, except: [:edit, :update]
