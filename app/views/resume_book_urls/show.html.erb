@@ -1,0 +1,62 @@
+<p>
+  <strong>Resume book:</strong>
+  <%= link_to "Link to Book", resume_book_path(@resume_book_url.resume_book_id) %>
+</p>
+
+<p>
+  <strong>Created at:</strong>
+  <%= @resume_book_url.created_at.to_s(:long) %>
+</p>
+
+<p>
+  <strong>Expiration date:</strong>
+  <%= @resume_book_url.expiration_date.to_s(:long) %>
+</p>
+
+<p>
+  <strong>Expired?:</strong>
+  <%= @resume_book_url.expired? %>
+</p>
+
+<p>
+  <strong>Feedback:</strong>
+  <%= @resume_book_url.feedback %>
+</p>
+
+<p>
+  <strong>Password:</strong>
+  <%= @resume_book_url.password %>
+</p>
+
+<p>
+  <strong>Download count:</strong>
+  <%= @resume_book_url.download_count %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @resume_book_url.company %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @resume_book_url.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @resume_book_url.email %>
+</p>
+
+<p>
+  <strong>Transaction_id:</strong>
+  <%= @resume_book_url.transaction_id %>
+</p>
+
+<p>
+  <strong>Download link:</strong>
+  <%= link_to "#{resume_book_download_pdf_url(@resume_book_url.resume_book_id, string: @resume_book_url.password)}", resume_book_download_pdf_url(@resume_book_url.resume_book_id, string: @resume_book_url.password) %>
+</p>
+
+<%= link_to 'Edit', edit_resume_book_url_path(@resume_book_url) %> |
+<%= link_to 'URL index', resume_book_urls_path %>

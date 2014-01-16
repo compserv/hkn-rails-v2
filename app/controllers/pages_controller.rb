@@ -3,6 +3,22 @@ class PagesController < ApplicationController
   #tocache.each {|a| caches_action a, :layout => false}
 
   def home
+    #@events = Event.upcoming_events(0, @current_user)
+    @show_searcharea = true
+    #prop = Property.get_or_create
+    #@tutoring_enabled = prop.tutoring_enabled
+    #@hours = prop.tutoring_start .. prop.tutoring_end
+    time = Time.now
+    time = time.tomorrow if time.hour > 16#prop.tutoring_end
+    time = time.next_week unless (1..5).include? time.wday
+    @day = time.wday
+    @tutor_title = "#{time.strftime("%A")}'s Tutoring Schedule"
+    #if @tutoring_enabled
+    #  @course_mapping = {}
+    #  @slots = Slot.includes(:tutors).where(:wday => time.wday)
+    #else
+      @tutoring_message = "HKN is on break for the holidays"#prop.tutoring_message
+    #end
   end
 
   def coursesurveys_how_to

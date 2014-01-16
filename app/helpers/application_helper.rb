@@ -100,4 +100,12 @@ $(window).bind('statechange', function(){
   def spinner
     raw '<div id="spinner"><img src="/assets/site/spinner.gif" alt="Loading..."/></div>'
   end
+
+  # Removes the badness from a query, by allowing only common chars.
+  # For example, you could break a query by searching for ".
+  #
+  def sanitize_query(q)
+    return '' if q.nil?
+    q.gsub(/\s+/, ' ').gsub(/[^a-zA-Z 0-9\*\?'\"]/i, '?')
+  end
 end

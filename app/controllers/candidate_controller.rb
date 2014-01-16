@@ -10,6 +10,7 @@ class CandidateController < ApplicationController
 
   def portal
     @challenges = Challenge.all
+    @announcements = Announcement.all
   end
 
   def quiz
