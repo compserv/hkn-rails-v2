@@ -20,6 +20,7 @@
 #
 
 class Event < ActiveRecord::Base
+  EVENT_TYPES = ["Big Fun", "Fun", "Industry", "Mandatory for Candidates", "Miscellaneous", "Service"]
   has_many :rsvps, dependent: :destroy
   has_many :users, through: :rsvps
 
@@ -31,12 +32,10 @@ class Event < ActiveRecord::Base
   validates :max_rsvps, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates_inclusion_of :rsvp_permission_roles, in: ['candidates', 'committee_members', 'officers', nil]
   validates_inclusion_of :view_permission_roles, in: ['candidates', 'committee_members', 'officers', nil] 
-  validates_inclusion_of :event_type, in: ["Big Fun", "Fun", "Industry", "Mandatory for Candidates",
-                                           "Miscellaneous", "Service"]
+  validates_inclusion_of :event_type, in: EVENT_TYPES
 
   def self.event_types
-    ["Big Fun", "Fun", "Industry", "Mandatory for Candidates",
-     "Miscellaneous", "Service"]
+    EVENT_TYPES
   end
 
   def self.permission_options

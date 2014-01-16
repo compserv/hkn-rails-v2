@@ -146,18 +146,29 @@ class EventsController < ApplicationController
   # RSVPs page
   def confirm_rsvps_index
     authorize(:pres) || authenticate_vp!
-    @role = params[:role] || :candidate
-    types = ["Mandatory for Candidates", "Big Fun", "Fun", "Service"]
-    @events = Event.current.joins(rsvps: {user: :roles}).where("(rsvps.confirmed IS NULL OR rsvps.confirmed = 'f') AND roles.id = #{Role.find_by_name(@role).id}").uniq
+    @role = params[:role] || :candidates
+    if @role.to_sym == :candidates
+      users = MemberSemester.current.candidates
+    else
+      @role = :members
+      users = Role.members.all_users
+    end
+    @events = Event.current.joins(rsvps: :user).where("(rsvps.confirmed IS NULL OR rsvps.confirmed = 'f') AND users.id in (?)", users).uniq
     @events.sort!{|x, y| x.start_time <=> y.end_time }.reverse!
   end
 
   # RSVP confirmation for an individual event
   def confirm_rsvps
     authorize(:pres) || authenticate_vp!
-    @role = params[:role] || :candidate
+    @role = params[:role] || :candidates
+    if @role.to_sym == :candidates
+      users = MemberSemester.current.candidates
+    else
+      @role = :members
+      users = Role.members.all_users
+    end
     @event = Event.find(params[:id])
-    @rsvps = @event.rsvps.includes(:user).sort_by { |rsvp| rsvp.user.full_name }
+    @rsvps = @event.rsvps.joins(:user).where("users.id in (?)", users).sort_by { |rsvp| rsvp.user.full_name }
   end
 
   private
