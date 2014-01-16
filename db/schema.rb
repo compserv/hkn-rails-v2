@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140113223743) do
+ActiveRecord::Schema.define(version: 20140114053024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,15 +214,6 @@ ActiveRecord::Schema.define(version: 20140113223743) do
   create_table "mobile_carriers", force: true do |t|
     t.string   "name"
     t.string   "sms_email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "payment_notifications", force: true do |t|
-    t.text     "params"
-    t.string   "status"
-    t.string   "transaction_id"
-    t.string   "create"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

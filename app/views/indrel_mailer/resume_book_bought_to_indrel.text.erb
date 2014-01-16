@@ -1,7 +1,7 @@
 This is an email to indrel notifying that a resume book has just been bought
 
 The link is here <%= resume_book_download_pdf_url(@url.resume_book_id, string: @url.password) %>.
-The link will expire by default on <%= @url.expiration_date.strftime("%B %d, %Y at %I:%M %p") %>.
+The link will expire by default on <%= @url.expiration_date.to_s(:long) %>.
 The paypal transaction id used was <%= @url.transaction_id %>.
 
 To view more information about this transaction please visit <%= link_to "this page", "hkn.eecs.berkeley.edu/resume_book_urls/#{@url.id}" %>

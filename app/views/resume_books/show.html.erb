@@ -5,8 +5,8 @@
 
 <p><%= link_to "Download PDF", resume_book_download_pdf_path(@resume_book.id) %></p>
 <p><%= link_to "Download ISO", resume_book_download_iso_path(@resume_book.id) %></p>
-<p>Resume book cutoff date: <%= @resume_book.cutoff_date.strftime("%B %d, %Y") %></p>
-<p>Resume book generated at: <%= @resume_book.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+<p>Resume book cutoff date: <%= @resume_book.cutoff_date.to_s(:long) %></p>
+<p>Resume book generated at: <%= @resume_book.created_at.to_s(:long) %></p>
 
 
 <p>
