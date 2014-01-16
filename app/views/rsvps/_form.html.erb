@@ -1,0 +1,37 @@
+<%= form_for([@event, @rsvp]) do |f| %>
+  <% if @rsvp.errors.any? %>
+    <h2><%= pluralize(@rsvp.errors.count, "error") %> prohibited this rsvp from being saved:</h2>
+
+    <div id="alert alert-danger">
+      <% @rsvp.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <label>Event</label>
+    <div><%= link_to @event.title, @event %></div>
+  </div>
+
+  <div class="field">
+    <label>User</label>
+    <div><%= link_to current_user.full_name, current_user %></div>
+  </div>
+
+  <% if @event.need_transportation? %>
+  <div class="field">
+    <%= f.label :transportation_ability %>
+    <%= f.select :transportation_ability, Rsvp::TRANSPORT_ENUM %>
+  </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :comment, 'Anything we should know?' %>
+    <%= f.text_area :comment %>
+  </div>
+
+  <div class="field-submit">
+    <%= f.submit 'RSVP!' %>
+  </div>
+<% end %>

@@ -46,6 +46,12 @@ class ApplicationController < ActionController::Base
     user_session[:comm].nil? ? user_session[:comm] = current_user.has_ever_had_role?(:committee_member) || current_user.has_ever_had_role?(:officer) : user_session[:comm]
   end
 
+  def comm_authorize!
+    if !comm_authorize
+      redirect_to new_user_session_path, :notice => "Please log in to access this page."
+    end
+  end
+
   def active_member_authorize
     return unless current_user
     user_session[:current_comm].nil? ? user_session[:current_comm] = current_user.is_active_member? : user_session[:current_comm]

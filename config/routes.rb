@@ -29,6 +29,22 @@ HknRails::Application.routes.draw do
   resources :resume_books, except: [:edit, :update]
   resources :users, except: [:new, :create, :index]
 
+  scope "events" do
+    match "rsvps", to: "rsvps#my_rsvps", via: :get, as: :my_rsvps
+    match "calendar", to: "events#calendar", via: :get, as: "events_calendar"
+    match ":category", to: "events#index", via: :get, as: :events_category, constraints: {:category => /(future|past)/}
+    # Routes for RSVP confirmation page
+    match "confirm_rsvps/:role" => "events#confirm_rsvps_index", via: :get, :as => :confirm_rsvps_index
+    match "confirm_rsvps/:role/event/:id" => "events#confirm_rsvps", via: :get, :as => :confirm_rsvps    
+    match "confirm/:id" => "rsvps#confirm", via: :get, :as => :confirm_rsvp
+    match "unconfirm/:id" => "rsvps#unconfirm", via: :get, :as => :unconfirm_rsvp
+    match "reject/:id" => "rsvps#reject", via: :get, :as => :reject_rsvp
+  end
+
+  resources :events do
+    resources :rsvps, shallow: true
+  end
+
   scope "candidate" do
     match "quiz", to: "candidate#quiz", via: :get, as: "candidate_quiz"
     match "submit_quiz", to: "candidate#submit_quiz", via: :post, as: "candidate_submit_quiz"

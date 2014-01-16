@@ -1,0 +1,27 @@
+<p>
+  <b>Person:</b>
+  <%= link_to @rsvp.user.full_name, @rsvp.user %>
+</p>
+
+<p>
+  <b>Event:</b>
+  <%= link_to @rsvp.event.title , @rsvp.event %>
+</p>
+
+<p>
+  <b>Comment:</b>
+  <%= @rsvp.comment %>
+</p>
+
+<% if @event.need_transportation? %>
+<p>
+  <b>Transportation:</b>
+  <%= @rsvp.transportation_ability %>
+</p>
+<% end %>
+
+<% if @rsvp.user == current_user || authorize(:compserv) %>
+	<%= link_to 'Edit', edit_rsvp_path(@rsvp) %> |
+<% end %>
+<%= link_to 'RSVPs Index', event_rsvps_path(@event) %> |
+<%= link_to 'Event Details', event_path(@event) %>

@@ -54,11 +54,11 @@
   <% end %>
 
   <% if @user.rsvps.count > 0 %>
-    <h2><%= @user.fullname %>'s RSVPs</h2>
+    <h2><%= @user.full_name %>'s RSVPs</h2>
     <ul>
-    <% @user.rsvps.ordered_desc.each do |rsvp| %>
+    <% @user.rsvps.includes(:event).order('events.start_time').each do |rsvp| %>
       <% if rsvp.event.can_view? current_user %>
-        <li><%= link_to "#{rsvp.event.start_date} - #{rsvp.event.name}", rsvp.event %></li>
+        <li><%= link_to "#{rsvp.event.start_date} - #{rsvp.event.title}", rsvp.event %></li>
       <% end %>
     <% end %>
     </ul>

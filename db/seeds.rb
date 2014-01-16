@@ -21,14 +21,14 @@ users = [
 ]
 
 users.each do |user_info|
-  user = User.create(username: user_info[0], email: user_info[1], password: "password", password_confirmation: "password", first_name: user_info[2], last_name: user_info[3], approved: true, phone_number: '123-456-7891')
+  user = User.create(username: user_info[0], email: user_info[1], password: "password", password_confirmation: "password", first_name: user_info[2], last_name: user_info[3], approved: true, phone_number: '123-456-7891', should_reset_session: true)
   user.member_semesters << current_member_semester
   puts "Created user with username: #{user.username} and email: #{user.email}."
 end
 
 # candidate tester
-u = User.create(username: 'notaspammer', email: 'hazedcasey@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false, phone_number: '123-456-7891')
-v = User.create(username: 'approved', email: 'hihihi@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "alice", approved: true, phone_number: '123-456-7891')
+u = User.create(username: 'notaspammer', email: 'hazedcasey@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false, phone_number: '123-456-7891', should_reset_session: true)
+v = User.create(username: 'approved', email: 'hihihi@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "alice", approved: true, phone_number: '123-456-7891', should_reset_session: true)
 new_role = Role.create(name: :candidate, role_type: :candidate, resource_type: MemberSemester.to_s, resource_id: MemberSemester.current.id)
 v.add_position_for_semester_and_role_type(:candidate, MemberSemester.current, :candidate)
 u.add_position_for_semester_and_role_type(:candidate, MemberSemester.current, :candidate)
@@ -104,4 +104,24 @@ def initialize_mobile_carriers
 end
 
 initialize_mobile_carriers
+
+events = [
+  ["Picnic", "Lots of fun", DateTime.yesterday, DateTime.now, "Big Fun", nil, nil, false, 999],
+  ["GM2", "Must see!", DateTime.now.ago(2.days), DateTime.now, "Mandatory for Candidates", 'candidates', 'candidates', false, 999],
+  ["HM1", "hm1", DateTime.tomorrow, DateTime.tomorrow, "Miscellaneous", 'committee_members', 'committee_members', true, 0],
+  ["Paintball", "paintball", DateTime.now.in(3.hours), DateTime.now.in(4.hours), "Fun", 'officers', 'officers', true, 999]
+]
+
+events.each do |event|
+  Event.create(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
+               event_type: event[4], view_permission_roles: event[5], rsvp_permission_roles: event[6],
+               need_transportation?: event[7], max_rsvps: event[8])
+  puts "Created event #{event[0]}"
+  User.first.rsvp! Event.last.id
+  puts "First user tried to RSVP to event #{Event.last.title}"
+  #Candidate tries to rsvp
+  if Event.last.can_rsvp? User.find_by_username('approved')
+    User.find_by_username('approved').rsvp! Event.last.id
+  end
+end
 

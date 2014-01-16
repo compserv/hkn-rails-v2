@@ -128,6 +128,10 @@ class User < ActiveRecord::Base
     roles_for_semester(semester).officers.count > 0
   end
 
+  def is_candidate?
+    roles_for_semester(MemberSemester.current).candidates.count > 0
+  end
+
   def full_name
     first_name + " " + last_name
   end

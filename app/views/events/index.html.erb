@@ -1,0 +1,9 @@
+<h1><%= @heading %></h1>
+
+<%= render 'list' %>
+
+<%= ajaxify_links %>
+
+<% if @event_auth %>
+  <%= link_to 'New Event', new_event_path %>
+<% end %>
