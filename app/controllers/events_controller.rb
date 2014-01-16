@@ -18,8 +18,6 @@ class EventsController < ApplicationController
                      else "ASC"
                      end
     @search_opts = {'sort' => order, 'sort_direction' => sort_direction }.merge params
-    # Maintains start_time as secondary sort column
-    options = { :page => params[:page], :per_page => 20 }
 
     category = params[:category] || 'all'
     event_finder = Event.with_permission(current_user)
@@ -38,7 +36,10 @@ class EventsController < ApplicationController
       @events = @events.where('lower(event_type) = ?', event_filter)
     end
 
-    @events = @events.order("#{order} #{sort_direction}, start_time #{sort_direction}").paginate options
+    # Maintains start_time as secondary sort column
+    ord = "#{order} #{sort_direction}, start_time #{sort_direction}"
+    options = { :page => params[:page], :per_page => 20 }
+    @events = @events.order(ord).paginate options
 
     respond_to do |format|
       format.html # index.html.erb
@@ -144,17 +145,16 @@ class EventsController < ApplicationController
   # Lists all events with unconfirmed RSVPs with links to individual event
   # RSVPs page
   def confirm_rsvps_index
-    redirect_to root_path unless authorize(:pres) or authorize(:vp)
+    authorize(:pres) || authenticate_vp!
     @role = params[:role] || :candidate
     types = ["Mandatory for Candidates", "Big Fun", "Fun", "Service"]
-
-    @events = Event.current.find(:all, :joins => { :rsvps => {:user => :roles} }, :conditions => "(rsvps.confirmed IS NULL OR rsvps.confirmed = 'f') AND roles.id = #{Role.find_by_name(@role).id}").uniq
+    @events = Event.current.joins(rsvps: {user: :roles}).where("(rsvps.confirmed IS NULL OR rsvps.confirmed = 'f') AND roles.id = #{Role.find_by_name(@role).id}").uniq
     @events.sort!{|x, y| x.start_time <=> y.end_time }.reverse!
   end
 
   # RSVP confirmation for an individual event
   def confirm_rsvps
-    redirect_to root_path unless authorize(:pres) or authorize(:vp)
+    authorize(:pres) || authenticate_vp!
     @role = params[:role] || :candidate
     @event = Event.find(params[:id])
     @rsvps = @event.rsvps.includes(:user).sort_by { |rsvp| rsvp.user.full_name }

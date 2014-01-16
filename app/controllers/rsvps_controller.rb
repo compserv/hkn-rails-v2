@@ -30,7 +30,7 @@ class RsvpsController < ApplicationController
   # GET /rsvps/new
   # GET /rsvps/new.xml
   def new
-    redirect_to event_rsvps_path(params[:event_id].to_i), notice: "you've already rsvp'd up" and return if current_user.events.pluck(:id).include?(params[:event_id].to_i)
+    redirect_to event_rsvps_path(params[:event_id].to_i), notice: "you've already rsvp'd" and return if current_user.events.pluck(:id).include?(params[:event_id].to_i)
     @rsvp = Rsvp.new
 
     respond_to do |format|
@@ -46,7 +46,7 @@ class RsvpsController < ApplicationController
   # POST /rsvps
   # POST /rsvps.xml
   def create
-    redirect_to event_rsvps_path(params[:event_id].to_i), notice: "you've already rsvp'd up" and return if current_user.events.pluck(:id).include?(params[:event_id].to_i)
+    redirect_to event_rsvps_path(params[:event_id].to_i), notice: "you've already rsvp'd" and return if current_user.events.pluck(:id).include?(params[:event_id].to_i)
     @rsvp = Rsvp.new(rsvp_params)
     @rsvp.event = @event
     @rsvp.user = current_user
