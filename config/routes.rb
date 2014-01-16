@@ -1,5 +1,4 @@
 HknRails::Application.routes.draw do
-
   resources :indrel_events
 
   root to: "pages#home"
@@ -91,6 +90,7 @@ HknRails::Application.routes.draw do
     scope "vp" do
       match "/", to: "vp#index", via: :get, as: :vp
     end
+    match "pres", to: "pres#index", via: :get, as: :pres
     scope "bridge" do
       match "/", to: "bridge#index", via: :get, as: :bridge
       match "officer_photo_upload", to: "bridge#officer_photo_index", via: :get, as: :bridge_officer_index
