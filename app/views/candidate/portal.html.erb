@@ -1,3 +1,14 @@
+<div id="sidebar" class="trans-bg">
+  <h2>Upcoming Events <%= link_to "(see calendar)", events_calendar_path %></h2>
+  <%= render :partial => "events/upcoming" %>
+
+  <h2>Important Information</h2>
+  [Coming Soon]
+  
+  <h2>Additional Forms</h2>
+  [Coming Soon]
+</div>
+
 <div id="main">
   <h1>Candidate Portal</h1>
 
@@ -13,22 +24,48 @@
       </ul>
   </div>
 
-  <div style="float:left; width: 45%; padding-left: 3em;">
-    <%= render "candidate_challenges" %>
-    <h3>
-      <span class="<%= "req_status " + (false ? "status_done" : "status_notdone") %>"></span>
-      Forms
-    </h3>
-    <ul id="forms" class="semi-plain">
-      <li>
-        <span class="<%= "event_status " + (false ? 'event_done' : 'event_notdone') %>"></span>
-        <%= link_to "Resume", new_resume_path %>
-      </li>
-      <li>
-        <span class="<%= "event_status " + (false ? 'event_done' : 'event_notdone') %>"></span>
-        <%= link_to "Quiz", candidate_quiz_path %>
-      </li>
-    </ul>
-  </div>
+  <div id="checklist" style="float:left">
+    <h2>Checklist</h2>
+    
+    <div style="float:left; width: 45%;">
+      <h3>
+        <span class="<%= "req_status " + (@done["events"] ? "status_done" : "status_notdone") %>"></span>
+        Events
+      </h3>
+      <ul class="semi-plain">
+        <% @status.each do |req, status| %>
+        <li>
+          <h4>
+            <span class="<%= "req_status " + (status ? "status_done" : "status_notdone") %>"></span>
+            <%=h req.to_s %>
+          </h4>
+          <ul class="semi-plain">
+            <% for event in @my_events[req] %>
+            <% rsvp = event.rsvps.find_by_user_id(current_user.id) %>
+            <li><span class="<%= "event_status " + (rsvp.confirmed == 't' ? 'event_done' : (rsvp.confirmed == 'r' ? 'rejected' : 'event_notdone')) %>"></span><%= event.title %></li>
+            <% end %>
+          </ul>
+        </li>
+        <% end %>
+      </ul>
+    </div>
 
+    <div style="float:left; width: 45%; padding-left: 3em;">
+      <%= render "candidate_challenges" %>
+      <h3>
+        <span class="<%= "req_status " + (@done["forms"] ? "status_done" : "status_notdone") %>"></span>
+        Forms
+      </h3>
+      <ul id="forms" class="semi-plain">
+        <li>
+          <span class="<%= "event_status " + (@done["resume"] ? 'event_done' : 'event_notdone') %>"></span>
+          <%= link_to "Resume", new_resume_path %>
+        </li>
+        <li>
+          <span class="<%= "event_status " + (@done["quiz"] ? 'event_done' : 'event_notdone') %>"></span>
+          <%= link_to "Quiz", candidate_quiz_path %>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

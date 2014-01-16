@@ -3,14 +3,34 @@ class CandidateController < ApplicationController
   before_filter :is_candidate?
 
   def is_candidate?
-    unless current_user.is_currently_candidate
+    unless currently_candidate?
       flash[:notice] = "You're not a candidate, so this information may not apply to you"
     end
   end
 
   def portal
-    @challenges = Challenge.all
-    @announcements = Announcement.all
+    req = Hash.new { |h,k| 0 }
+    req["Mandatory for Candidates"] = 3
+    req["Fun"] = 3
+    req["Big Fun"] = 1
+    req["Service"] = 2
+    @my_events = current_user.events.group_by(&:event_type)
+    @my_confirmed_events = current_user.events.joins(:rsvps).where('rsvps.confirmed = ?', 't').group_by(&:event_type)
+    @status = {}
+    req.each do |x, y|
+      @my_events[x] ||= []
+      @my_confirmed_events[x] ||= []
+      @status[x] = (@my_confirmed_events[x].count >= y)
+    end
+    @events = Event.with_permission(current_user).where('end_time >= ? AND end_time <= ?', Time.now, Time.now + 7.days).order(:start_time)
+    @challenges = Challenge.where(candidate_id: current_user.id)
+    @announcements = Announcement.all.limit(10)
+    @done = Hash.new(false)
+    @done["events"] = !@status.has_value?(false)
+    @done["challenges"] = @challenges.where(confirmed: true).count >= 5
+    @done["resume"] = !current_user.resume.nil?
+    @done["quiz"] = !current_user.candidate_quiz.nil?
+    @done["forms"] = @done["resume"] and @done["quiz"]
   end
 
   def quiz

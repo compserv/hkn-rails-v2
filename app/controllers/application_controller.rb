@@ -57,6 +57,11 @@ class ApplicationController < ActionController::Base
     user_session[:current_comm].nil? ? user_session[:current_comm] = current_user.is_active_member? : user_session[:current_comm]
   end
 
+  def currently_candidate?
+    return unless current_user
+    user_session[:current_cand].nil? ? user_session[:current_cand] = current_user.is_currently_candidate? : user_session[:current_cand]
+  end
+
   def get_num_deprel_requests
     return unless current_user
     user_session[:deptTour_number].nil? ? user_session[:deptTour_number] = DeptTour.all.count.to_s : user_session[:deptTour_number]

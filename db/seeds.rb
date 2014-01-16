@@ -30,6 +30,7 @@ end
 u = User.create(username: 'notaspammer', email: 'hazedcasey@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false, phone_number: '123-456-7891', should_reset_session: true)
 v = User.create(username: 'approved', email: 'hihihi@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "alice", approved: true, phone_number: '123-456-7891', should_reset_session: true)
 v.add_position_for_semester_and_role_type(:candidate, MemberSemester.current, :candidate)
+User.find_by_username('mark').add_position_for_semester_and_role_type(:candidate, MemberSemester.first, :candidate)
 
 # Roles
 execs = [
@@ -182,3 +183,5 @@ events.each do |event|
   end
 end
 
+r = ResumeBook.new(title: "EMPTY", details: {info: "NOTHING"}, cutoff_date: Time.now, remarks: "Seed generated, please delete")
+r.save(:validate => false)
