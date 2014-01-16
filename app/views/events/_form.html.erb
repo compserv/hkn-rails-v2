@@ -24,7 +24,7 @@
   </div>
   <div class="field">
     <%= f.label :event_type %>
-    <%= f.select :event_type, Event.event_types.map { |type| [type, type] } %>
+    <%= f.select :event_type, Event::EVENT_TYPES.map { |type| [type, type] } %>
   </div>
   <div class="field">
     <%= f.label :start_time %>

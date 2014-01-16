@@ -34,10 +34,6 @@ class Event < ActiveRecord::Base
   validates_inclusion_of :view_permission_roles, in: ['candidates', 'committee_members', 'officers', nil] 
   validates_inclusion_of :event_type, in: EVENT_TYPES
 
-  def self.event_types
-    EVENT_TYPES
-  end
-
   def self.permission_options
     [["Candidates and Members", "candidates"], ["Committee Members", "committee_members"], 
      ["Officers", "officers"], ["Everyone", nil]]
