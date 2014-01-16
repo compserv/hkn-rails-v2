@@ -29,7 +29,6 @@ class EventsController < ApplicationController
       event_finder = event_finder.upcoming
       @heading = "Upcoming Events"
     else
-      event_finder = event_finder
       @heading = "All Events"
     end
     if event_filter != "none"
@@ -58,7 +57,6 @@ class EventsController < ApplicationController
   end
 
   def create
-    debugger
     @event = Event.new(event_params)
 
     respond_to do |format|
