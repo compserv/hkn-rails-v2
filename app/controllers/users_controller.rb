@@ -89,14 +89,14 @@ class UsersController < ApplicationController
 
     opts = { page: params[:page], per_page: params[:per_page] || 20 }
     ord = "users." + params["sort"] + " " + sort_direction
-    joinstr = 'INNER JOIN "users_roles" ON "users_roles"."user_id" = "users"."id" INNER JOIN "roles" ON "roles"."id" = "users_roles"."role_id"' # this looks terribad...
+    joinstr = 'INNER JOIN "users_roles" ON "users_roles"."user_id" = "users"."id" INNER JOIN "roles" ON "roles"."id" = "users_roles"."role_id"'
 
     user_selector = User.uniq(:id)
     if authenticate_vp and params[:approved] == 'false'
-      user_selector = user_selector.where(:approved => false )
+      @users = user_selector.where(approved: false).paginate opts
+    else
+      @users = user_selector.order(ord).joins(joinstr).where(cond).paginate opts
     end
-
-    @users = user_selector.order(ord).joins(joinstr).where(cond).paginate opts
 
     respond_to do |format|
       format.html
@@ -109,6 +109,7 @@ class UsersController < ApplicationController
   def approve
     authenticate_vp! # current user must at least be vp to approve
     if @user.update(approved: true)
+      @user.add_position_for_semester_and_role_type(:candidate, MemberSemester.current, :candidate)
       flash[:notice] = "Successfully approved #{@user.full_name}, an email has been sent to #{@user.email}"
       AccountMailer.account_approval(@user).deliver
     else

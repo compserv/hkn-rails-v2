@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
   end
 
   def add_position_for_semester_and_role_type(position, semester, role)
-    Role.find_or_create_by_name_and_resource_id_and_role_type(position, semester.id, role).users << self
+    Role.find_or_create_by_name_and_resource_id_and_role_type_and_resource_type(position, semester.id, role, "MemberSemester").users << self
   end
 
   def has_position_for_semester_and_role_type(position, semester, role)

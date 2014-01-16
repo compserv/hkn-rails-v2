@@ -1,7 +1,7 @@
 <%= form_for(@event) do |f| %>
   <% if @event.errors.any? %>
     <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
-    <div id="alert alert-danger">
+    <div class="alert alert-danger">
       <% @event.errors.full_messages.each do |msg| %>
         <li>
           <%= msg %>
@@ -52,7 +52,7 @@
 
   <div class="field">
     <%= f.label :need_transportation? %>
-    <%= f.check_box :need_transportation? %>
+    <%= f.check_box :need_transportation %>
   </div>
   <div class="field-submit">
     <%= f.submit %>

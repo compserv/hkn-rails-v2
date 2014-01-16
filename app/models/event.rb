@@ -13,7 +13,7 @@
 #  start_time            :datetime
 #  end_time              :datetime
 #  event_type            :string(255)
-#  need_transportation?  :boolean
+#  need_transportation   :boolean
 #  view_permission_roles :string(255)
 #  rsvp_permission_roles :string(255)
 #  max_rsvps             :integer

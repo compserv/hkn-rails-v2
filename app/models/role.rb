@@ -13,7 +13,7 @@
 
 class Role < ActiveRecord::Base
   @Committees = %w(pres vp rsec treas csec deprel act alumrel bridge compserv indrel serv studrel tutoring pub examfiles ejc) #This generates a constant which is an array of possible committees.
-  Positions = %w(officer committee_member candidate)  # A list of possible positions
+  Positions = %w(officer committee_member candidate member)  # A list of possible positions
   Execs = %w(pres vp rsec csec treas deprel) # Executive positions
   NonExecs = @Committees-Execs
 
@@ -121,7 +121,8 @@ class Role < ActiveRecord::Base
       "tutoring" => "Tutoring",
       "pub"      => "Publicity",
       "examfiles"=> "Exam Files",
-      "candidate"=> ""
+      "candidate"=> "",
+      "member"   => ""
     }
     nice_committees[name]
   end

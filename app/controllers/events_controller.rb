@@ -58,6 +58,7 @@ class EventsController < ApplicationController
   end
 
   def create
+    debugger
     @event = Event.new(event_params)
 
     respond_to do |format|
@@ -178,6 +179,6 @@ class EventsController < ApplicationController
 
     def event_params
       params.require(:event).permit(:title, :description, :location, :start_time, :end_time, :event_type,
-                    :view_permission_roles, :rsvp_permission_roles, :max_rsvps, :need_transportation?)
+                    :view_permission_roles, :rsvp_permission_roles, :max_rsvps, :need_transportation)
     end
 end

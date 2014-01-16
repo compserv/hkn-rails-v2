@@ -29,9 +29,7 @@ end
 # candidate tester
 u = User.create(username: 'notaspammer', email: 'hazedcasey@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "bob", approved: false, phone_number: '123-456-7891', should_reset_session: true)
 v = User.create(username: 'approved', email: 'hihihi@gmail.com', password: "password", password_confirmation: "password", first_name: "candidate", last_name: "alice", approved: true, phone_number: '123-456-7891', should_reset_session: true)
-new_role = Role.create(name: :candidate, role_type: :candidate, resource_type: MemberSemester.to_s, resource_id: MemberSemester.current.id)
 v.add_position_for_semester_and_role_type(:candidate, MemberSemester.current, :candidate)
-u.add_position_for_semester_and_role_type(:candidate, MemberSemester.current, :candidate)
 
 # Roles
 execs = [
@@ -174,7 +172,7 @@ events = [
 events.each do |event|
   Event.create(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
                event_type: event[4], view_permission_roles: event[5], rsvp_permission_roles: event[6],
-               need_transportation?: event[7], max_rsvps: event[8], location: "Soda-Etchevery Breezeway")
+               need_transportation: event[7], max_rsvps: event[8], location: "Soda-Etchevery Breezeway")
   puts "Created event #{event[0]}"
   User.first.rsvp! Event.last.id
   puts "First user tried to RSVP to event #{Event.last.title}"
