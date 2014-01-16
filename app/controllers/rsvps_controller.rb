@@ -10,7 +10,7 @@ class RsvpsController < ApplicationController
   # GET /rsvps.xml
   def index
     # Most recently created RSVPs will show on top of the list
-    @rsvps = @event.rsvps.order("created_at DESC")
+    @rsvps = @event.rsvps.order("created_at DESC").includes(:user)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -30,6 +30,7 @@ class RsvpsController < ApplicationController
   # GET /rsvps/new
   # GET /rsvps/new.xml
   def new
+    redirect_to event_rsvps_path(params[:event_id].to_i), notice: "you've already rsvp'd up" and return if current_user.events.pluck(:id).include?(params[:event_id].to_i)
     @rsvp = Rsvp.new
 
     respond_to do |format|
@@ -45,6 +46,7 @@ class RsvpsController < ApplicationController
   # POST /rsvps
   # POST /rsvps.xml
   def create
+    redirect_to event_rsvps_path(params[:event_id].to_i), notice: "you've already rsvp'd up" and return if current_user.events.pluck(:id).include?(params[:event_id].to_i)
     @rsvp = Rsvp.new(rsvp_params)
     @rsvp.event = @event
     @rsvp.user = current_user

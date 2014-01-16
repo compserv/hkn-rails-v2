@@ -54,7 +54,7 @@
   <% if @event_auth %>
     <%= link_to 'Edit', edit_event_path(@event) %>
     |
-    <%= link_to 'Delete Event', event_path(@event), :method => :delete, :confirm => "Are you sure you want to delete this event?" %>
+    <%= link_to 'Delete Event', event_path(@event), method: :delete, data: { confirm: 'Are you sure you want to delete this event?' } %>
     |
   <% end %>
   <%#= link_to "Add to iCal", single_ical_path(@event.id, :format => :ics) %>
@@ -65,7 +65,7 @@
   <% if @current_user_rsvp %>
     <%= link_to 'Change RSVP', edit_rsvp_path(@current_user_rsvp), :id=>'edit_rsvp', "data-rsvp_id" => @current_user_rsvp.id.to_s %>
     |
-    <%= link_to 'Remove My RSVP', rsvp_path(@current_user_rsvp), :confirm => 'Are you sure?', :method => :delete %>
+    <%= link_to 'Remove My RSVP', rsvp_path(@current_user_rsvp), data: { confirm: 'Are you sure?' }, method: :delete %>
     |
   <% elsif @event.can_rsvp? current_user %>
     <% if @event.allows_rsvps? %>

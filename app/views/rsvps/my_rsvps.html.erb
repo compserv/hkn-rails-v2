@@ -17,11 +17,9 @@
     <td><%= rsvp.confirmed == 't' ? "Yes" : "No" %></td>
     <td><%= link_to 'Show', rsvp_path(rsvp) %></td>
     <% if comm_authorize %>
-      <td class='admin'><%= link_to 'Edit', edit_rsvp_path(rsvp.event, rsvp) %></td>
+      <td class='admin'><%= link_to 'Edit', edit_rsvp_path(rsvp) %></td>
       <td class='admin'><%= link_to 'Destroy', rsvp_path(rsvp), :confirm => 'Are you sure?', :method => :delete %></td>
     <% end %>
   </tr>
 <% end %>
 </table>
-
-<br />

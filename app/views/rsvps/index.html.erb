@@ -8,11 +8,7 @@
     <% if @event.need_transportation? %>
       <th>Transportation</th>
     <% end %>
-    <th></th>
-    <% if authorize(:compserv) %>
-      <th></th>
-      <th></th>
-    <% end %>
+    <th colspan="3">Actions</th>
   </tr>
 
 <% @rsvps.each do |rsvp| %>
@@ -26,7 +22,7 @@
     <td><%= link_to 'Show', rsvp_path(rsvp) %></td>
     <% if authorize(:compserv) %>
       <td class='admin'><%= link_to 'Edit', edit_rsvp_path(rsvp) %></td>
-      <td class='admin'><%= link_to 'Destroy', rsvp_path(rsvp), :confirm => 'Are you sure?', :method => :delete %></td>
+      <td class='admin'><%= link_to 'Destroy', rsvp_path(rsvp), data: { confirm: 'Are you sure?' }, method: :delete %></td>
     <% end %>
   </tr>
 <% end %>

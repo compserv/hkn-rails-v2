@@ -3,8 +3,6 @@ class EventsController < ApplicationController
   before_filter :comm_authorize!, except: [:index, :show, :calendar]
 
   def index
-    per_page = 20
-
     if Event::VALID_SORT_FIELDS.include?(params[:sort])
       order = params[:sort]
     else
@@ -21,7 +19,7 @@ class EventsController < ApplicationController
                      end
     @search_opts = {'sort' => order, 'sort_direction' => sort_direction }.merge params
     # Maintains start_time as secondary sort column
-    options = { :page => params[:page], :per_page => per_page, :order => "#{order} #{sort_direction}, start_time #{sort_direction}" }
+    options = { :page => params[:page], :per_page => 20 }
 
     category = params[:category] || 'all'
     event_finder = Event.with_permission(current_user)
@@ -36,12 +34,11 @@ class EventsController < ApplicationController
       @events = event_finder
       @heading = "All Events"
     end
-
     if event_filter != "none"
-      @events = @events.select {|e| e.event_type.downcase == event_filter}
+      @events = @events.where('lower(event_type) = ?', event_filter)
     end
 
-    @events = @events.paginate options
+    @events = @events.order("#{order} #{sort_direction}, start_time #{sort_direction}").paginate options
 
     respond_to do |format|
       format.html # index.html.erb
@@ -112,7 +109,7 @@ class EventsController < ApplicationController
   def show
     begin
       # Only show event if user has permission to
-      @event = Event.with_permission(current_user).find(params[:id], include: { rsvps: :user } )
+      @event = Event.with_permission(current_user).includes(rsvps: :user).find(params[:id])
     rescue ActiveRecord::RecordNotFound
       redirect_to :root, :notice => "Event not found"
       return
@@ -129,7 +126,7 @@ class EventsController < ApplicationController
     year = (params[:year] || Time.now.year).to_i
     @start_date = Date.new(year, month, 1) 
     @end_date = Date.new(year, month, 1).end_of_month
-    @events = Event.with_permission(current_user).all.select { |event| (@start_date.to_time..@end_date.at_end_of_day).cover? event.start_time }.sort_by { |event| event.start_time }
+    @events = Event.with_permission(current_user).select { |event| (@start_date.to_time..@end_date.at_end_of_day).cover? event.start_time }.sort_by { |event| event.start_time }
     @event_types = Event.pluck(:event_type)
     #First Sunday
     @calendar_start_date = (@start_date.wday == 0) ? @start_date : @start_date.next_week.ago(8.days).to_date
