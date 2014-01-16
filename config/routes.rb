@@ -44,7 +44,7 @@ HknRails::Application.routes.draw do
     match ":category", to: "events#index", via: :get, as: :events_category, constraints: {:category => /(future|past)/}
     # Routes for RSVP confirmation page
     match "confirm_rsvps/:role" => "events#confirm_rsvps_index", via: :get, :as => :confirm_rsvps_index
-    match "confirm_rsvps/:role/event/:id" => "events#confirm_rsvps", via: :get, :as => :confirm_rsvps    
+    match "confirm_rsvps/:role/event/:id" => "events#confirm_rsvps", via: :get, :as => :confirm_rsvps
     match "confirm/:id" => "rsvps#confirm", via: :get, :as => :confirm_rsvp
     match "unconfirm/:id" => "rsvps#unconfirm", via: :get, :as => :unconfirm_rsvp
     match "reject/:id" => "rsvps#reject", via: :get, :as => :reject_rsvp

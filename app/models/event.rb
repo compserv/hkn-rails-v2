@@ -31,15 +31,15 @@ class Event < ActiveRecord::Base
   validates :end_time, :presence => true
   validates :max_rsvps, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates_inclusion_of :rsvp_permission_roles, in: ['candidates', 'committee_members', 'officers', nil]
-  validates_inclusion_of :view_permission_roles, in: ['candidates', 'committee_members', 'officers', nil] 
+  validates_inclusion_of :view_permission_roles, in: ['candidates', 'committee_members', 'officers', nil]
   validates_inclusion_of :event_type, in: EVENT_TYPES
 
   def self.permission_options
-    [["Candidates and Members", "candidates"], ["Committee Members", "committee_members"], 
+    [["Candidates and Members", "candidates"], ["Committee Members", "committee_members"],
      ["Officers", "officers"], ["Everyone", nil]]
   end
 
-  scope :with_permission, Proc.new { |user| 
+  scope :with_permission, Proc.new { |user|
     if user.nil?
       where(:view_permission_roles => nil)
     elsif user.is_officer_for_semester? MemberSemester.current

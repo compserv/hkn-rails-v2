@@ -56,9 +56,9 @@
   <% if @user.rsvps.count > 0 %>
     <h2><%= @user.full_name %>'s RSVPs</h2>
     <ul>
-    <% @user.rsvps.includes(:event).order('events.start_time').each do |rsvp| %>
-      <% if rsvp.event.can_view? current_user %>
-        <li><%= link_to "#{rsvp.event.start_date} - #{rsvp.event.title}", rsvp.event %></li>
+    <% @user.events.order(:start_time).each do |event| %>
+      <% if event.can_view? current_user %>
+        <li><%= link_to "#{event.start_date} - #{event.title}", event %></li>
       <% end %>
     <% end %>
     </ul>

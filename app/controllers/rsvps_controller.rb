@@ -57,7 +57,7 @@ class RsvpsController < ApplicationController
         format.html { redirect_to(@event, :notice => 'Thanks for RSVPing! See you there!') }
         format.xml  { render :xml => @rsvp, :status => :created, :location => @rsvp }
       else
-        format.html { render :action => "new" }
+        format.html { render :new }
         format.xml  { render :xml => @rsvp.errors, :status => :unprocessable_entity }
       end
     end
@@ -72,7 +72,7 @@ class RsvpsController < ApplicationController
         format.html { redirect_to(@event, :notice => 'Rsvp was successfully updated.') }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :edit }
         format.xml  { render :xml => @rsvp.errors, :status => :unprocessable_entity }
       end
     end
@@ -117,7 +117,6 @@ class RsvpsController < ApplicationController
 
   def reject
     @rsvp.update_attribute :confirmed, Rsvp::Rejected
-    
     role = params[:role] || "candidates"
 
     respond_to do |format|

@@ -8,7 +8,7 @@ class EventsController < ApplicationController
     else
       order = "start_time"
     end
-    
+
     event_filter = params[:event_filter] || "none"
     params[:sort_direction] ||= (params[:category] == 'past') ? 'down' : 'up'
 
@@ -23,23 +23,23 @@ class EventsController < ApplicationController
     event_finder = Event.with_permission(current_user)
 
     if category == 'past'
-      @events = event_finder.past
+      event_finder = event_finder.past
       @heading = "Past Events"
     elsif category == 'future'
-      @events = event_finder.upcoming
+      event_finder = event_finder.upcoming
       @heading = "Upcoming Events"
     else
-      @events = event_finder
+      event_finder = event_finder
       @heading = "All Events"
     end
     if event_filter != "none"
-      @events = @events.where('lower(event_type) = ?', event_filter)
+      event_finder = event_finder.where('lower(event_type) = ?', event_filter)
     end
 
     # Maintains start_time as secondary sort column
     ord = "#{order} #{sort_direction}, start_time #{sort_direction}"
     options = { :page => params[:page], :per_page => 20 }
-    @events = @events.order(ord).paginate options
+    @events = event_finder.order(ord).paginate options
 
     respond_to do |format|
       format.html # index.html.erb
@@ -65,7 +65,7 @@ class EventsController < ApplicationController
         format.html { redirect_to(@event, :notice => 'Event was successfully created.') }
         format.xml  { render :xml => @event, :status => :created, :location => @event }
       else
-        format.html { render :action => "new" }
+        format.html { render :new }
         format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
       end
     end
@@ -79,7 +79,7 @@ class EventsController < ApplicationController
         format.html { redirect_to(@event, :notice => 'Event was successfully updated.') }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :edit }
         format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
       end
     end
@@ -125,7 +125,7 @@ class EventsController < ApplicationController
   def calendar
     month = (params[:month] || Time.now.month).to_i
     year = (params[:year] || Time.now.year).to_i
-    @start_date = Date.new(year, month, 1) 
+    @start_date = Date.new(year, month, 1)
     @end_date = Date.new(year, month, 1).end_of_month
     @events = Event.with_permission(current_user).select { |event| (@start_date.to_time..@end_date.at_end_of_day).cover? event.start_time }.sort_by { |event| event.start_time }
     @event_types = Event.pluck(:event_type)
