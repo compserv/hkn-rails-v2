@@ -91,6 +91,10 @@ HknRails::Application.routes.draw do
   namespace :admin do
     scope "vp" do
       match "/", to: "vp#index", via: :get, as: :vp
+      match "applications", to: "vp#applications", via: :get, as: :cand_applications
+      match "applications/byperson", to: "vp#byperson", via: :get, as: :cand_byperson
+      match "applications/bycommittee", to: "vp#bycommittee", via: :get, as: :cand_bycommittee
+      match "applications/byperson_withoutapp", to: "vp#byperson_without_application", via: :get, as: :cand_byperson_without_application
     end
     match "pres", to: "pres#index", via: :get, as: :pres
     scope "bridge" do
