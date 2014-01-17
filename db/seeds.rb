@@ -99,11 +99,70 @@ def initialize_mobile_carriers
     {:name => "Virgin Mobile USA",  :sms_email => "@vmobl.com"},
   ]
   mobile_carriers.each do |mobile_carrier|
-    MobileCarrier.find_or_create_by_name_and_sms_email(mobile_carrier)
+    MobileCarrier.where(mobile_carrier).first_or_create
   end
+  puts "successfully initialized mobile carriers"
+end
+
+def initialize_indrel_database
+  locations = [
+    {name: '10 Evans', capacity: 200, comments: 'Largest lecture hall with a projector but never available.'},
+    {name: '3117 Etcheverry', capacity: 30},
+    {name: '3 Evans', capacity: 35},
+    {name: '45 Evans', capacity: 25, comments: 'Not recommended, too small.'},
+    {name: '60 Evans', capacity: 150, comments: 'A large room on the back of Evans with a nice projector'},
+    {name: '75 Evans', capacity: 30},
+    {name: '81 Evans', capacity: 30},
+    {name: 'Wozniak Lounge', capacity: 100}
+  ]
+  locations.each do |location|
+    Location.where(location).first_or_create
+  end
+  puts "successfully initialized locations"
+
+  event_types = [{name: 'Infosession'}, {name: 'Resume Book Sale'}, {name: 'Tech Talk'}]
+  event_types.each do |event|
+    IndrelEventType.where(event).first_or_create
+  end
+  puts "successfully initialized indrel event types"
+
+  companies = [
+    {name: 'Apple', address: nil, website: 'apple.com', comments: 'Allison Rossi <allison_rossi@apple.com>'},
+    {name: 'Box', address: nil, website: 'box.com', comments: 'Jennifer Nguyen jennifer@box.com'},
+    {name: 'Brandcast', address: '2 Mint Plaza #702 San Francisco, CA 94103', website: nil, comments: 'Name of contact person: Dan Lynch Email: dan@brandcast.com'}
+
+  ]
+  companies.each do |company|
+    Company.where(company).first_or_create
+  end
+  puts "successfully initialized a few indrel companies"
+
+  contacts = [
+    {name: 'Alicia Schetter', email: 'aschetter@salesforce.com', phone: '312.523.4603'},
+    {name: 'Anja Hartmann', email: 'anja.hartmann@gs.com', phone: '212-902-4144'},
+    {name: 'Brian Goodman', email: 'Brian.Goodman@deshawresearch.com', phone: 'N/A'},
+    {name: 'Jason Lopatecki', email: 'jason@tubemogul.com', phone: '510.653.0664', cellphone: '415.297.1981'}
+  ]
+  contacts.each do |contact|
+    Contact.where(contact).first_or_create
+  end
+  puts "successfully initialized a few indrel contacts"
+
+  events = [
+    {time: DateTime.civil(2011, 10, 12, 18, 0, 0, '-8'), indrel_event_type: IndrelEventType.find_by_name('Infosession'), officer: 'Ruchika Gupta'},
+    {time: DateTime.civil(2010, 4, 20, 17, 0, 0, '-8'), food: "LaVal's pizza (10 boxes)", turnout: 25, location: Location.find_by_name('10 Evans'), indrel_event_type: IndrelEventType.find_by_name('Tech Talk'), prizes: 'Google Swags', officer: 'Ryosuke Niwa', comments: 'We had only 2 days to advertise. In the future, we need more time to advertise, and should contact the department. Also suggested to have techtalk with labs since they might be interested in what Google is doing. Did not charge for food (~$180) since the turnout was much worse than we expected.'},
+    {time: DateTime.civil(2010, 4, 15, 18, 0, 0, '-8'), food: "LaVals (3 large pepperoni, 2 large cheese)", turnout: 25, indrel_event_type: IndrelEventType.find_by_name('Infosession'), officer: 'Rohan Nagesh', contact: Contact.find_by_name('Jason Lopatecki') }
+  ]
+  events.each do |event|
+    IndrelEvent.where(event).first_or_create
+  end
+  puts "successfully initialized a few indrel events"
+
+  puts "initialized indrel database"
 end
 
 initialize_mobile_carriers
+initialize_indrel_database
 
 events = [
   ["Picnic", "Lots of fun", DateTime.yesterday, DateTime.now, "Big Fun", nil, nil, false, 999],

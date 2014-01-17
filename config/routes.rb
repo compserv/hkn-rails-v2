@@ -1,4 +1,7 @@
 HknRails::Application.routes.draw do
+
+  resources :indrel_events
+
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -25,8 +28,12 @@ HknRails::Application.routes.draw do
   resources :alum
   resources :announcements
   resources :challenges, only: [:create, :update, :index]
+  resources :companies
+  resources :contacts
   resources :dept_tours
   resources :exams
+  resources :indrel_event_types
+  resources :locations
   resources :resumes
   resources :resume_books, except: [:edit, :update]
   resources :resume_book_urls
@@ -73,7 +80,7 @@ HknRails::Application.routes.draw do
 
   #About HKN
   scope 'about' do
-    match 'contact', to: "pages#contact", via: :get, as: "contact"
+    match 'contact', to: "pages#contact", via: :get, as: "about_contact"
     match 'slideshow', to: 'pages#slideshow', via: 'get', as: 'bridge_slideshow'
     match 'yearbook', to: 'pages#yearbook', via: 'get', as: 'bridge_yearbook'
     match 'officers(/:semester)', to: "pages#officers", via: :get, as: "about_officers"

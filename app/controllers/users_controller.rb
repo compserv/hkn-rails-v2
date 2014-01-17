@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    unless @user == current_user || authorize(:superuser)
+    unless @user.id == current_user.id || authorize(:superuser)
       redirect_to edit_user_path(current_user), notice: "Oops you don't have permissions to edit others" and return
     end
 
@@ -96,11 +96,7 @@ class UsersController < ApplicationController
       user_selector = user_selector.where(:approved => false )
     end
 
-    if cond.nil?
-      @users = user_selector.order(ord).paginate opts
-    else
-      @users = user_selector.order(ord).joins(joinstr).where(cond).paginate opts
-    end
+    @users = user_selector.order(ord).joins(joinstr).where(cond).paginate opts
 
     respond_to do |format|
       format.html

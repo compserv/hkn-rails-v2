@@ -1,0 +1,31 @@
+<p>
+  <strong>Name:</strong>
+  <%= @company.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @company.address %>
+</p>
+
+<p>
+  <strong>Website:</strong>
+  <%= @company.website %>
+</p>
+
+<p>
+  <strong>Comments:</strong>
+  <%= @company.comments %>
+</p>
+
+<p>
+  <strong>Resume Book Urls:</strong>
+  <% @company.urls.each do |url| %>
+    <div>
+      <%= link_to "Link to Resume Book Url for Book #{url.resume_book.id}", url %>
+    </div>
+  <% end %>
+</p>
+
+<%= link_to 'Edit', edit_company_path(@company) %> |
+<%= link_to 'Back', companies_path %>

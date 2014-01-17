@@ -4,7 +4,7 @@ class ResumeBookUrlsController < ApplicationController
 
   # GET /resume_book_urls
   def index
-    @resume_book_urls = ResumeBookUrl.all
+    @resume_book_urls = ResumeBookUrl.all.sort_by(&:created_at).reverse
   end
 
   # GET /resume_book_urls/1
@@ -29,7 +29,7 @@ class ResumeBookUrlsController < ApplicationController
     if @resume_book_url.save
       redirect_to @resume_book_url, notice: 'Resume book url was successfully created.'
     else
-      render action: 'new' 
+      render :new
     end
   end
 
@@ -38,7 +38,7 @@ class ResumeBookUrlsController < ApplicationController
     if @resume_book_url.update(resume_book_url_params)
       redirect_to @resume_book_url, notice: 'Resume book url was successfully updated.'
     else
-      render action: 'edit'
+      render :edit
     end
   end
 
