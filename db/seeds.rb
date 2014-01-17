@@ -171,9 +171,9 @@ events = [
 ]
 
 events.each do |event|
-  Event.create(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
+  Event.where(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
                event_type: event[4], view_permission_roles: event[5], rsvp_permission_roles: event[6],
-               need_transportation: event[7], max_rsvps: event[8], location: "Soda-Etchevery Breezeway")
+               need_transportation: event[7], max_rsvps: event[8], location: "Soda-Etchevery Breezeway").first_or_create
   puts "Created event #{event[0]}"
   User.first.rsvp! Event.last.id
   puts "First user tried to RSVP to event #{Event.last.title}"
@@ -186,6 +186,8 @@ end
 r = ResumeBook.new(title: "EMPTY", details: {info: "NOTHING"}, cutoff_date: Time.now, remarks: "Seed generated, please delete")
 r.save(:validate => false)
 
+c_semester = CourseSemester.where(season: MemberSemester.current.season, year: MemberSemester.current.year).first_or_create
+
 require 'CSV'
 path_to_courses = Rails.root.join("course_info_#{Time.now.strftime('%Y%m%d')}.csv")
 if File.exists?(path_to_courses)
@@ -193,9 +195,10 @@ if File.exists?(path_to_courses)
   csv = CSV.parse(csv_text, :headers => true)
   csv.each do |row|
     dept, name = row["Course"].split
-    Course.create(department: dept, course_name: name, units: row["units"])
+    c = Course.where(department: dept, course_name: name, units: row["units"]).first_or_create
+    CourseOffering.where(course: c, course_semester: c_semester).first_or_create
   end
   puts "initialized courses"
 else
-  puts "please run 'ruby script/csec/scraper.rb'"
+  puts "please run 'ruby script/csec/scraper.rb' to generate course info from today"
 end
