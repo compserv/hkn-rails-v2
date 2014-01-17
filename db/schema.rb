@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140116170516) do
+ActiveRecord::Schema.define(version: 20140117194707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -482,6 +482,11 @@ ActiveRecord::Schema.define(version: 20140116170516) do
     t.integer  "candidate_quiz_id"
     t.integer  "mobile_carrier_id"
     t.boolean  "should_reset_session"
+    t.string   "local_address"
+    t.string   "perm_address"
+    t.string   "committee_preferences"
+    t.text     "suggestion"
+    t.string   "graduation_semester"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree

@@ -58,6 +58,8 @@ HknRails::Application.routes.draw do
     match "quiz", to: "candidate#quiz", via: :get, as: "candidate_quiz"
     match "submit_quiz", to: "candidate#submit_quiz", via: :post, as: "candidate_submit_quiz"
     match "portal", to: 'candidate#portal', via: :get, as: "candidate_portal"
+    match "application", to: 'candidate#application', via: :get, as: "candidate_application"
+    match "application", to: 'candidate#submit_app', via: :post, as: "candidate_submit_app"
     match "autocomplete_officer_name", to: "candidate#autocomplete_officer_name", via: :get, as: "autocomplete_officer_name"
   end
 
