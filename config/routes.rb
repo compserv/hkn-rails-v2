@@ -38,6 +38,7 @@ HknRails::Application.routes.draw do
   resources :users, except: [:new, :create, :index]
 
   scope "events" do
+    match "leaderboard(/:semester)", to: "events#leaderboard", via: :get, as: :event_leaderboard
     match "rsvps", to: "rsvps#my_rsvps", via: :get, as: :my_rsvps
     match "calendar", to: "events#calendar", via: :get, as: "events_calendar"
     match ":category", to: "events#index", via: :get, as: :events_category, constraints: {:category => /(future|past)/}

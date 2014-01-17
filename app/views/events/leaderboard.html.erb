@@ -1,0 +1,29 @@
+<p> Scoring system: Big fun = 2 pts; Fun = 1 pt; Service = 3 pts
+</p>
+
+<span id="semester-nav">
+<%= link_to "&larr;prev".html_safe, event_leaderboard_path(@semester.prev.id) unless @semester.prev.nil? %>
+&nbsp;<%= @semester.name %>&nbsp;
+<%= link_to "next&rarr;".html_safe, event_leaderboard_path(@semester.next.id) unless @semester.next.nil? %>
+</span>
+
+<table>
+  <tr>
+    <th>Rank</td>
+    <th>Name</th>
+    <th>Score</th>
+    <th>Big Fun</th>
+    <th>Fun</th>
+    <th>Service</th>
+  </tr>
+<% @users_array.each do |entry| %>
+  <tr>
+    <td><%= entry[:rank] %></td>
+    <td><%= entry[:user].full_name %></td>
+    <td><%= entry[:score] %></td>
+    <td><%= entry[:big_fun] %></td>
+    <td><%= entry[:fun] %></td>
+    <td><%= entry[:service] %></td>
+  </tr>
+<% end %>
+</table>

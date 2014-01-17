@@ -170,6 +170,44 @@ class EventsController < ApplicationController
     @rsvps = @event.rsvps.joins(:user).where("users.id in (?)", users).sort_by { |rsvp| rsvp.user.full_name }
   end
 
+  def leaderboard
+    @semester = params[:semester] ? MemberSemester.find_by_id(params[:semester]) : MemberSemester.current
+    @users = Role.members.semester_filter(@semester).all_users
+    @users_array = []
+    #moar_people = [ 'eunjian' ].collect{|u|Person.find_by_username(u)}   # TODO remove when we have leaderboard opt-in
+    @users.each do |user|
+      # Makeshift data structure
+      events = user.rsvps.where(confirmed: 't').joins(:event).where("events.start_time > ? AND events.start_time < ?", @semester.start_time, @semester.end_time)
+      @users_array << {
+        :user => user, 
+        :total => events.count,
+        :events => events
+      }
+    end
+
+    @users_array.each do |entry|
+      entry[:big_fun] = entry[:events].where("events.event_type = ? ", "Big Fun").count
+      entry[:fun] = entry[:events].where("events.event_type = ? ", "Fun").count
+      entry[:service] = entry[:events].where("events.event_type = ? ", "Service").count
+      entry[:score] = 2*entry[:big_fun] + entry[:fun] + 3*entry[:service]
+    end
+
+    @users_array.sort!{|a,b| a[:score] <=> b[:score]}
+    @users_array.reverse!
+    rank = 0
+    last_num = -1
+    incr = 1
+    @users_array.each do |entry|
+      if last_num != entry[:score]
+        rank += incr
+        last_num = entry[:score]
+        incr = 0
+      end
+      entry[:rank] = rank
+      incr += 1
+    end
+  end
+
   private
     def event_authorize
       @event_auth = comm_authorize

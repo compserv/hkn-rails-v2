@@ -92,10 +92,10 @@ class RsvpsController < ApplicationController
 
   def confirm
 
-    role = params[:role] || :candidate
+    role = params[:role] || :candidates
 
     respond_to do |format|
-      if @rsvp.update_attribute :confirmed, Rsvp::Confirmed
+      if @rsvp.update_attributes(confirmed: Rsvp::Confirmed, confirmed_by: current_user.id, confirmed_at: Time.now)
         format.html { redirect_to(confirm_rsvps_path(@rsvp.event_id, :role => role), :notice => 'Rsvp was confirmed.') }
         format.xml  { render :xml => @rsvp }
       else
@@ -106,7 +106,7 @@ class RsvpsController < ApplicationController
   end
 
   def unconfirm
-    @rsvp.update_attribute :confirmed, Rsvp::Unconfirmed
+    @rsvp.update_attributes(confirmed: Rsvp::Unconfirmed, confirmed_by: current_user.id, confirmed_at: Time.now)
     role = params[:role] || "candidates"
 
     respond_to do |format|
@@ -116,7 +116,7 @@ class RsvpsController < ApplicationController
   end
 
   def reject
-    @rsvp.update_attribute :confirmed, Rsvp::Rejected
+    @rsvp.update_attributes(confirmed: Rsvp::Rejected, confirmed_by: current_user.id, confirmed_at: Time.now)
     role = params[:role] || "candidates"
 
     respond_to do |format|
