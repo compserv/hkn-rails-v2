@@ -3,7 +3,7 @@ class PagesController < ApplicationController
   #tocache.each {|a| caches_action a, :layout => false}
 
   def home
-    #@events = Event.upcoming_events(0, @current_user)
+    @events = Event.with_permission(current_user).where('end_time >= ? AND end_time <= ?', Time.now, Time.now + 7.days).order(:start_time)
     @show_searcharea = true
     #prop = Property.get_or_create
     #@tutoring_enabled = prop.tutoring_enabled

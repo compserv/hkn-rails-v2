@@ -16,7 +16,7 @@
     <td><%= rsvp.user.full_name %></td>
     <td><%= rsvp.comment %></td>
     <td><%= rsvp.created_at.strftime('%a %m/%d/%y %I:%M%p') %></td>
-    <% if @event.need_transportation? %>    
+    <% if @event.need_transportation? %>
       <td><%= rsvp.transportation_ability %></td>
     <% end %>
     <td><%= link_to 'Show', rsvp_path(rsvp) %></td>

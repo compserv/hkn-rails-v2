@@ -8,7 +8,7 @@ class EventsController < ApplicationController
     else
       order = "start_time"
     end
-    
+
     event_filter = params[:event_filter] || "none"
     params[:sort_direction] ||= (params[:category] == 'past') ? 'down' : 'up'
 
@@ -23,23 +23,22 @@ class EventsController < ApplicationController
     event_finder = Event.with_permission(current_user)
 
     if category == 'past'
-      @events = event_finder.past
+      event_finder = event_finder.past
       @heading = "Past Events"
     elsif category == 'future'
-      @events = event_finder.upcoming
+      event_finder = event_finder.upcoming
       @heading = "Upcoming Events"
     else
-      @events = event_finder
       @heading = "All Events"
     end
     if event_filter != "none"
-      @events = @events.where('lower(event_type) = ?', event_filter)
+      event_finder = event_finder.where('lower(event_type) = ?', event_filter)
     end
 
     # Maintains start_time as secondary sort column
     ord = "#{order} #{sort_direction}, start_time #{sort_direction}"
     options = { :page => params[:page], :per_page => 20 }
-    @events = @events.order(ord).paginate options
+    @events = event_finder.order(ord).paginate options
 
     respond_to do |format|
       format.html # index.html.erb
@@ -65,7 +64,7 @@ class EventsController < ApplicationController
         format.html { redirect_to(@event, :notice => 'Event was successfully created.') }
         format.xml  { render :xml => @event, :status => :created, :location => @event }
       else
-        format.html { render :action => "new" }
+        format.html { render :new }
         format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
       end
     end
@@ -79,7 +78,7 @@ class EventsController < ApplicationController
         format.html { redirect_to(@event, :notice => 'Event was successfully updated.') }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :edit }
         format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
       end
     end
@@ -125,7 +124,7 @@ class EventsController < ApplicationController
   def calendar
     month = (params[:month] || Time.now.month).to_i
     year = (params[:year] || Time.now.year).to_i
-    @start_date = Date.new(year, month, 1) 
+    @start_date = Date.new(year, month, 1)
     @end_date = Date.new(year, month, 1).end_of_month
     @events = Event.with_permission(current_user).select { |event| (@start_date.to_time..@end_date.at_end_of_day).cover? event.start_time }.sort_by { |event| event.start_time }
     @event_types = Event.pluck(:event_type)
@@ -171,6 +170,44 @@ class EventsController < ApplicationController
     @rsvps = @event.rsvps.joins(:user).where("users.id in (?)", users).sort_by { |rsvp| rsvp.user.full_name }
   end
 
+  def leaderboard
+    @semester = params[:semester] ? MemberSemester.find_by_id(params[:semester]) : MemberSemester.current
+    @users = Role.members.semester_filter(@semester).all_users
+    @users_array = []
+    #moar_people = [ 'eunjian' ].collect{|u|Person.find_by_username(u)}   # TODO remove when we have leaderboard opt-in
+    @users.each do |user|
+      # Makeshift data structure
+      events = user.rsvps.where(confirmed: 't').joins(:event).where("events.start_time > ? AND events.start_time < ?", @semester.start_time, @semester.end_time)
+      @users_array << {
+        :user => user, 
+        :total => events.count,
+        :events => events
+      }
+    end
+
+    @users_array.each do |entry|
+      entry[:big_fun] = entry[:events].where("events.event_type = ? ", "Big Fun").count
+      entry[:fun] = entry[:events].where("events.event_type = ? ", "Fun").count
+      entry[:service] = entry[:events].where("events.event_type = ? ", "Service").count
+      entry[:score] = 2*entry[:big_fun] + entry[:fun] + 3*entry[:service]
+    end
+
+    @users_array.sort!{|a,b| a[:score] <=> b[:score]}
+    @users_array.reverse!
+    rank = 0
+    last_num = -1
+    incr = 1
+    @users_array.each do |entry|
+      if last_num != entry[:score]
+        rank += incr
+        last_num = entry[:score]
+        incr = 0
+      end
+      entry[:rank] = rank
+      incr += 1
+    end
+  end
+
   private
     def event_authorize
       @event_auth = comm_authorize
@@ -178,6 +215,6 @@ class EventsController < ApplicationController
 
     def event_params
       params.require(:event).permit(:title, :description, :location, :start_time, :end_time, :event_type,
-                    :view_permission_roles, :rsvp_permission_roles, :max_rsvps, :need_transportation?)
+                    :view_permission_roles, :rsvp_permission_roles, :max_rsvps, :need_transportation)
     end
 end

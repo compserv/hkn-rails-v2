@@ -13,14 +13,15 @@
 #  start_time            :datetime
 #  end_time              :datetime
 #  event_type            :string(255)
-#  need_transportation?  :boolean
+#  need_transportation   :boolean
 #  view_permission_roles :string(255)
 #  rsvp_permission_roles :string(255)
 #  max_rsvps             :integer
 #
 
 class Event < ActiveRecord::Base
-  EVENT_TYPES = ["Big Fun", "Fun", "Industry", "Mandatory for Candidates", "Miscellaneous", "Service"]
+  EVENT_TYPES = ["Big Fun", "Fun", "Industry", "Mandatory for Candidates", "Miscellaneous", "Service", "Exam", "Review Session"]
+  PERMISSION_OPTIONS = [["Candidates and Members", "candidates"], ["Officers and Committee Members", "committee_members"], ["Officers", "officers"], ["Members", 'members'], ["Everyone", nil]]
   has_many :rsvps, dependent: :destroy
   has_many :users, through: :rsvps
 
@@ -30,24 +31,20 @@ class Event < ActiveRecord::Base
   validates :start_time, :presence => true
   validates :end_time, :presence => true
   validates :max_rsvps, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates_inclusion_of :rsvp_permission_roles, in: ['candidates', 'committee_members', 'officers', nil]
-  validates_inclusion_of :view_permission_roles, in: ['candidates', 'committee_members', 'officers', nil] 
+  validates_inclusion_of :rsvp_permission_roles, in: PERMISSION_OPTIONS.collect(&:last)
+  validates_inclusion_of :view_permission_roles, in: PERMISSION_OPTIONS.collect(&:last)
   validates_inclusion_of :event_type, in: EVENT_TYPES
 
-  def self.permission_options
-    [["Candidates and Members", "candidates"], ["Committee Members", "committee_members"], 
-     ["Officers", "officers"], ["Everyone", nil]]
-  end
-
-  scope :with_permission, Proc.new { |user| 
+  scope :with_permission, Proc.new { |user|
     if user.nil?
       where(:view_permission_roles => nil)
     elsif user.is_officer_for_semester? MemberSemester.current
       all
-    #if user is member?
     elsif user.is_active_member?
-      where(view_permission_roles: %w[candidates committee_members nil])
-    elsif user.is_candidate?
+      where(view_permission_roles: %w[candidates members committee_members nil])
+    elsif user.is_member?
+      where(view_permission_roles: %w[candidates members nil])
+    elsif user.is_currently_candidate?
       where(view_permission_roles: %w[candidates nil])
     else
       where(:view_permission_roles => nil)

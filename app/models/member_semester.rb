@@ -57,4 +57,20 @@ class MemberSemester < ActiveRecord::Base
       MemberSemester.find_by_year_and_season(year, "Spring")
     end
   end
+
+  def start_time
+    if season == "Spring"
+      Date.civil(year)
+    else
+      Date.civil(year, 8)
+    end
+  end
+
+  def end_time
+    if season == "Spring"
+      Date.civil(year, 6)
+    else
+      Date.civil(year, 12, 30)
+    end
+  end
 end

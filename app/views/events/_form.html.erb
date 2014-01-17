@@ -1,7 +1,7 @@
 <%= form_for(@event) do |f| %>
   <% if @event.errors.any? %>
     <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
-    <div id="alert alert-danger">
+    <div class="alert alert-danger">
       <% @event.errors.full_messages.each do |msg| %>
         <li>
           <%= msg %>
@@ -37,12 +37,12 @@
 
   <div class="field">
     <%= f.label :view_permission_roles, 'View Permission' %>
-    <%= f.select :view_permission_roles, Event.permission_options %>
+    <%= f.select :view_permission_roles, Event::PERMISSION_OPTIONS %>
   </div>
 
   <div class="field" id="rsvp_permission_group_id_div">
     <%= f.label :rsvp_permission_roles, 'RSVP Permission' %>
-    <%= f.select :rsvp_permission_roles, Event.permission_options %>
+    <%= f.select :rsvp_permission_roles, Event::PERMISSION_OPTIONS %>
   </div>
 
   <div class="field" id="rsvp_cap_div">
@@ -52,7 +52,7 @@
 
   <div class="field">
     <%= f.label :need_transportation? %>
-    <%= f.check_box :need_transportation? %>
+    <%= f.check_box :need_transportation %>
   </div>
   <div class="field-submit">
     <%= f.submit %>

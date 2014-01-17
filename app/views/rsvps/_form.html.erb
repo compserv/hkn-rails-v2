@@ -1,8 +1,7 @@
 <%= form_for([@event, @rsvp]) do |f| %>
   <% if @rsvp.errors.any? %>
     <h2><%= pluralize(@rsvp.errors.count, "error") %> prohibited this rsvp from being saved:</h2>
-
-    <div id="alert alert-danger">
+    <div class="alert alert-danger">
       <% @rsvp.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>

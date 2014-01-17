@@ -8,7 +8,7 @@
   </div>
   <div class="field">
     <%= label_tag :position %>
-    <%= select_tag :position, options_for_select(Role.committees + ["candidate"], "candidate") %>
+    <%= select_tag :position, options_for_select(Role.committees + ["candidate", "member"], "candidate") %>
   </div>
   <div class="field">
     <%= label_tag :role %>

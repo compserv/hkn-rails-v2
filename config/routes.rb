@@ -1,7 +1,4 @@
 HknRails::Application.routes.draw do
-
-  resources :indrel_events
-
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -33,6 +30,7 @@ HknRails::Application.routes.draw do
   resources :dept_tours
   resources :exams
   resources :indrel_event_types
+  resources :indrel_events
   resources :locations
   resources :resumes
   resources :resume_books, except: [:edit, :update]
@@ -40,12 +38,13 @@ HknRails::Application.routes.draw do
   resources :users, except: [:new, :create, :index]
 
   scope "events" do
+    match "leaderboard(/:semester)", to: "events#leaderboard", via: :get, as: :event_leaderboard
     match "rsvps", to: "rsvps#my_rsvps", via: :get, as: :my_rsvps
     match "calendar", to: "events#calendar", via: :get, as: "events_calendar"
     match ":category", to: "events#index", via: :get, as: :events_category, constraints: {:category => /(future|past)/}
     # Routes for RSVP confirmation page
     match "confirm_rsvps/:role" => "events#confirm_rsvps_index", via: :get, :as => :confirm_rsvps_index
-    match "confirm_rsvps/:role/event/:id" => "events#confirm_rsvps", via: :get, :as => :confirm_rsvps    
+    match "confirm_rsvps/:role/event/:id" => "events#confirm_rsvps", via: :get, :as => :confirm_rsvps
     match "confirm/:id" => "rsvps#confirm", via: :get, :as => :confirm_rsvp
     match "unconfirm/:id" => "rsvps#unconfirm", via: :get, :as => :unconfirm_rsvp
     match "reject/:id" => "rsvps#reject", via: :get, :as => :reject_rsvp
@@ -91,6 +90,7 @@ HknRails::Application.routes.draw do
     scope "vp" do
       match "/", to: "vp#index", via: :get, as: :vp
     end
+    match "pres", to: "pres#index", via: :get, as: :pres
     scope "bridge" do
       match "/", to: "bridge#index", via: :get, as: :bridge
       match "officer_photo_upload", to: "bridge#officer_photo_index", via: :get, as: :bridge_officer_index

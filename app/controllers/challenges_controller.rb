@@ -4,7 +4,7 @@ class ChallengesController < ApplicationController
   before_filter :is_candidate?, only: [:index, :update]
 
   def is_candidate?
-    if current_user.has_role? :candidate, MemberSemester.current
+    if currently_candidate?
       redirect_to root_path, notice: "Oops, a candidate shouldn't be here"
     end
   end

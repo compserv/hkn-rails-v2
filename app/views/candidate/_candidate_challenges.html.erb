@@ -2,13 +2,11 @@
 
 <% if @challenges.length > 0 %>
   <% @challenges.each do |challenge| %>
-    <li id='list'>
-      <span class="<%= "event_status " +
-          (challenge.confirmed ? 'event_done' :
-          (challenge.rejected ? 'rejected' : 'event_notdone'))%>"></span>
-      <strong><%= challenge.name %></strong>
-      - <%= User.find_by_id(challenge.requester_id).username %>
-    </li>
+    <span class="<%= "event_status " +
+        (challenge.confirmed ? 'event_done' :
+        (challenge.rejected ? 'rejected' : 'event_notdone'))%>"></span>
+    <strong><%= challenge.name %></strong>
+    - <%= User.find_by_id(challenge.requester_id).username %>
   <% end %>
 <% else %>
   No challenges requested
@@ -18,16 +16,16 @@
 
 <%= form_for(Challenge.new) do |f| %>
   <div class="field">
-    <%= label_tag "Find Officer" %><br>
+    <%= label_tag "Find Officer" %>
     <%= text_field_tag "officer", nil, :id => 'officer_field' %>
     <%= hidden_field_tag "officer_id", "", :id => "officer_id" %>
   </div>
   <div class="field">
-    <%= f.label :name %><br>
+    <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
   <div class="field">
-    <%= f.label :description %><br>
+    <%= f.label :description %>
     <%= f.text_area :description %>
   </div>
   <div class="actions">
