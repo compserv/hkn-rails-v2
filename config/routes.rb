@@ -95,6 +95,8 @@ HknRails::Application.routes.draw do
       match "applications/byperson", to: "vp#byperson", via: :get, as: :cand_byperson
       match "applications/bycommittee", to: "vp#bycommittee", via: :get, as: :cand_bycommittee
       match "applications/byperson_withoutapp", to: "vp#byperson_without_application", via: :get, as: :cand_byperson_without_application
+      match "super_page(/:semester)", to: "vp#super_page", via: :get, as: :vp_super_page
+      match "promote_candidate_path", to: "vp#promote_candidate", via: :post, as: :vp_promote_candidate
     end
     match "pres", to: "pres#index", via: :get, as: :pres
     scope "bridge" do

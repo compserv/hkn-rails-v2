@@ -67,6 +67,7 @@ class CandidateController < ApplicationController
         end
       end
     end
+    current_user.candidate_quiz.grade
     redirect_to candidate_portal_path, notice: "Your quiz responses have been recorded."
   end
 

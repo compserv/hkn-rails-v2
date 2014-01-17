@@ -34,4 +34,8 @@ class Challenge < ActiveRecord::Base
     "icons/notifications/challenge.jpg"
   end
 
+  def officer
+    User.where(id: requester_id).first
+  end
+
 end

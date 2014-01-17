@@ -13,13 +13,20 @@ class CandidateQuiz < ActiveRecord::Base
   belongs_to :user
   has_many :quiz_questions, through: :quiz_responses
   has_many :quiz_responses
+  after_create :set_quiz_score
 
   validates :user_id, presence: true, uniqueness: true
+
+  def set_quiz_score
+    self.score = 0
+    self.save
+  end
 
   def grade
     self.score = 0
     self.quiz_responses.each do |resp|
       self.score += 1 if resp.correct?
     end
+    self.save
   end
 end
