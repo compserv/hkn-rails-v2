@@ -185,3 +185,17 @@ end
 
 r = ResumeBook.new(title: "EMPTY", details: {info: "NOTHING"}, cutoff_date: Time.now, remarks: "Seed generated, please delete")
 r.save(:validate => false)
+
+require 'CSV'
+path_to_courses = Rails.root.join("course_info_#{Time.now.strftime('%Y%m%d')}.csv")
+if File.exists?(path_to_courses)
+  csv_text = File.read(path_to_courses)
+  csv = CSV.parse(csv_text, :headers => true)
+  csv.each do |row|
+    dept, name = row["Course"].split
+    Course.create(department: dept, course_name: name, units: row["units"])
+  end
+  puts "initialized courses"
+else
+  puts "please run 'ruby script/csec/scraper.rb'"
+end
