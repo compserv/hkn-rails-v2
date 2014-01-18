@@ -2,11 +2,12 @@
 #
 # Table name: member_semesters
 #
-#  id         :integer          not null, primary key
-#  year       :integer
-#  season     :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id                   :integer          not null, primary key
+#  year                 :integer
+#  season               :string(255)
+#  created_at           :datetime
+#  updated_at           :datetime
+#  coursesurveys_active :boolean
 #
 
 class MemberSemester < ActiveRecord::Base
