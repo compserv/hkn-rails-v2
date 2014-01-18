@@ -21,4 +21,9 @@ class Course < ActiveRecord::Base
   def add_offering(course_semester)
     course_offerings.create!(course_semester_id: course_semester.id)
   end
+
+  def course_abbr
+    # e.g. EE20N
+    "#{department}#{course_name}"
+  end
 end

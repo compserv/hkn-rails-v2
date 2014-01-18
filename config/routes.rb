@@ -89,6 +89,13 @@ HknRails::Application.routes.draw do
   end
 
   namespace :admin do
+    scope "csec" do
+      match "/", to: "csec#index", via: :get, as: :csec
+      match "select_classes", to: "csec#select_classes", via: :get, as: :csec_select_classes
+      match "manage_classes", to: "csec#manage_classes", via: :get, as: :csec_manage_classes
+      match "manage_candidates", to: "csec#manage_candidates", via: :get, as: :csec_manage_candidates
+      match "upload_surveys", to: "csec#upload_surveys", via: :get, as: :csec_upload_surveys
+    end
     scope "vp" do
       match "/", to: "vp#index", via: :get, as: :vp
       match "applications", to: "vp#applications", via: :get, as: :cand_applications

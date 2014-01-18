@@ -6,7 +6,7 @@ member_semesters = [
 ]
 
 member_semesters.each do |member_semester|
-  new_member_semester = MemberSemester.create(season: member_semester[0], year: member_semester[1])
+  new_member_semester = MemberSemester.where(season: member_semester[0], year: member_semester[1]).first_or_create
   puts "Created new member semester: #{new_member_semester.name}."
 end
 
@@ -57,26 +57,26 @@ officer_roles = execs + committees
 
 MemberSemester.all.each do |semester|
   officer_roles.each do |role|
-    new_role = Role.create(name: role, role_type: "officer", resource_type: MemberSemester.to_s, resource_id: semester.id)
+    new_role = Role.where(name: role, role_type: "officer", resource_type: MemberSemester.to_s, resource_id: semester.id).first_or_create
     puts "Created new officer role: #{new_role.name} for semester: #{semester.name}."
   end
 
   committees.each do |role|
-    new_role = Role.create(name: role, role_type: "committee_member", resource_type: MemberSemester.to_s, resource_id: semester.id)
+    new_role = Role.where(name: role, role_type: "committee_member", resource_type: MemberSemester.to_s, resource_id: semester.id).first_or_create
     puts "Created new committee member role: #{new_role.name} for semester: #{semester.name}."
   end
 end
 
 officer_to_position = [
-  [User.find(1), Role.current(:compserv)],
-  [User.find(2), Role.current(:tutoring)],
-  [User.find(3), Role.current(:pres)],
-  [User.find(4), Role.current(:indrel)]
+  [User.find(1), Role.semester_filter(MemberSemester.current).position(:compserv).officers.first_or_create],
+  [User.find(2), Role.semester_filter(MemberSemester.current).position(:tutoring).officers.first_or_create],
+  [User.find(3), Role.semester_filter(MemberSemester.current).position(:pres).officers.first_or_create],
+  [User.find(4), Role.semester_filter(MemberSemester.current).position(:indrel).officers.first_or_create]
 ]
 
+semester = MemberSemester.current
 officer_to_position.each do |user, role|
-  semester = MemberSemester.find(role.resource_id)
-  user.add_role_for_semester(role.name, semester)
+  user.add_position_for_semester_and_role_type(role.name, semester, role.role_type)
   puts "Added role: #{role.name} to user: #{user.username} for semester: #{semester.name}."
 end
 
