@@ -2,18 +2,13 @@
 #
 # Table name: course_surveys
 #
-#  id                     :integer          not null, primary key
-#  staff_member_id        :integer
-#  course_staff_member_id :integer
-#  course_offering_id     :integer
-#  course_id              :integer
-#  course_semester_id     :integer
-#  created_at             :datetime
-#  updated_at             :datetime
-#  survey_time            :datetime
-#  status                 :string(255)
-#  max_surveyors          :integer
-#  number_responses       :integer
+#  id                 :integer          not null, primary key
+#  course_offering_id :integer
+#  created_at         :datetime
+#  updated_at         :datetime
+#  status             :string(255)
+#  survey_time        :datetime
+#  max_surveyors      :integer
 #
 
 require 'spec_helper'

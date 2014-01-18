@@ -12,12 +12,13 @@
 
 class StaffMember < ActiveRecord::Base
   has_many :course_staff_members
-  has_many :course_surveys, through: :course_staff_members
+  has_many :survey_question_responses, through: :course_staff_members
+  has_many :course_offerings, through: :course_staff_members
 
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  after_initialize :init
+  before_create :init
 
   def find_surveys_by_semester(course_semester)
     return course_surveys.where("course_surveys.course_semester_id = #{course_semester.id}")

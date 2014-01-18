@@ -16,9 +16,9 @@ Check Everything
       <th>Section</th>
       <th>Notes</th>
     </tr>
-    <% for offering in @klasses %>
+    <% for offering in @offerings %>
       <tr>
-        <td><%= check_box_tag "offering#{offering.id}", true, offering.coursesurveys_active %></td>
+        <td><%= check_box_tag "offering#{offering.id}", true, !offering.course_survey.nil? %></td>
         <td><%= offering.course.course_abbr %></td>
         <td><%#= klass.section %></td>
         <td><%#= klass.notes %></td>

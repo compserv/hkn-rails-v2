@@ -196,7 +196,7 @@ if File.exists?(path_to_courses)
   csv.each do |row|
     dept, name = row["Course"].split
     c = Course.where(department: dept, course_name: name, units: row["units"]).first_or_create
-    CourseOffering.where(course: c, course_semester: c_semester).first_or_create
+    CourseOffering.where(course: c, course_semester: c_semester, section: row["Sec"], time: row["Time"], location: row["Place"]).first_or_create
   end
   puts "initialized courses"
 else

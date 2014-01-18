@@ -2,13 +2,12 @@
 #
 # Table name: survey_questions
 #
-#  id               :integer          not null, primary key
-#  course_survey_id :integer
-#  question_text    :string(255)
-#  keyword          :string(255)
-#  mean_score       :float
-#  created_at       :datetime
-#  updated_at       :datetime
+#  id            :integer          not null, primary key
+#  question_text :string(255)
+#  keyword       :string(255)
+#  mean_score    :float
+#  created_at    :datetime
+#  updated_at    :datetime
 #
 
 require 'spec_helper'

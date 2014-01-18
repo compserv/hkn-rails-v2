@@ -1,2 +1,52 @@
-<h1>Admin::Csec#manage_classes</h1>
-<p>Find me in app/views/admin/csec/manage_classes.html.erb</p>
+<h1>Corresponding Secretary Admin - Manage Classes</h1>
+
+<p> <%= link_to "Back to Csec Admin", admin_csec_path %> </p>
+
+<script>
+  function set_all_max_surveyors() {
+    var x = $('#global_max_surveyors').val();
+    $('#manage_classes_table input[type="text"]').each( function(index) {
+      $(this).attr('value', x);
+    });
+  }
+</script>
+
+<p> <%= link_to 'Set all max surveyors', 'javascript:;', onclick: "set_all_max_surveyors();" %> <%= text_field_tag "global_max_surveyors" %> </p>
+<%= form_tag nil do %>
+  <table id="manage_classes_table">
+    <tr>
+      <th>Status</th>
+      <th>Course Number</th>
+      <th>Section</th>
+      <th>Time</th>
+      <th>Loc</th>
+      <th># Students</th>
+      <th>Notes</th>
+      <th>Max Surveyors</th>
+      <th>Surveyors</th>
+      <th></th>
+    </tr>
+    <% @coursesurveys.each do |coursesurvey| %>
+      <tr>
+        <td><%= select_tag "survey#{coursesurvey.id}[status]", options_for_select(CourseSurvey.statusmap.invert.to_a.sort{|a,b| a.last <=> b.last }, :selected => coursesurvey.status ) %></td>
+        <td><%= link_to coursesurvey.course_offering.course.course_abbr, 'admin_courses_show_path(*coursesurvey.klass.course.slug)' %></td>
+        <td><%= link_to coursesurvey.course_offering.section.to_s.center(5).gsub(' ','&nbsp').html_safe, 'admin_klasses_edit_path(coursesurvey.klass)' %></td>
+        <td><%= coursesurvey.course_offering.time %></td>
+        <td><%= coursesurvey.course_offering.location %></td>
+        <td><%= coursesurvey.course_offering.num_students %></td>
+        <td><%= coursesurvey.course_offering.notes %></td>
+        <td><%= text_field_tag "survey#{coursesurvey.id}[max_surveyors]", coursesurvey.max_surveyors %></td>
+        <td>
+          <% coursesurvey.users.each do |person| %>
+            <%# link_to person.fullname, admin_csec_coursesurvey_path(coursesurvey) %>
+            <%= link_to person.fullname, person %>
+            <%= "," if coursesurvey.surveyors.last != person %>
+          <% end %>
+        </td>
+        <td><%= link_to "Edit", 'admin_csec_coursesurvey_path(coursesurvey)' %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <%= submit_tag %>
+<% end %>

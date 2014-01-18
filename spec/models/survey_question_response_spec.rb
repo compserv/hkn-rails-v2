@@ -7,6 +7,7 @@
 #  rating             :integer
 #  created_at         :datetime
 #  updated_at         :datetime
+#  number_responses   :integer
 #
 
 require 'spec_helper'

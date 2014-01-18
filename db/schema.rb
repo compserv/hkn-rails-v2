@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140118033336) do
+ActiveRecord::Schema.define(version: 20140118073412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,7 +90,11 @@ ActiveRecord::Schema.define(version: 20140118033336) do
     t.integer  "course_semester_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "coursesurveys_active"
+    t.string   "section"
+    t.string   "time"
+    t.string   "location"
+    t.integer  "num_students"
+    t.text     "notes"
   end
 
   add_index "course_offerings", ["course_id", "course_semester_id"], name: "index_course_offerings_on_course_id_and_course_semester_id", using: :btree
@@ -104,38 +108,22 @@ ActiveRecord::Schema.define(version: 20140118033336) do
 
   create_table "course_staff_members", force: true do |t|
     t.integer  "course_offering_id"
-    t.integer  "staff_member_id"
-    t.integer  "course_semester_id"
-    t.integer  "course_id"
     t.string   "staff_role"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "staff_member_id"
   end
-
-  add_index "course_staff_members", ["course_id"], name: "index_course_staff_members_on_course_id", using: :btree
-  add_index "course_staff_members", ["course_offering_id", "staff_member_id"], name: "index_course_staff_on_course_offering_and_staff_member_ids", using: :btree
-  add_index "course_staff_members", ["course_semester_id"], name: "index_course_staff_members_on_course_semester_id", using: :btree
 
   create_table "course_surveys", force: true do |t|
-    t.integer  "staff_member_id"
-    t.integer  "course_staff_member_id"
     t.integer  "course_offering_id"
-    t.integer  "course_id"
-    t.integer  "course_semester_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "survey_time"
     t.string   "status"
+    t.datetime "survey_time"
     t.integer  "max_surveyors"
-    t.integer  "number_responses"
   end
 
-  add_index "course_surveys", ["course_id"], name: "index_course_surveys_on_course_id", using: :btree
   add_index "course_surveys", ["course_offering_id"], name: "index_course_surveys_on_course_offering_id", using: :btree
-  add_index "course_surveys", ["course_staff_member_id"], name: "index_course_surveys_on_course_staff_member_id", using: :btree
-  add_index "course_surveys", ["staff_member_id", "course_id"], name: "index_course_surveys_on_staff_member_id_and_course_id", using: :btree
-  add_index "course_surveys", ["staff_member_id", "course_semester_id"], name: "index_course_surveys_on_staff_member_id_and_course_semester_id", using: :btree
-  add_index "course_surveys", ["staff_member_id"], name: "index_course_surveys_on_staff_member_id", using: :btree
 
   create_table "courses", force: true do |t|
     t.string   "department"
@@ -418,12 +406,12 @@ ActiveRecord::Schema.define(version: 20140118033336) do
     t.integer  "rating"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "number_responses"
   end
 
   add_index "survey_question_responses", ["survey_question_id"], name: "index_survey_question_responses_on_survey_question_id", using: :btree
 
   create_table "survey_questions", force: true do |t|
-    t.integer  "course_survey_id"
     t.string   "question_text"
     t.string   "keyword"
     t.float    "mean_score"
@@ -431,7 +419,12 @@ ActiveRecord::Schema.define(version: 20140118033336) do
     t.datetime "updated_at"
   end
 
-  add_index "survey_questions", ["course_survey_id"], name: "index_survey_questions_on_course_survey_id", using: :btree
+  create_table "surveyors_candidates", id: false, force: true do |t|
+    t.integer "course_survey_id"
+    t.integer "user_id"
+  end
+
+  add_index "surveyors_candidates", ["course_survey_id", "user_id"], name: "index_surveyors_candidates_on_course_survey_id_and_user_id", using: :btree
 
   create_table "tutor_slot_preferences", force: true do |t|
     t.integer  "tutor_slot_id"
