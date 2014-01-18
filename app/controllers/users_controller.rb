@@ -82,7 +82,7 @@ class UsersController < ApplicationController
     if %w[officers committee_members candidates].include? params[:category]
       cond = ["role_type = ? AND resource_id = ?", params[:category].singularize, MemberSemester.current.id] # autos to current semester
     elsif params[:category] == "members"
-      cond = ["role_type = 'officer' OR role_type = 'committee_member'"]
+      cond = ["role_type = 'officer' OR role_type = 'committee_member' OR role_type = 'member'"]
     elsif params[:category] != "all"
       cond = ["name = ?", params[:category]] # searching for other things...e.g. indrel
     end
