@@ -76,7 +76,7 @@ def make_courses(rows)
     end
     next_course << row
   end
-  courses
+  courses.update(make_course(next_course)) # don't forget last class
 end
 
 def make_course(course_rows)
