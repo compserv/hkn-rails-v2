@@ -1,0 +1,66 @@
+The following courses *might* be cross-listed.
+
+TuTh 1230-2P
+Laurent El Ghaoui; 
+EE 127, EE 227AT
+
+MWF 1-2P
+Stojanovic, V.; 
+EE 140, EE 240A
+
+WF 1-230P
+Laura Waller; 
+EE 118, EE 218A
+
+TuTh 330-5P
+Sayeef Salahuddin; 
+EE 130, EE 230A
+
+TuTh 5:00-7:00P
+Dan Garcia; 
+CS 98, CS 198
+
+MWF 1:00-2:00P
+Dan Garcia; 
+CS 98, CS 198
+
+TuTh 7:00-9:00P
+Dan Garcia; 
+CS 98, CS 198
+
+Th 7:00-9:00P
+Björn Hartmann; Shawn H Park, Kevin Liang and Jeff Zhan
+CS 98, CS 198
+
+TU 7:00-9:00P
+Björn Hartmann; Elizabeth Lin, Shana Hu
+CS 98, CS 198
+
+W 7:00-9:00P
+Björn Hartmann; Elizabeth Lin, Shana Hu
+CS 98, CS 198
+
+F 3:00-6:00P
+Abhay Parekh; Kyle Lian, Dylan Paddock
+CS 98, CS 198
+
+M 5:00-7:00P
+Pieter Abbeel; Kate Lee, Bryan Munar, Douglas Kim
+CS 98, CS 198
+
+M 6:00-8:00P
+Pieter Abbeel; Michael Lannin
+CS 98, CS 198
+
+TuTh 2:00-3:30P
+Alexei (Alyosha) Efros; Jitendra Malik
+CS 189, CS 289A
+
+M 5:30-8:30P
+Michael Franklin; 
+CS 194, CS 294
+
+Tu 3:30-5:00P
+Ruzena Bajcsy; 
+CS 195, CS H195
+
