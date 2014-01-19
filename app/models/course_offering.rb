@@ -30,4 +30,10 @@ class CourseOffering < ActiveRecord::Base
                                  course_offering_id: id,
                                  staff_role: staff_role)
   end
+
+  def to_s
+    #"#{course.course_abbr} #{proper_semester(:sections=>true)}"
+    "#{course.course_abbr} #{course_semester.name}" + (self.section? ? " Section #{section}" : "")
+  end
+
 end

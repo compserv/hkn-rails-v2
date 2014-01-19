@@ -20,8 +20,8 @@ Check Everything
       <tr>
         <td><%= check_box_tag "offering#{offering.id}", true, !offering.course_survey.nil? %></td>
         <td><%= offering.course.course_abbr %></td>
-        <td><%#= klass.section %></td>
-        <td><%#= klass.notes %></td>
+        <td><%= offering.section %></td>
+        <td><%= offering.notes %></td>
       </tr>
     <% end %>
   </table>

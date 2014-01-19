@@ -202,3 +202,8 @@ if File.exists?(path_to_courses)
 else
   puts "please run 'ruby script/csec/scraper.rb' to generate course info from today"
 end
+
+c = CourseSurvey.create!(course_offering: CourseOffering.first)
+
+c.users << User.last
+c.users << User.first
