@@ -115,7 +115,6 @@ class CandidateController < ApplicationController
 
   def committee_defaults
     defaults = ["Activities", "Bridge", "CompServ", "Service", "Indrel", "StudRel", "Tutoring"]
-    return defaults
   end
 
   def autocomplete_officer_name
