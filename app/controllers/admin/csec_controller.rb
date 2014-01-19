@@ -37,14 +37,13 @@ class Admin::CsecController < ApplicationController
       id = param_id[6..-1]
       coursesurvey = CourseSurvey.find_by_id(id) # This should not fail
       coursesurvey.update_attributes(params[param_id].permit(:status, :max_surveyors))
-      if !coursesurvey.valid?
-        redirect_to admin_csec_manage_classes_path, notice: "Error happened. Your input was probably not valid." and return
-      end
+      redirect_to admin_csec_manage_classes_path, notice: "Error happened. Your input was probably not valid." and return unless coursesurvey.valid?
     end
     redirect_to admin_csec_manage_classes_path, notice: "Updated classes"
   end
 
   def manage_candidates
+    @users = MemberSemester.current.candidates.sort_by(&:full_name)
   end
 
   def upload_surveys
