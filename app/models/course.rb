@@ -26,4 +26,13 @@ class Course < ActiveRecord::Base
     # e.g. EE20N
     "#{department}#{course_name}"
   end
+
+  def course_number
+    # e.g. EE20N
+    course_name.gsub(/\D/, '').to_i
+  end
+  def course_suffix
+    # e.g. EE20N
+    course_name.gsub(/\d/, '')
+  end
 end

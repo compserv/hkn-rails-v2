@@ -1,4 +1,5 @@
 HknRails::Application.routes.draw do
+
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -27,6 +28,7 @@ HknRails::Application.routes.draw do
   resources :challenges, only: [:create, :update, :index]
   resources :companies
   resources :contacts
+  resources :courses
   resources :dept_tours
   resources :exams
   resources :indrel_event_types
