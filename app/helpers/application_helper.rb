@@ -108,4 +108,51 @@ $(window).bind('statechange', function(){
     return '' if q.nil?
     q.gsub(/\s+/, ' ').gsub(/[^a-zA-Z 0-9\*\?'\"]/i, '?')
   end
+
+end
+
+class Array
+# This borks activerecord's average
+  def avg
+    return nil if self.empty?
+    self.sum.to_f / self.count.to_f
+  end
+
+  def to_ul(tag='ul')
+    # Converts a nested array to <ul>
+    ["<#{tag}>",
+     self.collect do |e| 
+        case
+        when e.is_a?(Array)
+          e.to_ul tag
+        else
+          "<li>#{e.inspect.semi_escape}</li>"
+        end 
+     end.join,
+     "</#{tag}>"
+    ].join
+  end
+end
+
+class String
+
+  def is_int?
+    !self.blank? && self.to_i.to_s.eql?(self)
+  end
+  
+  def semi_escape
+    m = { '<' => '&lt;',
+          '>' => '&gt;',
+          /^\"|\"$/ => '',
+          '\\"' => '"'
+        }
+    s = self.dup
+    m.each_pair {|old,new| s.gsub! old, new }
+    s
+  end
+
+  def to_ul
+    [self].to_ul
+  end
+  
 end

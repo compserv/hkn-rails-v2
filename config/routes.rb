@@ -104,6 +104,7 @@ HknRails::Application.routes.draw do
       match "manage_classes", to: "csec#manage_classes_post", via: :post, as: :csec_manage_classes_post
       match "manage_candidates", to: "csec#manage_candidates", via: :get, as: :csec_manage_candidates
       match "upload_surveys", to: "csec#upload_surveys", via: :get, as: :csec_upload_surveys
+      match "upload_surveys", to: "csec#upload_surveys_post", via: :post, as: :csec_upload_surveys_post
       match  'coursesurveys/:id', to: 'csec#coursesurvey_show', via: :get, as: :csec_coursesurvey
       match 'coursesurveys/:coursesurvey_id/remove/:user_id', to: 'csec#coursesurvey_remove', via: :delete, as: :csec_coursesurvey_remove
     end
