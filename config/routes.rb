@@ -37,6 +37,7 @@ HknRails::Application.routes.draw do
   resources :resumes
   resources :resume_books, except: [:edit, :update]
   resources :resume_book_urls
+  resources :staff_members
   resources :users, except: [:new, :create, :index]
 
   scope "events" do

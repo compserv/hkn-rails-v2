@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :department %>
-    <%= f.text_field :department %>
+    <%= f.select :department, options_for_select(Course::DEPARTMENTS, @course.department) %>
   </div>
 
   <div class="field">

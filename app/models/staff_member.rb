@@ -8,6 +8,13 @@
 #  release_surveys :boolean
 #  created_at      :datetime
 #  updated_at      :datetime
+#  picture         :string(255)
+#  title           :string(255)
+#  interests       :text
+#  home_page       :string(255)
+#  office          :string(255)
+#  phone_number    :string(255)
+#  email           :string(255)
 #
 
 class StaffMember < ActiveRecord::Base
@@ -18,13 +25,12 @@ class StaffMember < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  before_create :init
-
   def find_surveys_by_semester(course_semester)
     return course_surveys.where("course_surveys.course_semester_id = #{course_semester.id}")
   end
 
-  def init
-    self.release_surveys = false
+  def full_name
+    "#{first_name} #{last_name}"
   end
+
 end

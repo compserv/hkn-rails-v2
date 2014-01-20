@@ -1,0 +1,62 @@
+<%= form_for(@staff_member) do |f| %>
+  <% if @staff_member.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@staff_member.errors.count, "error") %> prohibited this staff_member from being saved:</h2>
+
+      <ul>
+      <% @staff_member.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :office %>
+    <%= f.text_field :office %>
+  </div>
+
+  <div class="field">
+    <%= f.label :phone_number %>
+    <%= f.text_field :phone_number %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :home_page %>
+    <%= f.text_field :home_page %>
+  </div>
+
+  <div class="field">
+    <%= f.label :interests %>
+    <%= f.text_field :interests %>
+  </div>
+
+  <div class="field">
+    <%= f.label :release_surveys %>
+    <%= f.check_box :release_surveys %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

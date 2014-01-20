@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140118073412) do
+ActiveRecord::Schema.define(version: 20140119233742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -399,6 +399,13 @@ ActiveRecord::Schema.define(version: 20140118073412) do
     t.boolean  "release_surveys"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "picture"
+    t.string   "title"
+    t.text     "interests"
+    t.string   "home_page"
+    t.string   "office"
+    t.string   "phone_number"
+    t.string   "email"
   end
 
   create_table "survey_question_responses", force: true do |t|
