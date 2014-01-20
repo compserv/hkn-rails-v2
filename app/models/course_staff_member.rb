@@ -14,8 +14,10 @@ class CourseStaffMember < ActiveRecord::Base
   belongs_to :course_offering
   belongs_to :staff_member
   has_many :survey_question_responses
+  STAFF_ROLES = ['TA', 'Prof']
 
-  validates :staff_role, presence: true
+  validates :staff_role, presence: true, inclusion: { in: STAFF_ROLES,
+      message: "%{value} is not a valid staff role" }
   validates :course_offering_id, presence: true
 
   def add_survey

@@ -19,6 +19,8 @@ class CourseOffering < ActiveRecord::Base
   belongs_to :course_semester
   has_one :course_survey
   has_many :exams
+  has_many :course_staff_members
+  has_many :staff_members, through: :course_staff_members
 
   validates :course_id, presence: true
   validates :course_semester_id, presence: true

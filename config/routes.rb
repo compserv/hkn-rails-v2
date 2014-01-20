@@ -22,6 +22,10 @@ HknRails::Application.routes.draw do
   match "resume_books/missing" => "resume_books#missing", via: :get, :as => :resume_book_missing_get
   match 'resumes/include/:id' => "resumes#include", via: :post, :as => :resumes_include
   match 'resumes/exclude/:id' => "resumes#exclude", via: :post, :as => :resumes_exclude
+  match 'staff_members_merge' => 'staff_members#merge', via: :get, as: :staff_members_merge
+  match 'staff_members_merge' => 'staff_members#merge_post_setup', via: :post, as: :staff_members_merge_post
+  match 'staff_members_commit' => 'staff_members#merge_post_commit', via: :post, as: :staff_members_merge_post_commit
+  match 'autocomplete_staff_members', to: 'staff_members#autocomplete_staff_members_name', via: :get, as: :autocomplete_staff_members_name
 
   resources :alum
   resources :announcements
