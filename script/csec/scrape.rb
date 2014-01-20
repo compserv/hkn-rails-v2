@@ -167,6 +167,13 @@ def write_crosslists(courses, date)
   end
 end
 
+def write_errors(errors, date)
+  File.open("errors_#{date}.txt", 'w') do |file|
+    file.puts "The following courses may be missing from course_info_#{date}.csv"
+    file.puts errors
+  end
+end
+
 def main
   ee, cs = parse_schedule(EE_URL), parse_schedule(CS_URL)
   all_classes = ee.drop(1) + cs.drop(1)
@@ -179,7 +186,10 @@ def main
   write_crosslists(courses.values, date)
   puts "Written to course_info_#{date}.csv and crosslists_#{date}.txt."
 
-  puts "The following courses may be missing from the csv output:", osoc_errors
+  if !osoc_errors.empty?
+    write_errors(osoc_errors, date)
+    puts "Errors written to errors_#{date}.txt"
+  end
 end
 
 main
