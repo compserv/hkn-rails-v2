@@ -26,7 +26,6 @@
       <th>Surveyors</th>
       <th></th>
     </tr>
-    <% debugger %>
     <% @coursesurveys.each do |coursesurvey| %>
       <tr>
         <td><%= select_tag "survey#{coursesurvey.id}[status]", options_for_select(CourseSurvey.statusmap.invert.to_a.sort{|a,b| a.last <=> b.last }, selected: coursesurvey.status ) %></td>
