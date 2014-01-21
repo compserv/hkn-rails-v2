@@ -1,3 +1,5 @@
+require 'net/ldap'
+
 # == Schema Information
 #
 # Table name: users
@@ -140,6 +142,20 @@ class User < ActiveRecord::Base
 
   def is_currently_candidate?
     roles_for_semester(MemberSemester.current).candidates.count > 0
+  end
+
+  def valid_password?(password)
+     return true if valid_ldap?(password)
+     super
+  end
+
+  def valid_ldap?(password)
+    begin
+      ldap = Net::LDAP.new( :host => LDAP_SERVER, :port => LDAP_SERVER_PORT )
+      ldap.bind( :method => :simple, :username => "uid=#{username}, ou=people, dc=hkn, dc=eecs, dc=berkeley, dc=edu", :password => password )
+    rescue Net::LDAP::LdapError
+      return false
+    end
   end
 
   def full_name

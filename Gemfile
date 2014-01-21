@@ -14,6 +14,7 @@ gem 'jquery-ui-rails'
 # User authentication
 gem 'devise', '3.2.2'
 gem 'rolify', '~> 3.3.0.rc4'
+gem 'net-ldap'
 
 # spam stopper
 gem "recaptcha", :require => "recaptcha/rails"
