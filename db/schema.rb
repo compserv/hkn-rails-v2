@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140116170516) do
+ActiveRecord::Schema.define(version: 20140118033336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20140116170516) do
     t.integer  "course_semester_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "coursesurveys_active"
   end
 
   add_index "course_offerings", ["course_id", "course_semester_id"], name: "index_course_offerings_on_course_id_and_course_semester_id", using: :btree
@@ -260,6 +261,7 @@ ActiveRecord::Schema.define(version: 20140116170516) do
     t.string   "season"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "coursesurveys_active"
   end
 
   create_table "member_semesters_users", force: true do |t|
@@ -482,6 +484,11 @@ ActiveRecord::Schema.define(version: 20140116170516) do
     t.integer  "candidate_quiz_id"
     t.integer  "mobile_carrier_id"
     t.boolean  "should_reset_session"
+    t.string   "local_address"
+    t.string   "perm_address"
+    t.string   "committee_preferences"
+    t.text     "suggestion"
+    t.string   "graduation_semester"
   end
 
   add_index "users", ["approved"], name: "index_users_on_approved", using: :btree

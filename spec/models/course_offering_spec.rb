@@ -2,11 +2,12 @@
 #
 # Table name: course_offerings
 #
-#  id                 :integer          not null, primary key
-#  course_id          :integer
-#  course_semester_id :integer
-#  created_at         :datetime
-#  updated_at         :datetime
+#  id                   :integer          not null, primary key
+#  course_id            :integer
+#  course_semester_id   :integer
+#  created_at           :datetime
+#  updated_at           :datetime
+#  coursesurveys_active :boolean
 #
 
 require 'spec_helper'

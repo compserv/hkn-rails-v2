@@ -58,6 +58,8 @@ HknRails::Application.routes.draw do
     match "quiz", to: "candidate#quiz", via: :get, as: "candidate_quiz"
     match "submit_quiz", to: "candidate#submit_quiz", via: :post, as: "candidate_submit_quiz"
     match "portal", to: 'candidate#portal', via: :get, as: "candidate_portal"
+    match "application", to: 'candidate#application', via: :get, as: "candidate_application"
+    match "application", to: 'candidate#submit_app', via: :post, as: "candidate_submit_app"
     match "autocomplete_officer_name", to: "candidate#autocomplete_officer_name", via: :get, as: "autocomplete_officer_name"
   end
 
@@ -87,8 +89,22 @@ HknRails::Application.routes.draw do
   end
 
   namespace :admin do
+    scope "csec" do
+      match "/", to: "csec#index", via: :get, as: :csec
+      match "select_classes", to: "csec#select_classes", via: :get, as: :csec_select_classes
+      match "select_classes", to: "csec#select_classes_post", via: :post, as: :csec_select_classes_post
+      match "manage_classes", to: "csec#manage_classes", via: :get, as: :csec_manage_classes
+      match "manage_candidates", to: "csec#manage_candidates", via: :get, as: :csec_manage_candidates
+      match "upload_surveys", to: "csec#upload_surveys", via: :get, as: :csec_upload_surveys
+    end
     scope "vp" do
       match "/", to: "vp#index", via: :get, as: :vp
+      match "applications", to: "vp#applications", via: :get, as: :cand_applications
+      match "applications/byperson", to: "vp#byperson", via: :get, as: :cand_byperson
+      match "applications/bycommittee", to: "vp#bycommittee", via: :get, as: :cand_bycommittee
+      match "applications/byperson_withoutapp", to: "vp#byperson_without_application", via: :get, as: :cand_byperson_without_application
+      match "super_page(/:semester)", to: "vp#super_page", via: :get, as: :vp_super_page
+      match "promote_candidate_path", to: "vp#promote_candidate", via: :post, as: :vp_promote_candidate
     end
     match "pres", to: "pres#index", via: :get, as: :pres
     scope "bridge" do

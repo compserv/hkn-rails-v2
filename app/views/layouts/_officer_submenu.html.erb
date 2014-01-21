@@ -84,7 +84,7 @@
   <div class="submenu cand_submenu">
     <ul class="plain">
       <li><%= link_to "Portal Home", candidate_portal_path, :class=>"navigation_sublevel_item" %></li>
-      <li><a href="/cand/application/" class="navigation_sublevel_item">Application Form</a></li>
+      <li><%= link_to "Application Form", candidate_application_path, :class=>"navigation_sublevel_item" %></li>
       <li><a href="/~vp" class="navigation_sublevel_item">Candidate Information</a></li>
     </ul>
   </div>
@@ -106,7 +106,7 @@
         <li><a href="/admin/tutor/" class="navigation_sublevel_item">Tutor Admin</a></li>
       <% end %>
       <% if authorize(:csec) %>
-        <li><a href="/admin/csec" class="navigation_sublevel_item">Csec Admin</a></li>
+        <li><%= link_to 'Csec Admin', admin_csec_path, :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:rsec) %>
         <li><%= link_to 'Rsec Admin', 'admin_rsec_path', :class => 'navigation_sublevel_item'  %></li>

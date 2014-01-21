@@ -1,0 +1,4 @@
+First Name,Last Name,Phone,Email Address,Committee Preferences,Suggestion
+<%- @candidates.each do |c| -%>
+<%= [:first_name, :last_name, :phone_number, :email].collect{|s| c.send(s)}.join(',') %>,"<%= c.committee_preferences.split.join("\n") if c.committee_preferences %>","<%= c.suggestion.gsub(/"/,"\\\"") if c.suggestion %>"
+<%- end -%>

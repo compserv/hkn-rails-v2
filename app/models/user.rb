@@ -30,6 +30,11 @@
 #  candidate_quiz_id      :integer
 #  mobile_carrier_id      :integer
 #  should_reset_session   :boolean
+#  local_address          :string(255)
+#  perm_address           :string(255)
+#  committee_preferences  :string(255)
+#  suggestion             :text
+#  graduation_semester    :string(255)
 #
 
 class User < ActiveRecord::Base

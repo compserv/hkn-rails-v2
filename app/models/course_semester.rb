@@ -13,6 +13,12 @@ class CourseSemester < ActiveRecord::Base
   has_many :course_offerings
   has_many :courses, through: :course_offerings
 
-  validates :season, presence: true
+  SEASONS = ['Fall', 'Spring', 'Summer']
+  validates :season, inclusion: { in: SEASONS,
+      message: "%{value} is not a valid semester" }
   validates :year, presence: true
+
+  def name
+    "#{season} #{year}"
+  end
 end

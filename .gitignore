@@ -38,3 +38,7 @@ config/initializers/environment_variables.rb
 
 # hidden certificates
 /certs
+
+# script generated
+course_info_*.csv
+crosslists_*.txt

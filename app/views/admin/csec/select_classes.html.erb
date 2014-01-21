@@ -1,0 +1,40 @@
+<h1>Corresponding Secretary Admin - Select Classes to Survey</h1>
+
+<%= link_to "Back to Csec Admin", admin_csec_path %>
+Check Everything
+<input type="checkbox" onclick="checkAll(this)">
+
+<%= form_tag nil do %>
+  <div class="field">
+    <%= label_tag :coursesurveys_active, "Allow Course Survey Signups" %>
+    <%= check_box_tag :coursesurveys_active, true, MemberSemester.current.coursesurveys_active %>
+  </div>
+  <table>
+    <tr>
+      <th>Needs Survey</th>
+      <th>Course Number</th>
+      <th>Section</th>
+      <th>Notes</th>
+    </tr>
+    <% for offering in @klasses %>
+      <tr>
+        <td><%= check_box_tag "offering#{offering.id}", true, offering.coursesurveys_active %></td>
+        <td><%= offering.course.course_abbr %></td>
+        <td><%#= klass.section %></td>
+        <td><%#= klass.notes %></td>
+      </tr>
+    <% end %>
+  </table>
+  <%= submit_tag %>
+<% end %>
+
+<script>
+  function checkAll(bx) {
+    var cbs = document.getElementsByTagName('input');
+    for(var i=0; i < cbs.length; i++) {
+      if(cbs[i].type == 'checkbox') {
+        cbs[i].checked = bx.checked;
+      }
+    }
+  }
+</script>

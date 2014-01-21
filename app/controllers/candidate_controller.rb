@@ -4,7 +4,7 @@ class CandidateController < ApplicationController
 
   def is_candidate?
     unless currently_candidate?
-      flash[:notice] = "You're not a candidate, so this information may not apply to you"
+      flash.now[:alert_cand] = "You're not a candidate, so this information may not apply to you"
     end
   end
 
@@ -67,7 +67,54 @@ class CandidateController < ApplicationController
         end
       end
     end
+    current_user.candidate_quiz.grade
     redirect_to candidate_portal_path, notice: "Your quiz responses have been recorded."
+  end
+
+  def application
+    @app_details = {
+      committee_prefs: current_user.committee_preferences.blank? ? committee_defaults : current_user.committee_preferences.split(' '),
+      local_address: current_user.local_address,
+      perm_address: current_user.perm_address,
+      phone: current_user.phone_number,
+      graduation_semester: current_user.graduation_semester,
+      release: !current_user.private,
+      suggestion: current_user.suggestion
+    }
+  end
+
+  def submit_app
+    redirect_to candidate_application_path, notice: "Your application has invalid committees listed. Please notify compserv@hkn." unless committees_must_be_valid(params[:committee_prefs])
+    to_update = {
+      committee_preferences: params[:committee_prefs],
+      suggestion: params[:suggestion],
+      phone_number: params[:phone],
+      local_address: params[:local_address],
+      perm_address: params[:perm_address],
+      graduation_semester: params[:grad_sem],
+      :private => params[:release].nil?
+    }
+    current_user.update_attributes(to_update)
+    redirect_to candidate_application_path, notice: "Your application has been saved."
+
+  end
+
+  def committees_must_be_valid(committee_preferences)
+    defaults = committee_defaults.collect {|c| c.downcase}
+    if committee_preferences.blank?
+      # nil is a valid committee
+      return true
+    end
+    committee_preferences.split(' ').each do |comm|
+      if not defaults.include?(comm.downcase)
+        return false
+      end
+    end
+    return true
+  end
+
+  def committee_defaults
+    defaults = ["Activities", "Bridge", "CompServ", "Service", "Indrel", "StudRel", "Tutoring"]
   end
 
   def autocomplete_officer_name

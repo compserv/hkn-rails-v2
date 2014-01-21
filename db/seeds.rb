@@ -6,7 +6,7 @@ member_semesters = [
 ]
 
 member_semesters.each do |member_semester|
-  new_member_semester = MemberSemester.create(season: member_semester[0], year: member_semester[1])
+  new_member_semester = MemberSemester.where(season: member_semester[0], year: member_semester[1]).first_or_create
   puts "Created new member semester: #{new_member_semester.name}."
 end
 
@@ -57,26 +57,26 @@ officer_roles = execs + committees
 
 MemberSemester.all.each do |semester|
   officer_roles.each do |role|
-    new_role = Role.create(name: role, role_type: "officer", resource_type: MemberSemester.to_s, resource_id: semester.id)
+    new_role = Role.where(name: role, role_type: "officer", resource_type: MemberSemester.to_s, resource_id: semester.id).first_or_create
     puts "Created new officer role: #{new_role.name} for semester: #{semester.name}."
   end
 
   committees.each do |role|
-    new_role = Role.create(name: role, role_type: "committee_member", resource_type: MemberSemester.to_s, resource_id: semester.id)
+    new_role = Role.where(name: role, role_type: "committee_member", resource_type: MemberSemester.to_s, resource_id: semester.id).first_or_create
     puts "Created new committee member role: #{new_role.name} for semester: #{semester.name}."
   end
 end
 
 officer_to_position = [
-  [User.find(1), Role.current(:compserv)],
-  [User.find(2), Role.current(:tutoring)],
-  [User.find(3), Role.current(:pres)],
-  [User.find(4), Role.current(:indrel)]
+  [User.find(1), Role.semester_filter(MemberSemester.current).position(:compserv).officers.first_or_create],
+  [User.find(2), Role.semester_filter(MemberSemester.current).position(:tutoring).officers.first_or_create],
+  [User.find(3), Role.semester_filter(MemberSemester.current).position(:pres).officers.first_or_create],
+  [User.find(4), Role.semester_filter(MemberSemester.current).position(:indrel).officers.first_or_create]
 ]
 
+semester = MemberSemester.current
 officer_to_position.each do |user, role|
-  semester = MemberSemester.find(role.resource_id)
-  user.add_role_for_semester(role.name, semester)
+  user.add_position_for_semester_and_role_type(role.name, semester, role.role_type)
   puts "Added role: #{role.name} to user: #{user.username} for semester: #{semester.name}."
 end
 
@@ -171,9 +171,9 @@ events = [
 ]
 
 events.each do |event|
-  Event.create(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
+  Event.where(title: event[0], description: event[1], start_time: event[2], end_time: event[3],
                event_type: event[4], view_permission_roles: event[5], rsvp_permission_roles: event[6],
-               need_transportation: event[7], max_rsvps: event[8], location: "Soda-Etchevery Breezeway")
+               need_transportation: event[7], max_rsvps: event[8], location: "Soda-Etchevery Breezeway").first_or_create
   puts "Created event #{event[0]}"
   User.first.rsvp! Event.last.id
   puts "First user tried to RSVP to event #{Event.last.title}"
@@ -185,3 +185,20 @@ end
 
 r = ResumeBook.new(title: "EMPTY", details: {info: "NOTHING"}, cutoff_date: Time.now, remarks: "Seed generated, please delete")
 r.save(:validate => false)
+
+c_semester = CourseSemester.where(season: MemberSemester.current.season, year: MemberSemester.current.year).first_or_create
+
+require 'CSV'
+path_to_courses = Rails.root.join("course_info_#{Time.now.strftime('%Y%m%d')}.csv")
+if File.exists?(path_to_courses)
+  csv_text = File.read(path_to_courses)
+  csv = CSV.parse(csv_text, :headers => true)
+  csv.each do |row|
+    dept, name = row["Course"].split
+    c = Course.where(department: dept, course_name: name, units: row["units"]).first_or_create
+    CourseOffering.where(course: c, course_semester: c_semester).first_or_create
+  end
+  puts "initialized courses"
+else
+  puts "please run 'ruby script/csec/scraper.rb' to generate course info from today"
+end
