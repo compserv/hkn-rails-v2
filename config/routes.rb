@@ -1,5 +1,4 @@
 HknRails::Application.routes.draw do
-
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -93,6 +92,10 @@ HknRails::Application.routes.draw do
     match 'yearbook', to: 'pages#yearbook', via: 'get', as: 'bridge_yearbook'
     match 'officers(/:semester)', to: "pages#officers", via: :get, as: "about_officers"
     match 'committee_members(/:semester)', to: "pages#committee_members", via: :get, as: "about_committee_members"
+  end
+
+  scope 'bridge' do
+    resources :slideshows
   end
 
   namespace :admin do

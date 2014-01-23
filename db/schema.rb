@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140119233742) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20140123202054) do
 
   create_table "alumni", force: true do |t|
     t.string   "grad_semester"
@@ -108,18 +105,20 @@ ActiveRecord::Schema.define(version: 20140119233742) do
 
   create_table "course_staff_members", force: true do |t|
     t.integer  "course_offering_id"
+    t.integer  "staff_member_id"
     t.string   "staff_role"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "staff_member_id"
   end
+
+  add_index "course_staff_members", ["course_offering_id", "staff_member_id"], name: "index_course_staff_on_course_offering_and_staff_member_ids", using: :btree
 
   create_table "course_surveys", force: true do |t|
     t.integer  "course_offering_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status"
     t.datetime "survey_time"
+    t.string   "status"
     t.integer  "max_surveyors"
   end
 
@@ -392,6 +391,18 @@ ActiveRecord::Schema.define(version: 20140119233742) do
   add_index "rsvps", ["event_id"], name: "index_rsvps_on_event_id", using: :btree
   add_index "rsvps", ["user_id", "event_id"], name: "index_rsvps_on_user_id_and_event_id", using: :btree
   add_index "rsvps", ["user_id"], name: "index_rsvps_on_user_id", using: :btree
+
+  create_table "slideshows", force: true do |t|
+    t.integer  "member_semester_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "slideshow_file_name"
+    t.string   "slideshow_content_type"
+    t.integer  "slideshow_file_size"
+    t.datetime "slideshow_updated_at"
+  end
+
+  add_index "slideshows", ["member_semester_id"], name: "index_slideshows_on_member_semester_id", using: :btree
 
   create_table "staff_members", force: true do |t|
     t.string   "first_name"
