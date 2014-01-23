@@ -1,11 +1,14 @@
-require 'will_paginate/array'
-
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :approve, :roles, :alter_roles]
+  before_action :set_user, only: [:edit, :update, :destroy, :approve, :roles, :alter_roles]
   before_filter :authenticate_user!
 
   # GET /users/1
   def show
+    if params[:id].to_i.to_s == params[:id]
+      set_user
+    else
+      @user = User.find_by_username(params[:id])
+    end
   end
 
   # GET /users/1/edit
@@ -119,7 +122,7 @@ class UsersController < ApplicationController
   end
 
   def roles
-    authenticate_superuser! # roles are shown on a user's show page, no reason for civilians to be here
+    authenticate_superuser! # roles are shown on a user's show page, no reason for civilians to alter roles
     @current_semester = MemberSemester.current
     @roles = @user.roles.order(:resource_id, :role_type)
   end
