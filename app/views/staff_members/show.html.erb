@@ -1,0 +1,42 @@
+<p>
+  <b>Name:</b>
+  <%= @staff_member.full_name %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%= @staff_member.title %>
+</p>
+
+<p>
+  <b>Office:</b>
+  <%= @staff_member.office %>
+</p>
+
+<p>
+  <b>Phone Number:</b>
+  <%= @staff_member.phone_number %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @staff_member.email %>
+</p>
+
+<p>
+  <b>Home Page:</b>
+  <%= @staff_member.home_page %>
+</p>
+
+<p>
+  <b>Release Surveys:</b>
+  <%= @staff_member.release_surveys %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%= @staff_member.title %>
+</p>
+
+<%= link_to 'Edit', edit_staff_member_path(@staff_member) %> |
+<%= link_to 'Back', staff_members_path %>

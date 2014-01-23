@@ -1,4 +1,5 @@
 HknRails::Application.routes.draw do
+
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -21,12 +22,17 @@ HknRails::Application.routes.draw do
   match "resume_books/missing" => "resume_books#missing", via: :get, :as => :resume_book_missing_get
   match 'resumes/include/:id' => "resumes#include", via: :post, :as => :resumes_include
   match 'resumes/exclude/:id' => "resumes#exclude", via: :post, :as => :resumes_exclude
+  match 'staff_members_merge' => 'staff_members#merge', via: :get, as: :staff_members_merge
+  match 'staff_members_merge' => 'staff_members#merge_post_setup', via: :post, as: :staff_members_merge_post
+  match 'staff_members_commit' => 'staff_members#merge_post_commit', via: :post, as: :staff_members_merge_post_commit
+  match 'autocomplete_staff_members', to: 'staff_members#autocomplete_staff_members_name', via: :get, as: :autocomplete_staff_members_name
 
   resources :alum
   resources :announcements
   resources :challenges, only: [:create, :update, :index]
   resources :companies
   resources :contacts
+  resources :courses
   resources :dept_tours
   resources :exams
   resources :indrel_event_types
@@ -35,6 +41,7 @@ HknRails::Application.routes.draw do
   resources :resumes
   resources :resume_books, except: [:edit, :update]
   resources :resume_book_urls
+  resources :staff_members
   resources :users, except: [:new, :create, :index]
 
   scope "events" do
@@ -94,8 +101,12 @@ HknRails::Application.routes.draw do
       match "select_classes", to: "csec#select_classes", via: :get, as: :csec_select_classes
       match "select_classes", to: "csec#select_classes_post", via: :post, as: :csec_select_classes_post
       match "manage_classes", to: "csec#manage_classes", via: :get, as: :csec_manage_classes
+      match "manage_classes", to: "csec#manage_classes_post", via: :post, as: :csec_manage_classes_post
       match "manage_candidates", to: "csec#manage_candidates", via: :get, as: :csec_manage_candidates
       match "upload_surveys", to: "csec#upload_surveys", via: :get, as: :csec_upload_surveys
+      match "upload_surveys", to: "csec#upload_surveys_post", via: :post, as: :csec_upload_surveys_post
+      match  'coursesurveys/:id', to: 'csec#coursesurvey_show', via: :get, as: :csec_coursesurvey
+      match 'coursesurveys/:coursesurvey_id/remove/:user_id', to: 'csec#coursesurvey_remove', via: :delete, as: :csec_coursesurvey_remove
     end
     scope "vp" do
       match "/", to: "vp#index", via: :get, as: :vp

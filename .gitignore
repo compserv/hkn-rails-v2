@@ -43,3 +43,6 @@ config/initializers/environment_variables.rb
 /script/csec/course_info_*.csv
 /script/csec/crosslists_*.txt
 /script/csec/errors_*.txt
+course_info_*.csv
+crosslists_*.txt
+errors_*.txt

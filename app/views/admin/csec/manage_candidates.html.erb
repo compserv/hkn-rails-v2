@@ -1,2 +1,22 @@
-<h1>Admin::Csec#manage_candidates</h1>
-<p>Find me in app/views/admin/csec/manage_candidates.html.erb</p>
+<h1>Corresponding Secretary Admin - Manage Candidates</h1>
+
+<%= link_to "Back to Csec Admin", admin_csec_path %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Classes Signed Up For</th>
+  </tr>
+  <% @users.each do |person| %>
+    <tr>
+      <td>
+        <%= link_to person.full_name, person %>
+      </td>
+      <td>
+        <% person.course_surveys.includes(course_offering: :course).each do |course_survey| %>
+          <%= course_survey.course_offering.course.course_abbr%>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

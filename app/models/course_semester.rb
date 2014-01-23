@@ -12,6 +12,7 @@
 class CourseSemester < ActiveRecord::Base
   has_many :course_offerings
   has_many :courses, through: :course_offerings
+  has_many :course_surveys, through: :course_offerings
 
   SEASONS = ['Fall', 'Spring', 'Summer']
   validates :season, inclusion: { in: SEASONS,
