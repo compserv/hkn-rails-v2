@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140123202054) do
+ActiveRecord::Schema.define(version: 20140123224635) do
 
   create_table "alumni", force: true do |t|
     t.string   "grad_semester"
@@ -514,5 +514,15 @@ ActiveRecord::Schema.define(version: 20140123202054) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+
+  create_table "yearbooks", force: true do |t|
+    t.integer  "year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "pdf_file_name"
+    t.string   "pdf_content_type"
+    t.integer  "pdf_file_size"
+    t.datetime "pdf_updated_at"
+  end
 
 end

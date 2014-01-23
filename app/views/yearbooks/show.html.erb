@@ -1,0 +1,8 @@
+<h1> Yearbook for <%= @yearbook.year %></h1>
+
+<div>
+  File: <%= link_to @yearbook.pdf_file_name, @yearbook.pdf.url %> 
+</div> 
+<div>
+  <%= link_to 'Delete', @yearbook, method: :delete, data: { confirm: 'Are you sure?' }  %> | <%= link_to 'Back', yearbooks_path %>
+</div>

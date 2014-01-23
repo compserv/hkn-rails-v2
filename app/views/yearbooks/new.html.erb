@@ -1,0 +1,26 @@
+<h1>Upload new yearbook</h1>
+
+<%= form_for(@yearbook) do |f| %>
+  <% if @yearbook.errors.any? %>
+    <h2><%= pluralize(@yearbook.errors.count, "error") %> prohibited this yearbook from being saved:</h2>
+    <div class="alert alert-danger">
+      <% @yearbook.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :year %>
+    <%= f.number_field :year %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Yearbook PDF', :pdf %>
+    <%= f.file_field :pdf %>
+  </div>
+
+  <div class="field-submit">
+    <%= f.submit %>
+  </div>
+<% end %>
