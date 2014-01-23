@@ -9,6 +9,9 @@ Each semester, the Bridge committee puts together a photo / video montage of the
     <li class="trans-bg">
     <span class="icon"></span>
     <%= link_to slideshow.member_semester.name, slideshow.slideshow.url %>
+    <% if @bridge_auth %>
+      <%= link_to 'Show', slideshow_path(slideshow) %>
+    <% end %>
     </li>
   <% end %>
   <li class="trans-bg">

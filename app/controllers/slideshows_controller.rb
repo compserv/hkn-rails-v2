@@ -2,7 +2,8 @@ class SlideshowsController < ApplicationController
   before_action :slideshow_auth, except: [:index, :show]
 
   def index
-    @slideshows = Slideshow.include(:member_semester)
+    @slideshows = Slideshow.includes(:member_semester)
+    @bridge_auth = authorize :bridge
   end
 
   def create
@@ -26,6 +27,7 @@ class SlideshowsController < ApplicationController
   end
 
   def show
+    @slideshow = Slideshow.find(params[:id])
   end
 
   private

@@ -1,0 +1,8 @@
+<h1> Slideshow for <%= @slideshow.member_semester.name %></h1>
+
+<div>
+  File: <%= link_to @slideshow.slideshow_file_name, @slideshow.slideshow.url %> 
+</div> 
+<div>
+  <%= link_to 'Delete', @slideshow, method: :delete, data: { confirm: 'Are you sure?' }  %> | <%= link_to 'Back', slideshows_path %>
+</div>

@@ -1,0 +1,190 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Alan Yao - SID 23775635 - CS184 - Spring 2014
+\end_layout
+
+\begin_layout Title
+HW1
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $ $
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Yes; k is any scalar multiple of i.
+ There are infinitely many of these.
+\end_layout
+
+\begin_layout Enumerate
+No.
+ i and j form a basis for the plane; if such a vector existed we would not
+ be working in 2D.
+\end_layout
+
+\begin_layout Enumerate
+k can now also be any vector orthogonal to both i and j, in addition to
+ the previous two answers.
+ There are infinitely many of these.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Expanding along the right column, we find the determinant:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $det=x_{2}y_{3}-y_{2}x_{3}-x_{1}y_{3}+y_{1}x_{3}+x_{1}y_{2}-y_{1}x_{2}$
+\end_inset
+
+; noting that the area of a triangle formed by points 
+\begin_inset Formula $(x_{1},y_{1})..(x_{3},y_{3})$
+\end_inset
+
+ is 
+\begin_inset Formula $area=\frac{1}{2}[x_{3}y_{2}-x_{2}y_{3}-x_{3}y_{1}+x_{1}y_{3}+x_{2}y_{1}-x_{1}y_{2}]$
+\end_inset
+
+, we find that 
+\begin_inset Formula $-\frac{1}{2}det=area$
+\end_inset
+
+.
+ In the case that the points are colinear, the value of the determinant
+ is zero.
+ This could be a useful test to determine colinearity of 3 points, as long
+ as the implementation for finding determinants is fast.
+\end_layout
+
+\begin_layout Enumerate
+Using the matrix from question 2, let 
+\begin_inset Formula $x_{3}=x$
+\end_inset
+
+ and 
+\begin_inset Formula $y_{3}=y$
+\end_inset
+
+, and 
+\begin_inset Formula $x_{1},x_{2},y_{1},y_{2}$
+\end_inset
+
+ correspond to the two points given.
+ Find the determinant.
+ The coefficients give a, b, and c as follows: 
+\begin_inset Formula $(y_{1}-y_{2})x+(x_{2}-x_{1})y+(x_{1}y_{2}-y_{1}x_{2})=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Calculating out the cross products, we find:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+The volume of a tetrahedron given four points a..d is: 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $V=\frac{1}{6}|(a-d)\cdot((b-d)x(c-d))|$
+\end_inset
+
+ where a..d are vectors.
+\begin_inset Newline newline
+\end_inset
+
+Then, computing the determinant of the given matrix, we find that it is
+ equivalent to 
+\begin_inset Formula $det(a-d,b-d,c-d)=(a-d)\cdot((b-d)x(c-d))$
+\end_inset
+
+, so 
+\begin_inset Formula $\frac{1}{6}|det|=V$
+\end_inset
+
+.
+ Similar to problem 2, if the four points lie on a plane the determinant
+ must be zero, and can be used as a coplanar check.
+\end_layout
+
+\begin_layout Enumerate
+
+\end_layout
+
+\end_body
+\end_document

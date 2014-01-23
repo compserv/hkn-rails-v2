@@ -1,1 +1,26 @@
 <h1>Upload new slideshow</h1>
+
+<%= form_for(@slideshow) do |f| %>
+  <% if @slideshow.errors.any? %>
+    <h2><%= pluralize(@slideshow.errors.count, "error") %> prohibited this slideshow from being saved:</h2>
+    <div class="alert alert-danger">
+      <% @announcement.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :member_semester_id, 'Semester' %>
+    <%= f.select :member_semester_id, MemberSemester.all.map { |x| [x.name, x.id] } %>
+  </div>
+
+  <div class="field">
+    <%= f.label :slideshow %>
+    <%= f.file_field :slideshow %>
+  </div>
+
+  <div class="field-submit">
+    <%= f.submit %>
+  </div>
+<% end %>
