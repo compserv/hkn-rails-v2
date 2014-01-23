@@ -2,7 +2,7 @@ class YearbooksController < ApplicationController
   before_action :yearbook_auth, except: [:index, :show]
 
   def index
-    @yearbooks = Yearbook.all
+    @yearbooks = Yearbook.order(year: :desc)
     @bridge_auth = authorize :bridge
   end
 
@@ -24,8 +24,8 @@ class YearbooksController < ApplicationController
   end
 
   def destroy
-    @yearbook.destroy
-    redirect_to :index
+    Yearbook.find(params[:id]).destroy
+    redirect_to yearbooks_path
   end
 
   private

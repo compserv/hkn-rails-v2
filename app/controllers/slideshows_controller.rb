@@ -2,7 +2,7 @@ class SlideshowsController < ApplicationController
   before_action :slideshow_auth, except: [:index, :show]
 
   def index
-    @slideshows = Slideshow.includes(:member_semester)
+    @slideshows = Slideshow.includes(:member_semester).order(created_at: :desc)
     @bridge_auth = authorize :bridge
   end
 
@@ -22,8 +22,8 @@ class SlideshowsController < ApplicationController
   end
 
   def destroy
-    @slideshow.destroy
-    redirect_to :index
+    Slideshow.find(params[:id]).destroy
+    redirect_to slideshows_path 
   end
 
   def show
