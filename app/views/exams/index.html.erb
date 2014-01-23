@@ -16,7 +16,7 @@
   <tbody>
     <% @exams.each do |exam| %>
       <tr>
-        <td><%= exam.course_id %></td>
+        <td><%= exam.course_offering.course.course_abbr %></td>
         <td><%= exam.exam_type %></td>
         <td><%= exam.number %></td>
         <td><%= exam.is_solution %></td>

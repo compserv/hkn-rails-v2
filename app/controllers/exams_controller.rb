@@ -1,6 +1,6 @@
 class ExamsController < ApplicationController
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
-  # before_action authorize_studrel, only: [:create, :edit, :update, :destroy]
+  before_filter :authenticate_studrel!, only: [:create, :edit, :update, :destroy]
 
   # GET /exams
   def index
@@ -23,6 +23,9 @@ class ExamsController < ApplicationController
   # POST /exams
   def create
     @exam = Exam.new(exam_params)
+    offering = Course.find_by_id(params[:course_id]).course_offerings.joins(:course_semester).where('course_semesters.year = ? AND course_semesters.season = ?', exam_params[:year], exam_params[:semester]).first
+    @exam.course_offering = offering
+    debugger
 
     if @exam.save
       redirect_to @exam, notice: 'Exam was successfully created.'
@@ -58,6 +61,6 @@ class ExamsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def exam_params
-      params.require(:exam).permit(:course_id, :exam_type, :number, :is_solution, :file, :year, :semester)
+      params.require(:exam).permit(:exam_type, :number, :is_solution, :file)
     end
 end

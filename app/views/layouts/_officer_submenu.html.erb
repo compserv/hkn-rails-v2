@@ -100,7 +100,7 @@
     <ul class="plain">
       <li><%= link_to "Confirm Challenges", challenges_path, :class=>"navigation_sublevel_item" %></li>
       <% if authorize(:studrel) %>
-        <li><a href="/admin/studrel/" class="navigation_sublevel_item">Studrel Admin</a></li>
+        <li><%= link_to 'Studrel Admin', admin_studrel_path, :class => 'navigation_sublevel_item'  %></li>
       <% end %>
       <% if authorize(:tutoring) %>
         <li><a href="/admin/tutor/" class="navigation_sublevel_item">Tutor Admin</a></li>
