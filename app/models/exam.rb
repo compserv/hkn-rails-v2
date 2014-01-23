@@ -19,7 +19,7 @@
 
 class Exam < ActiveRecord::Base
   belongs_to :course_offering
-  validates :exam_type, presence: true
+  validates_presence_of :exam_type, :course_offering_id
   validates :exam_type, inclusion: { in: %w(q mt f),
       message: "%{value} is not a valid exam type" }
   validates_uniqueness_of :exam_type,
@@ -44,4 +44,13 @@ class Exam < ActiveRecord::Base
     "#{self.course_offering.course.course_abbr}_#{self.course_offering.course_semester.season}#{self.course_offering.course_semester.year}_" +
         "#{self.exam_type}#{self.number}#{self.is_solution ? '' : '_sol'}"
   end
+
+  def content_type
+    file_content_type.split("/")[1] == 'pdf' ? :pdf : ""
+  end
+
+  def short_type
+    "#{exam_type}#{number}"
+  end
+
 end

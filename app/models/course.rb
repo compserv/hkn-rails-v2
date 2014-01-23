@@ -13,6 +13,7 @@
 class Course < ActiveRecord::Base
   DEPARTMENTS = ['EE', 'MATH', 'PHYS', 'CS']
   has_many :course_offerings
+  has_many :exams, through: :course_offerings
   has_many :course_semesters, through: :course_offerings
   has_many :course_surveys, through: :course_offerings
   has_many :course_staff_members, through: :course_offerings
@@ -41,4 +42,5 @@ class Course < ActiveRecord::Base
     # e.g. EE20N
     course_name.gsub(/\d/, '')
   end
+
 end

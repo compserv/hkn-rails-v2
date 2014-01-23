@@ -4,7 +4,15 @@ class ExamsController < ApplicationController
 
   # GET /exams
   def index
-    @exams = Exam.all
+    @dept_courses = {
+      'Computer Science' => Course.where(department: 'CS'),
+      'Electrical Engineering' => Course.where(department: 'EE')
+    }
+
+    @counts = Hash.new(0)
+    Exam.select("course_offering_id").each do |x|
+      @counts[x.course_offering.course.id] += 1
+    end
   end
 
   # GET /exams/1
@@ -23,9 +31,13 @@ class ExamsController < ApplicationController
   # POST /exams
   def create
     @exam = Exam.new(exam_params)
+    course = Course.find_by_id(params[:course_id])
+    if course.nil?
+      @exam.errors.add(:course_offering_id, 'invalid course')
+      render :new and return
+    end
     offering = Course.find_by_id(params[:course_id]).course_offerings.joins(:course_semester).where('course_semesters.year = ? AND course_semesters.season = ?', exam_params[:year], exam_params[:semester]).first
     @exam.course_offering = offering
-    debugger
 
     if @exam.save
       redirect_to @exam, notice: 'Exam was successfully created.'
@@ -51,6 +63,29 @@ class ExamsController < ApplicationController
 
   def search
     @query = sanitize_query(params[:q])
+    @course = Course.find_by_short_name(dept_abbr, full_course_num)
+  end
+
+  def course
+    dept_abbr = params[:dept_abbr].upcase
+    full_course_num = params[:full_course_number].upcase
+    @course = Course.find_by_department_and_course_name(dept_abbr, full_course_num)
+    redirect_to exams_search_path([dept_abbr,full_course_num].compact.join(' ')) unless @course
+    offerings = CourseOffering.where(course_id: @course.id).reject {|klass| klass.exams.empty?}
+
+    @results = offerings.collect do |offering|
+      exams = {}
+      solutions = {}
+      offering.exams.each do |exam|
+        if not exam.is_solution
+          exams[exam.short_type] = exam
+        else
+          solutions[exam.short_type] = exam
+        end
+      end
+      [offering.course_semester.season, offering.instructors.first, exams, solutions]
+    end
+
   end
 
   private
@@ -61,6 +96,6 @@ class ExamsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def exam_params
-      params.require(:exam).permit(:exam_type, :number, :is_solution, :file)
+      params.require(:exam).permit(:exam_type, :number, :is_solution, :file, :semester, :year)
     end
 end

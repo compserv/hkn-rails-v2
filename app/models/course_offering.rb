@@ -38,4 +38,8 @@ class CourseOffering < ActiveRecord::Base
     "#{course.course_abbr} #{course_semester.name}" + (self.section? ? " Section #{section}" : "")
   end
 
+  def instructors
+    course_staff_members.where('staff_role = ?', 'Prof')
+  end
+
 end
