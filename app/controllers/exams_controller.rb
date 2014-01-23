@@ -39,6 +39,9 @@ class ExamsController < ApplicationController
     offering = course.course_offerings.joins(:course_semester).where('course_semesters.year = ? AND course_semesters.season = ?', exam_params[:year], exam_params[:semester]).first_or_create
     @exam.course_offering = offering
 
+    if other_exam = Exam.where(course_offering: @exam.course_offering, exam_type: @exam.exam_type, number: @exam.number, is_solution: @exam.is_solution).first
+      redirect_to other_exam, notice: 'Oops there appears to be another exam up already for this. Here is the show page for the exam.' and return
+    end
     if @exam.save
       redirect_to @exam, notice: 'Exam was successfully created.'
     else
