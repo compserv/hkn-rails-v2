@@ -10,7 +10,7 @@ class ExamsController < ApplicationController
     }
 
     @counts = Hash.new(0)
-    Exam.select("course_offering_id").each do |x|
+    Exam.includes(course_offering: :course).each do |x|
       @counts[x.course_offering.course.id] += 1
     end
   end
@@ -83,7 +83,7 @@ class ExamsController < ApplicationController
           solutions[exam.short_type] = exam
         end
       end
-      [offering.course_semester.season, offering.instructors.first, exams, solutions]
+      [offering.course_semester.name, offering.instructors.first, exams, solutions]
     end
 
   end

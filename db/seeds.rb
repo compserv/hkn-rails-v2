@@ -188,9 +188,9 @@ r.save(:validate => false)
 
 c_semester = CourseSemester.where(season: MemberSemester.current.season, year: MemberSemester.current.year).first_or_create
 
-require 'csv'
 path_to_courses = Rails.root.join("course_info_#{Time.now.strftime('%Y%m%d')}.csv")
 if File.exists?(path_to_courses)
+  require 'csv'
   csv_text = File.read(path_to_courses)
   csv = CSV.parse(csv_text, :headers => true)
   csv.each do |row|
