@@ -33,10 +33,10 @@ class ExamsController < ApplicationController
     @exam = Exam.new(exam_params)
     course = Course.find_by_id(params[:course_id])
     if course.nil?
-      @exam.errors.add(:course_offering_id, 'invalid course')
+      @exam.errors.add(:base, 'invalid course chosen')
       render :new and return
     end
-    offering = Course.find_by_id(params[:course_id]).course_offerings.joins(:course_semester).where('course_semesters.year = ? AND course_semesters.season = ?', exam_params[:year], exam_params[:semester]).first
+    offering = course.course_offerings.joins(:course_semester).where('course_semesters.year = ? AND course_semesters.season = ?', exam_params[:year], exam_params[:semester]).first_or_create
     @exam.course_offering = offering
 
     if @exam.save
@@ -48,6 +48,14 @@ class ExamsController < ApplicationController
 
   # PATCH/PUT /exams/1
   def update
+    course = Course.find_by_id(params[:course_id])
+    if course.nil?
+      @exam.errors.add(:base, 'invalid course chosen')
+      render :new and return
+    end
+    offering = course.course_offerings.joins(:course_semester).where('course_semesters.year = ? AND course_semesters.season = ?', exam_params[:year], exam_params[:semester]).first_or_create
+    @exam.course_offering = offering
+    @exam.save
     if @exam.update(exam_params)
       redirect_to @exam, notice: 'Exam was successfully updated.'
     else
@@ -71,16 +79,16 @@ class ExamsController < ApplicationController
     full_course_num = params[:full_course_number].upcase
     @course = Course.find_by_department_and_course_name(dept_abbr, full_course_num)
     redirect_to exams_search_path([dept_abbr,full_course_num].compact.join(' ')) unless @course
-    offerings = CourseOffering.where(course_id: @course.id).reject {|klass| klass.exams.empty?}
+    offerings = CourseOffering.where(course_id: @course.id).reject {|offering| offering.exams.empty?}
 
     @results = offerings.collect do |offering|
       exams = {}
       solutions = {}
-      offering.exams.each do |exam|
-        if not exam.is_solution
-          exams[exam.short_type] = exam
-        else
+      offering.exams.includes(:course_offering).each do |exam|
+        if exam.is_solution
           solutions[exam.short_type] = exam
+        else
+          exams[exam.short_type] = exam
         end
       end
       [offering.course_semester.name, offering.instructors.first, exams, solutions]

@@ -22,7 +22,7 @@
         <td>
           <%- exam = exams[short_type] -%>
           <%- sol = solutions[short_type] -%>
-          <%= (link_to "[#{exam.content_type}]", exam.file.url) unless exam.nil? %><%= (link_to '[solution]', @exam_path+sol.filename) unless sol.nil? %>
+          <%= (link_to "[#{exam.short_content_type}]", exam.file.url) unless exam.nil? %><%= (link_to '[solution]', sol.file.url) unless sol.nil? %>
         </td>
         <%- end -%>
       </tr>

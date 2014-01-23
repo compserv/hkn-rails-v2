@@ -45,12 +45,27 @@ class Exam < ActiveRecord::Base
         "#{self.exam_type}#{self.number}#{self.is_solution ? '' : '_sol'}"
   end
 
-  def content_type
-    file_content_type.split("/")[1] == 'pdf' ? :pdf : ""
+  def short_content_type 
+    file_content_type.split("/")[1].to_sym
   end
 
   def short_type
     "#{exam_type}#{number}"
+  end
+
+  def save_for_paperclip(path, type)
+    template = File.read(path) # grab the created file, going to save w/ paperclip
+
+    file = StringIO.new(template) # mimic a real upload file for paperclip
+    file.class.class_eval { attr_accessor :original_filename, :content_type } # add attr's that paperclip needs
+    file.content_type = type
+    if type == "application/pdf"
+      file.original_filename = "hi.pdf"
+      self.file = file
+    else
+      file.original_filename = "hi.iso"
+      self.file = file
+    end
   end
 
 end
