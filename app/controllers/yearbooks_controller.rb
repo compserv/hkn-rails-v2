@@ -1,9 +1,8 @@
 class YearbooksController < ApplicationController
-  before_action :authenticate_bridge!, except: [:index, :show]
+  before_action :authenticate_bridge!, except: [:index]
 
   def index
     @yearbooks = Yearbook.order(year: :desc)
-    @bridge_auth = authorize :bridge
   end
 
   def new

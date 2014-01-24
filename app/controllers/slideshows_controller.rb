@@ -1,9 +1,8 @@
 class SlideshowsController < ApplicationController
-  before_action :authenticate_bridge!, except: [:index, :show]
+  before_action :authenticate_bridge!, except: [:index]
 
   def index
     @slideshows = Slideshow.includes(:member_semester).order(created_at: :desc)
-    @bridge_auth = authorize :bridge
   end
 
   def create

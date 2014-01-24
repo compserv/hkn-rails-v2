@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140123224635) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "alumni", force: true do |t|
     t.string   "grad_semester"
     t.string   "grad_school"
@@ -105,20 +108,18 @@ ActiveRecord::Schema.define(version: 20140123224635) do
 
   create_table "course_staff_members", force: true do |t|
     t.integer  "course_offering_id"
-    t.integer  "staff_member_id"
     t.string   "staff_role"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "staff_member_id"
   end
-
-  add_index "course_staff_members", ["course_offering_id", "staff_member_id"], name: "index_course_staff_on_course_offering_and_staff_member_ids", using: :btree
 
   create_table "course_surveys", force: true do |t|
     t.integer  "course_offering_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "survey_time"
     t.string   "status"
+    t.datetime "survey_time"
     t.integer  "max_surveyors"
   end
 
@@ -169,7 +170,7 @@ ActiveRecord::Schema.define(version: 20140123224635) do
   end
 
   create_table "exams", force: true do |t|
-    t.integer  "course_id"
+    t.integer  "course_offering_id"
     t.string   "exam_type"
     t.integer  "number"
     t.boolean  "is_solution"
@@ -183,7 +184,7 @@ ActiveRecord::Schema.define(version: 20140123224635) do
     t.string   "semester"
   end
 
-  add_index "exams", ["course_id"], name: "index_exams_on_course_id", using: :btree
+  add_index "exams", ["course_offering_id"], name: "index_exams_on_course_offering_id", using: :btree
 
   create_table "indrel_event_types", force: true do |t|
     t.string   "name"
@@ -401,8 +402,6 @@ ActiveRecord::Schema.define(version: 20140123224635) do
     t.integer  "slideshow_file_size"
     t.datetime "slideshow_updated_at"
   end
-
-  add_index "slideshows", ["member_semester_id"], name: "index_slideshows_on_member_semester_id", using: :btree
 
   create_table "staff_members", force: true do |t|
     t.string   "first_name"
