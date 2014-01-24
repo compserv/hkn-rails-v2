@@ -6,6 +6,16 @@ Mu Chapter has consistently won the <a href="http://hkn.org/awards/oca.asp">Outs
 </p>
 
 <ul id="yearbooks" class="plain">
+  <% @yearbooks.each do |yearbook| %>
+    <li class="trans-bg">
+      <span class="icon"></span>
+      <%= link_to yearbook.name, yearbook.pdf.url %>
+      <% if authorize(:bridge) %>
+        <%= link_to 'Show', yearbook_path(yearbook) %>
+      <% end %>
+    </li>
+  <% end %>
+
   <li class="trans-bg">
     <span class="icon"></span>
     <a href="http://hkn.eecs.berkeley.edu/files/content/yearbook/yearbook-2011.pdf">

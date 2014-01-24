@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140119233742) do
+ActiveRecord::Schema.define(version: 20140123224635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,7 +170,7 @@ ActiveRecord::Schema.define(version: 20140119233742) do
   end
 
   create_table "exams", force: true do |t|
-    t.integer  "course_id"
+    t.integer  "course_offering_id"
     t.string   "exam_type"
     t.integer  "number"
     t.boolean  "is_solution"
@@ -184,7 +184,7 @@ ActiveRecord::Schema.define(version: 20140119233742) do
     t.string   "semester"
   end
 
-  add_index "exams", ["course_id"], name: "index_exams_on_course_id", using: :btree
+  add_index "exams", ["course_offering_id"], name: "index_exams_on_course_offering_id", using: :btree
 
   create_table "indrel_event_types", force: true do |t|
     t.string   "name"
@@ -393,6 +393,16 @@ ActiveRecord::Schema.define(version: 20140119233742) do
   add_index "rsvps", ["user_id", "event_id"], name: "index_rsvps_on_user_id_and_event_id", using: :btree
   add_index "rsvps", ["user_id"], name: "index_rsvps_on_user_id", using: :btree
 
+  create_table "slideshows", force: true do |t|
+    t.integer  "member_semester_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "slideshow_file_name"
+    t.string   "slideshow_content_type"
+    t.integer  "slideshow_file_size"
+    t.datetime "slideshow_updated_at"
+  end
+
   create_table "staff_members", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -503,5 +513,15 @@ ActiveRecord::Schema.define(version: 20140119233742) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+
+  create_table "yearbooks", force: true do |t|
+    t.integer  "year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "pdf_file_name"
+    t.string   "pdf_content_type"
+    t.integer  "pdf_file_size"
+    t.datetime "pdf_updated_at"
+  end
 
 end
