@@ -1,5 +1,5 @@
 class YearbooksController < ApplicationController
-  before_action :yearbook_auth, except: [:index, :show]
+  before_action :authenticate_bridge!, except: [:index, :show]
 
   def index
     @yearbooks = Yearbook.order(year: :desc)
@@ -29,9 +29,6 @@ class YearbooksController < ApplicationController
   end
 
   private
-  def yearbook_auth 
-    authenticate! :bridge
-  end
   
   def yearbook_params
     params.require(:yearbook).permit(:year, :pdf)
