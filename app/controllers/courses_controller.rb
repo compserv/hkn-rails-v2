@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_csec!
+  before_filter :authenticate_csec!, except: [:autocomplete_course_names]
 
   # GET /courses
   def index
@@ -44,6 +44,10 @@ class CoursesController < ApplicationController
   def destroy
     @course.destroy
     redirect_to courses_url, notice: 'Course was successfully destroyed.'
+  end
+
+  def autocomplete_course_names
+    render :json => Course.all.map {|c| {:label => c.course_abbr, :id => c.id} }
   end
 
   private

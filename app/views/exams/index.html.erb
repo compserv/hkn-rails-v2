@@ -1,33 +1,23 @@
-<h1>Listing exams</h1>
+<h1>Browse Exams by Department</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Course</th>
-      <th>Exam type</th>
-      <th>Number</th>
-      <th>Is solution</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @exams.each do |exam| %>
+<% @dept_courses.each do |dept_name, courses| %>
+<div class="exam_table">
+  <table class="table">
+    <tbody>
       <tr>
-        <td><%= exam.course_id %></td>
-        <td><%= exam.exam_type %></td>
-        <td><%= exam.number %></td>
-        <td><%= exam.is_solution %></td>
-        <td><%= link_to "[#{exam.is_solution ? 'sol' : 'pdf'}]", exam.file.url %></td>
-        <td><%= link_to 'Edit', edit_exam_path(exam) %></td>
-        <td><%= link_to 'Destroy', exam, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th class="dept_name"><%= dept_name %></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      <% courses.each do |course| %>
+      <tr>
+        <% if course.exams.size != 0 %>
+          <td><%= link_to "#{course.course_abbr} - #{pluralize course.exams.size, 'exam'}", exams_course_path(course.department.downcase, course.course_name.downcase) %></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<% end %>
+<div class="clear"></div>
 
-<br>
-
-<%= link_to 'New Exam', new_exam_path %>
+<%= render :partial => 'disclaimer' %>

@@ -1,0 +1,2 @@
+module Admin::StudrelHelper
+end

@@ -2,7 +2,7 @@
 
 <p>
   <strong>Course:</strong>
-  <%= @exam.course_id %>
+  <%= @exam.course_offering.course.course_abbr %>
 </p>
 
 <p>
@@ -22,13 +22,14 @@
 
 <p>
   <strong>Semester:</strong>
-  <%= @exam.semester %>
+  <%= @exam.course_offering.course_semester.season %>
 </p>
 
 <p>
   <strong>Year:</strong>
-  <%= @exam.year %>
+  <%= @exam.course_offering.course_semester.year %>
 </p>
 
 <%= link_to 'Edit', edit_exam_path(@exam) %> |
-<%= link_to 'Back', exams_path %>
+<%= link_to 'Back', exams_path %> |
+<%= link_to 'Destroy this exam', @exam, method: :delete, data: { confirm: 'Are you sure?' } %>

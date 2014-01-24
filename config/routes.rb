@@ -8,6 +8,7 @@ HknRails::Application.routes.draw do
   match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
   match "exams/search(/:q)", to: "exams#search", via: :get, :as => :exams_search
+  match "exams/course/:dept_abbr/:full_course_number", to: "exams#course", via: :get, :as => :exams_course
   match "users/approve/:id", to: "users#approve", via: :post, as: "users_approve"
   match "users/list(/:category)", to: "users#list", via: :get, as: "users_list"
   match "users/roles/:id", to: "users#roles", via: :get, as: "edit_roles_user"
@@ -25,6 +26,8 @@ HknRails::Application.routes.draw do
   match 'staff_members_merge' => 'staff_members#merge_post_setup', via: :post, as: :staff_members_merge_post
   match 'staff_members_commit' => 'staff_members#merge_post_commit', via: :post, as: :staff_members_merge_post_commit
   match 'autocomplete_staff_members', to: 'staff_members#autocomplete_staff_members_name', via: :get, as: :autocomplete_staff_members_name
+
+  match 'autocomplete_course_names', to: 'courses#autocomplete_course_names', via: :get, as: :autocomplete_course_name
 
   resources :alum
   resources :announcements
@@ -127,6 +130,9 @@ HknRails::Application.routes.draw do
     end
     scope "indrel" do
       match "/", to: "indrel#index", via: :get, as: :indrel
+    end
+    scope "studrel" do
+      match "/", to: "studrel#index", via: :get, as: :studrel
     end
   end
 

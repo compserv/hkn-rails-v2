@@ -188,9 +188,9 @@ r.save(:validate => false)
 
 c_semester = CourseSemester.where(season: MemberSemester.current.season, year: MemberSemester.current.year).first_or_create
 
-require 'csv'
 path_to_courses = Rails.root.join("course_info_#{Time.now.strftime('%Y%m%d')}.csv")
 if File.exists?(path_to_courses)
+  require 'csv'
   csv_text = File.read(path_to_courses)
   csv = CSV.parse(csv_text, :headers => true)
   csv.each do |row|
@@ -203,6 +203,25 @@ if File.exists?(path_to_courses)
 
   c.users << User.last
   c.users << User.first
+
+  puts "Created a course survey and threw mark/approved on it."
+
+  cs61c = Course.find_by_department_and_course_name('CS', '61C').course_offerings.last
+  exam_infos = [
+    {course_offering: Course.find_by_department_and_course_name('CS', '61A').course_offerings.last, exam_type: 'f', is_solution: false, number: nil, year: 2014, semester: 'Spring'}, 
+    {course_offering: cs61c, exam_type: 'f', is_solution: false, number: nil, year: 2014, semester: 'Spring'}, 
+    {course_offering: cs61c, exam_type: 'mt', is_solution: false, number: 1, year: 2014, semester: 'Spring'},
+    {course_offering: cs61c, exam_type: 'mt', is_solution: false, number: 2, year: 2014, semester: 'Spring'},
+    {course_offering: cs61c, exam_type: 'mt', is_solution: true, number: 2, year: 2014, semester: 'Spring'}
+  ]
+
+  exam_infos.each do |exam_info|
+    exam_test = Exam.new(exam_info)
+    exam_test.save_for_paperclip(Rails.root.join('private', 'template', 'cover.pdf'), 'application/pdf')
+    exam_test.save! # throw error if fails
+    puts "Summoned a final exam for #{exam_info[:course_offering].course.course_abbr} #{exam_info.except(:course_offering).to_s}"
+  end
+
 else
   puts "please run 'ruby script/csec/scrape.rb' to generate course info from today"
 end
