@@ -10,7 +10,7 @@
 
   <div id="course_select">
     <%= label_tag "Search for class:" %>
-    <%= text_field_tag "Course", @exam.course_offering.course.course_abbr, id: 'course_field' %>
+    <%= text_field_tag "Course", (@exam.course_offering.course.course_abbr if @exam.course_offering), id: 'course_field' %>
     <%= hidden_field_tag "course_id", @exam.course_offering_id, :id => "course_id" %>
   </div>
   <div id="year">
