@@ -1,6 +1,6 @@
 class ExamsController < ApplicationController
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_studrel!, only: [:create, :edit, :update, :destroy]
+  before_filter :authenticate_studrel!, only: [:create, :edit, :update, :destroy, :new, :show]
 
   # GET /exams
   def index
