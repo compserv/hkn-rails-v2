@@ -8,11 +8,6 @@ class ExamsController < ApplicationController
       'Computer Science' => Course.where(department: 'CS'),
       'Electrical Engineering' => Course.where(department: 'EE')
     }
-
-    @counts = Hash.new(0)
-    Exam.includes(course_offering: :course).each do |x|
-      @counts[x.course_offering.course.id] += 1
-    end
   end
 
   # GET /exams/1

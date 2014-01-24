@@ -9,8 +9,8 @@
       </tr>
       <% courses.each do |course| %>
       <tr>
-        <% if @counts[course.id] != 0 %>
-          <td><%= link_to "#{course.course_abbr} - #{@counts[course.id]} exam(s)", exams_course_path(course.department.downcase, course.course_name.downcase) %></td>
+        <% if course.exams.size != 0 %>
+          <td><%= link_to "#{course.course_abbr} - #{pluralize course.exams.size, 'exam'}", exams_course_path(course.department.downcase, course.course_name.downcase) %></td>
         <% end %>
       </tr>
       <% end %>

@@ -8,6 +8,7 @@
 #  units       :integer
 #  created_at  :datetime
 #  updated_at  :datetime
+#  exams_count :integer          default(0)
 #
 
 class Course < ActiveRecord::Base
