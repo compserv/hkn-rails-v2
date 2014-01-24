@@ -1,7 +1,8 @@
 <h1>Editing exam</h1>
-<h2>NOTE THE DATA DIDN'T TRANSFER (beside course_id) </h2>
 
 <%= render 'form' %>
 
 <%= link_to 'Show', @exam %> |
-<%= link_to 'Back', exams_path %>
+<%= link_to 'Back', exams_path %> |
+<%= link_to 'Destroy this exam', @exam, method: :delete, data: { confirm: 'Are you sure?' } %>
+
