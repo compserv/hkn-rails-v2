@@ -8,16 +8,13 @@ class StaffMembersController < ApplicationController
     return redirect_to coursesurveys_path, notice: "Invalid category" unless @category && @eff_q
     @results = []
 
-    StaffMember.includes(:courses, :survey_question_responses).
-      where('course_staff_members.staff_role = ?', @category).
-      where('survey_question_responses.survey_question_id = ?', @eff_q.id).
-      order(:last_name, :first_name).
-      each do |inst|
-        @results << { instructor: inst,
-                      courses: inst.courses,
-                      rating: inst.release_surveys ? inst.survey_question_responses.average(:rating) : nil
-                    }
-    end
+    @staff = StaffMember.includes(:courses, :survey_question_responses).
+      where('course_staff_members.staff_role = ?', @category).references(:course_staff_members).
+      where('survey_question_responses.survey_question_id = ?', @eff_q.id).references(:survey_question_responses).
+      #select('staff_members.*, AVG(survey_question_responses.rating) as avg_score').
+      #group('staff_members.id').
+      order(:last_name, :first_name)
+    #ActiveRecord::Associations::Preloader.new.preload(@staff, :courses)
   end
 
   # GET /staff_members
