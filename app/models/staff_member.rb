@@ -22,6 +22,7 @@ class StaffMember < ActiveRecord::Base
   has_many :survey_question_responses, through: :course_staff_members
   has_many :course_offerings, through: :course_staff_members
   has_many :courses, through: :course_offerings
+  has_many :survey_question_responses, through: :course_staff_members
 
   validates :first_name, presence: true
   validates :last_name, presence: true
