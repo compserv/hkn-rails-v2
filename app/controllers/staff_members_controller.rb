@@ -8,10 +8,8 @@ class StaffMembersController < ApplicationController
     return redirect_to coursesurveys_path, notice: "Invalid category" unless @category && @eff_q
     @results = []
 
-    @staff = StaffMember.includes(:courses, :survey_question_responses).
-      #joins(:course_staff_members).
+    StaffMember.includes(:courses, :survey_question_responses).
       where('course_staff_members.staff_role = ?', @category).
-      #joins(:survey_question_responses).
       where('survey_question_responses.survey_question_id = ?', @eff_q.id).
       order(:last_name, :first_name).
       each do |inst|
