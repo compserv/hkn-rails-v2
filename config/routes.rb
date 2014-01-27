@@ -5,6 +5,8 @@ HknRails::Application.routes.draw do
 
   match 'notifications/read', to: 'notifications#index', via: :get, as: "notifications"
 
+  match "random_url_hi/:dept/:name", to: "course#temp_redirect", via: :get, as: "coursesurveys_course"
+
   match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
   match "exams/search(/:q)", to: "exams#search", via: :get, :as => :exams_search
@@ -35,6 +37,7 @@ HknRails::Application.routes.draw do
   resources :companies
   resources :contacts
   resources :courses
+  resources :coursesurveys
   resources :dept_tours
   resources :exams
   resources :indrel_event_types
@@ -110,7 +113,7 @@ HknRails::Application.routes.draw do
       match "manage_candidates", to: "csec#manage_candidates", via: :get, as: :csec_manage_candidates
       match "upload_surveys", to: "csec#upload_surveys", via: :get, as: :csec_upload_surveys
       match "upload_surveys", to: "csec#upload_surveys_post", via: :post, as: :csec_upload_surveys_post
-      match  'coursesurveys/:id', to: 'csec#coursesurvey_show', via: :get, as: :csec_coursesurvey
+      match 'coursesurveys/:id', to: 'csec#coursesurvey_show', via: :get, as: :csec_coursesurvey
       match 'coursesurveys/:coursesurvey_id/remove/:user_id', to: 'csec#coursesurvey_remove', via: :delete, as: :csec_coursesurvey_remove
     end
     scope "vp" do

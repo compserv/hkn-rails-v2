@@ -2,6 +2,10 @@ class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_csec!, except: [:autocomplete_course_names]
 
+  def temp_redirect
+    @course = Course.find_by_department_and_name(params[:dept], params[:name])
+  end
+
   # GET /courses
   def index
     @courses = Course.all.sort_by {|x| [x.course_number, x.course_suffix] }
