@@ -199,44 +199,6 @@ if File.exists?(path_to_courses)
     CourseOffering.where(course: c, course_semester: c_semester, section: row["Sec"], time: row["Time"], location: row["Place"], num_students: row["Enrolled"]).first_or_create
   end
   puts "initialized courses"
-  a = Course.where(department: 'EE', course_name: '40').first
-  a.course_guide = "#Course Overview
-###Summary
-The course introduces basic circuit analysis techniques. Students will learn about passive elements such as resistors, capacitors, and inductors, as well as active circuit components, such as operational amplifiers. Using these circuit elements, students will have a chance to design and build basic analog circuits, including amplifiers.
-
-###Prerequisites
-None; Math 1A, Math 1B, and Physics 7B help.
-
-###Topics Covered
-Basic circuit characteristics, Ohm's Law, KCL, KVL, resistive circuits, dependent and independent sources, nodal & mesh analysis, superposition, Thévenin & Norton equivalent circuits, operational amplifiers, capacitors and inductors, first and second order transient circuits, phasors, time-varying signals, complex impedances, AC steady-state analysis, filters (passive & active), resonance, Bode plots, diodes & applications, basic semiconductor physics of PN junctions, MOSFET devices, CMOS logic, basic amplifiers, gain, input/output impedance
-
-
-#Workload
-###Course Work
-The course has one homework assignment per week, along with one lab that usually comes with a pre-lab. There is also a final project that involves putting everything learnt in the class together. There are usually two midterms and a final.
-
-###Time Commitment
-3 hours of lecture, 3 hours of lab, and one hour of discussion per week. Homework assignments usually take several hours to complete. Pre-labs should take around 1-2 hours.
-
-###HKN Tips
-Get a group of study buddies. They will significantly reduce the time you spend on homework assignments, while allowing you to understand the materials better.
-Keep up with the material. The concepts introduced strongly build on top of each other. For example, if you are not comfortable with basic nodal/mesh analysis by the time the class has moved on to later concepts, you will have a lot of trouble with the circuits encountered afterward. Similarly, you need to know how capacitors and inductors work to be able to understand Bode plots and filters. It is very easy to just plug in values in equations and push aside the intuitive understanding, but doing so will make later classes much harder and will not help you in the long run. In terms of doing well on exams, practice problems are the best way to prepare, as well as going to office hours to ask for help on how to do problems that you don't quite understand. 
-
-#Choosing the Course
-###Category
-Circuits
-
-###When to take
-Most students take this course in the first two years, especially those who are interested in circuit design or hardware in general.
-
-###What next?
-EE105, which is a lead way to advanced circuit classes like EE140 and EE142. EE130, EE141.
-
-###Usefulness for Research or Internships
-This course alone is not very useful for getting an internship or research position. But the material you learn in this course will help you succeed in advanced circuit courses, which will help you with internships and research.
-
-#Additional Comments"
-  a.save
   c = CourseSurvey.create!(course_offering: CourseOffering.first)
 
   c.users << User.last

@@ -1,2 +1,14 @@
-<h1>Courseguides#edit</h1>
-<p>Find me in app/views/courseguides/edit.html.erb</p>
+<h1>
+  <%= "Editing Course Guide for #{@course.course_abbr} : #{@course.name}" %>
+</h1>
+<p>
+  <%= link_to "View Course Guide", courseguide_show_path(@course.department, @course.course_name) %>
+</p>
+<%= form_tag nil do %>
+  <div class="field">
+    <%= text_area_tag :course_guide, @course.course_guide, style: "width:90%;min-height:500px;" %>
+  </div>
+  <div class="field-submit">
+    <%= submit_tag %>
+  </div>
+<% end %>

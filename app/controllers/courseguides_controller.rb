@@ -1,31 +1,32 @@
 class CourseguidesController < ApplicationController
+  before_action :set_course, only: [:show, :edit, :update]
   before_filter :authenticate_tutoring!, :only=>[:edit, :update]
 
   def index
   end
 
   def show
-    @course = Course.find_by_department_and_course_name(params[:dept], params[:name])
     return redirect_to coursesurveys_search_path("#{params[:dept]} #{params[:course]}") unless @course
   end
 
   def edit
-    @course = Course.find_by_short_name(params[:dept_abbr], params[:course_number])
     if @course.nil?
-      redirect_back_or_default coursesurveys_path, :notice => "Error: No such course."
+      redirect_to coursesurveys_path, notice: "Error: No such course."
     end
   end
 
   def update
-    @course = Course.find_by_short_name(params[:dept_abbr], params[:course_number])
-    if @course.nil?
-      return redirect_back_or_default coursesurveys_path, :notice=>"Error: That course does not exist."
+    redirect_to coursesurveys_path, notice: "Error: That course does not exist." and return unless @course
+    if @course.update_attribute(:course_guide, params[:course_guide])
+      flash[:notice] = "Successfully updated the course guide for #{@course.course_abbr}."
+    else
+      flash[:alert] = "Error updating the entry: #{@course.errors.inspect}"
     end
 
-    if !@course.update_attributes(params[:course])
-      return redirect_to courseguide_show_path(@course.dept_abbr, @course.full_course_number), :notice => "Error updating the entry: #{@course.errors.inspect}"
-    end
+    redirect_to courseguide_show_path
+  end
 
-    return redirect_to courseguide_edit_path(@course.dept_abbr, @course.full_course_number), :notice => "Successfully updated the course guide for #{@course.course_name}."
+  def set_course
+    @course = Course.find_by_department_and_course_name(params[:dept], params[:name])
   end
 end
