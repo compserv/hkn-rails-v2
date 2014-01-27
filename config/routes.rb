@@ -1,11 +1,15 @@
 HknRails::Application.routes.draw do
+
+  match "courseguides", to: "courseguides#index", via: :get, as: "courseguides"
+  match "courseguides/:dept/:name", to: "courseguides#show", via: :get, as: "courseguide_show"
+  match "courseguides/edit/:dept/:name", to: "courseguides#edit", via: :get, as: "courseguides_edit"
+  match "courseguides/edit/:dept/:name", to: "courseguides#update", via: :post, as: "courseguides_update"
+
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
 
   match 'notifications/read', to: 'notifications#index', via: :get, as: "notifications"
-
-  match "random_url_hi/:dept/:name", to: "course#temp_redirect", via: :get, as: "coursesurveys_course"
 
   match "dept_tours/success", to: "dept_tours#success", via: :get, as: "dept_tours_success"
   match "dept_tours/:id", to: "dept_tours#respond_to_tour", via: :post
@@ -30,6 +34,8 @@ HknRails::Application.routes.draw do
   match 'autocomplete_staff_members', to: 'staff_members#autocomplete_staff_members_name', via: :get, as: :autocomplete_staff_members_name
 
   match 'autocomplete_course_names', to: 'courses#autocomplete_course_names', via: :get, as: :autocomplete_course_name
+
+  match "coursesurveys/course/:dept_abbr/:course_number", to: "coursesurveys#show", via: :get, :as => :coursesurveys_course
 
   resources :alum
   resources :announcements
