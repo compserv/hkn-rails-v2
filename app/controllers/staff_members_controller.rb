@@ -8,35 +8,17 @@ class StaffMembersController < ApplicationController
     return redirect_to coursesurveys_path, notice: "Invalid category" unless @category && @eff_q
     @results = []
 
-=begin
-    StaffMember.where(id: CourseStaffMember.select(:staff_member_id).
-        where(staff_role: @category, 
-              id: SurveyQuestionResponse.select(:course_staff_member_id).
-                                         where(survey_question_id: @eff_q.id).
-                                         collect(&:course_staff_member_id)).
-              collect(&:staff_member_id)).
-        includes(course_staff_members: {course_offering: :course}).
-        order(:last_name, :first_name).each do |i|
-    @results << { instructor: i,
-                  courses: i.course_staff_members.course_offerings.course.where('course_staff_members.staff_role = ? AND course_staff_members.staff_member_id = ?', @category, i.id),
-                  rating: i.release_surveys ? i.survey_question_responses.where(survey_question_id: @eff_q.id).average(:rating) : nil
-                  }
-    end
-=end
-
-
-    # below works but does a lot of database queries, well so does above
-
-    @staff = StaffMember.includes(:courses, :survey_question_responses).joins(:course_staff_members).
-        where('course_staff_members.staff_role = ?', @category).
-        joins(:survey_question_responses).
-        where('survey_question_responses.survey_question_id = ?', @eff_q.id).
-        order(:last_name, :first_name).
-        each do |i|
-          @results << { :instructor => i,
-                        :courses    => i.courses.where('course_staff_members.staff_role = ? AND course_staff_members.staff_member_id = ?', @category, i.id),
-                        :rating     => i.release_surveys ? i.survey_question_responses.where(survey_question_id: @eff_q.id).average(:rating) : nil
-                      }
+    @staff = StaffMember.includes(:courses, :survey_question_responses).
+      #joins(:course_staff_members).
+      where('course_staff_members.staff_role = ?', @category).
+      #joins(:survey_question_responses).
+      where('survey_question_responses.survey_question_id = ?', @eff_q.id).
+      order(:last_name, :first_name).
+      each do |inst|
+        @results << { instructor: inst,
+                      courses: inst.courses,
+                      rating: inst.release_surveys ? inst.survey_question_responses.average(:rating) : nil
+                    }
     end
   end
 

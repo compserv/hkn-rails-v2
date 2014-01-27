@@ -14,11 +14,7 @@
         <%= link_to instructor.full_name_r, 'surveys_instructor_path(instructor)' %>
       </td>
       <td>
-        <% course = courses.shift %>
-        <%= link_to course.course_abbr, 'surveys_course_path(course)' %>
-        <% courses.each do |course| %>
-          , <%= link_to course.course_abbr, 'surveys_course_path(course)' %>
-        <% end %>
+        <%= courses.collect { |course| link_to course.course_abbr, 'surveys_course_path(course)' }.join(', ').html_safe %>
       </td>
       <td>
         <% if rating.present? %>
