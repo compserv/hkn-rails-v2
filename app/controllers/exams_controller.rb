@@ -5,8 +5,8 @@ class ExamsController < ApplicationController
   # GET /exams
   def index
     @dept_courses = {
-      'Computer Science' => Course.where(department: 'CS'),
-      'Electrical Engineering' => Course.where(department: 'EE')
+      'Computer Science' => Course.where(department: 'CS').sort_by { |c| [c.course_number, c.course_suffix]}, # is there a simplification for this? ideally database (not ruby) should sort
+      'Electrical Engineering' => Course.where(department: 'EE').sort_by { |c| [c.course_number, c.course_suffix]}
     }
   end
 
@@ -31,11 +31,12 @@ class ExamsController < ApplicationController
       @exam.errors.add(:base, 'invalid course chosen')
       render :new and return
     end
-    offering = course.course_offerings.joins(:course_semester).where('course_semesters.year = ? AND course_semesters.season = ?', exam_params[:year], exam_params[:semester]).first_or_create
+    semester = CourseSemester.where(year: exam_params[:year], season: exam_params[:semester]).first_or_create
+    offering = CourseOffering.where(course_id: course.id, course_semester_id: semester.id).first_or_create
     @exam.course_offering = offering
 
     if other_exam = Exam.where(course_offering: @exam.course_offering, exam_type: @exam.exam_type, number: @exam.number, is_solution: @exam.is_solution).first
-      redirect_to other_exam, notice: 'Oops there appears to be another exam up already for this. Here is the show page for the exam.' and return
+      redirect_to other_exam, notice: 'There appears to be another exam up already for this. Here is the show page for the exam.' and return
     end
     if @exam.save
       redirect_to @exam, notice: 'Exam was successfully created.'
@@ -51,7 +52,8 @@ class ExamsController < ApplicationController
       @exam.errors.add(:base, 'invalid course chosen')
       render :new and return
     end
-    offering = course.course_offerings.joins(:course_semester).where('course_semesters.year = ? AND course_semesters.season = ?', exam_params[:year], exam_params[:semester]).first_or_create
+    semester = CourseSemester.where(year: exam_params[:year], season: exam_params[:semester]).first_or_create
+    offering = CourseOffering.where(course_id: course.id, course_semester_id: semester.id).first_or_create
     @exam.course_offering = offering
     @exam.save
     if @exam.update(exam_params)

@@ -69,16 +69,22 @@ class Exam < ActiveRecord::Base
   end
 
   after_create :increment_course_counter_cache
+  after_update :fix_course_counter_cache
   after_destroy :decrement_course_counter_cache
 
   private
 
     def increment_course_counter_cache
-      Course.increment_counter( 'exams_count', self.course_offering.course.id )
+      Course.increment_counter('exams_count', self.course_offering.course.id)
     end
 
     def decrement_course_counter_cache
-      Course.decrement_counter( 'exams_count', self.course_offering.course.id )
+      Course.decrement_counter('exams_count', self.course_offering.course.id)
+    end
+
+    def fix_course_counter_cache
+      Course.decrement_counter('exams_count', CourseOffering.find(course_offering_id_was).course.id)
+      Course.increment_counter('exams_count', course_offering.course.id )
     end
 
 end
