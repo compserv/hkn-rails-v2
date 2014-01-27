@@ -1,6 +1,24 @@
 class StaffMembersController < ApplicationController
   before_action :set_staff_member, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_csec!, except: [:show]
+  before_filter :authenticate_csec!, except: [:show, :instructors]
+
+  def instructors
+    @category = params["instructors"].to_sym
+    @eff_q = SurveyQuestion.find_by_keyword "#{@category.to_s}_eff".to_sym
+    return redirect_to coursesurveys_path, notice: "Invalid category" unless @category && @eff_q
+    @results = []
+
+    @staff = StaffMember.uniq.joins(:course_staff_members)
+        .where('course_staff_members.staff_role = ?', @category)
+        .joins(:survey_question_responses)
+        .where('survey_question_responses.survey_question_id = ?', @eff_q.id)
+    @staff.each do |i|
+      @results << { :instructor => i,
+                    :courses    => i.courses.where('course_staff_members.staff_role = ? AND course_staff_members.staff_member_id = ?', @category, i.id),
+                    :rating     => i.release_surveys ? i.survey_question_responses.where(survey_question_id: @eff_q.id).average(:rating) : nil
+                  }
+    end
+  end
 
   # GET /staff_members
   def index

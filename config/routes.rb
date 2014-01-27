@@ -37,6 +37,8 @@ HknRails::Application.routes.draw do
 
   match "coursesurveys/course/:dept/:name", to: "coursesurveys#show", via: :get, :as => :coursesurveys_course
 
+  match 'staff_members/staff/:instructors', to: 'staff_members#instructors', via: :get, as: :staff_member_instructors
+
   resources :alum
   resources :announcements
   resources :challenges, only: [:create, :update, :index]

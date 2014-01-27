@@ -8,12 +8,11 @@
 #  mean_score    :float
 #  created_at    :datetime
 #  updated_at    :datetime
+#  max           :integer
 #
 
 class SurveyQuestion < ActiveRecord::Base
   has_many :survey_question_responses
+  validates_presence_of :question_text, :keyword, :max
 
-  validates :course_survey_id, presence:true
-  validates :question_text, presence:true
-  validates :keyword, presence:true
 end

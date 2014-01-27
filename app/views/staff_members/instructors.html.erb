@@ -1,0 +1,33 @@
+<h1>
+  <%= @category == :prof ? 'Instructors' : 'TAs' %>
+</h1>
+<table class="table" id="ratings">
+  <tr>
+    <th>Name</th>
+    <th>Recent Courses</th>
+    <th>Rating</th>
+  </tr>
+  <% @results.each do |result| %>
+    <% instructor, courses, rating = result[:instructor], result[:courses], result[:rating] %>
+    <tr>
+      <td>
+        <%= link_to instructor.full_name_r, 'surveys_instructor_path(instructor)' %>
+      </td>
+      <td>
+        <% course = courses.shift %>
+        <%= link_to course.course_abbr, 'surveys_course_path(course)' %>
+        <% courses.each do |course| %>
+          , <%= link_to course.course_abbr, 'surveys_course_path(course)' %>
+        <% end %>
+      </td>
+      <td>
+        <% if rating.present? %>
+          <div><%= "#{sprintf "%.1f", rating} / #{@eff_q.max.to_f}" %></div>
+          <%= rating_bar(rating/@eff_q.max) %>
+        <% else %>
+          [private]
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
