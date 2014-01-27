@@ -1,0 +1,116 @@
+<div class="trans-bg">
+  <h1>
+    <%= @course.course_abbr %>
+  </h1>
+  <table class="infobox" id="course_info">
+    <% unless @course.name.eql?("(No title)") %>
+      <tr>
+        <th>Title</th>
+        <td>
+          <%= @course.name %>
+        </td>
+      </tr>
+    <% end %>
+    <% unless @instructors.blank? %>
+      <tr>
+        <th>
+          <%= 'Instructor'.pluralize_for(@instructors.size) %>
+          in Charge
+        </th>
+        <td>
+          <% @instructors.each do |instructor| %>
+            <%= link_to instructor.full_name, surveys_instructor_path(instructor) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    <% unless @course.units.nil? %>
+      <tr>
+        <th>Units</th>
+        <td>
+          <%= @course.units %>
+        </td>
+      </tr>
+    <% end %>
+    <%# unless @course.prereqs.blank? %>
+      <tr>
+        <th>Prerequisites</th>
+        <td>
+          <%#= @course.prereqs %>
+        </td>
+      </tr>
+    <%# end %>
+    <%# unless @course.description.blank? %>
+      <tr>
+        <th>Description</th>
+        <td>
+          <%#= @course.description %>
+        </td>
+      </tr>
+    <%# end %>
+    <% unless @course.course_guide.blank? %>
+      <tr>
+        <th>Course Guide</th>
+        <td>
+          <%= link_to "Course Guide", courseguide_show_path(@course.department, @course.course_name) %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<% if true#@course.course_offerings.blank? %>
+  <p>No survey data available for this course.</p>
+<% else %>
+  <div id="chart_div"></div>
+  <div id="table">
+    <table class="table" id="ratings">
+      <tr>
+        <th>Sections</th>
+        <th>Instructor</th>
+        <th>Teaching Effectiveness</th>
+        <th>How worthwhile was this course?</th>
+      </tr>
+      <% @results.each do |result| %>
+        <% klass, ratings = result[:klass], result[:ratings] %>
+        <% ratings.each do |rating| %>
+          <% instructor, effectiveness, worthwhileness = rating[:instructor], rating[:effectiveness], rating[:worthwhile] %>
+          <tr>:class => @results.index(result) % 2 == 0 ? "even" : "odd"
+            <% if rating == ratings.first %>
+              <td rowspan="<%= ratings.size %>">
+                <span class="semester">
+                  <%= link_to klass.proper_semester, surveys_klass_path(klass) %>
+                </span>
+              </td>
+            <% end %>
+            <td>
+              <%= link_to instructor.full_name, surveys_instructor_path(instructor) %>
+            </td>
+            <% [ :effectiveness, :worthwhile ].each do |qname| %>
+              <td>
+                <%= rating_and_bar rating[qname], @overall[qname][:max] %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+      <tr>
+        <th colspan="2">Overall Rating</th>
+        <th>Teaching Effectiveness</th>
+        <th>How worthwhile was this course?</th>
+      </tr>
+      <tr>
+        <td colspan="2"></td>
+        <% [:effectiveness, :worthwhile].each do |qname| %>
+          <td>
+            <%= rating_and_bar @overall[qname][:score], @overall[qname][:max] %>
+          </td>
+        <% end %>
+      </tr>
+    </table>
+  </div>
+<% end %>
+<div class="clear"></div>
+<div style="text-align: center; padding-top: 1em;">
+  <%= render :partial => 'emailhkn' %> |
+  <%= link_to "[Info about this page]", 'coursesurveys_how_to_path' %>
+</div>

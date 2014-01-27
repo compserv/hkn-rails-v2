@@ -6,24 +6,20 @@ class CourseguidesController < ApplicationController
   end
 
   def show
-    return redirect_to coursesurveys_search_path("#{params[:dept]} #{params[:course]}") unless @course
+    redirect_to coursesurveys_search_path("#{params[:dept]} #{params[:course]}") and return unless @course
   end
 
   def edit
-    if @course.nil?
-      redirect_to coursesurveys_path, notice: "Error: No such course."
-    end
+    redirect_to coursesurveys_path, alert: "Error: No such course." and return unless @course
   end
 
   def update
-    redirect_to coursesurveys_path, notice: "Error: That course does not exist." and return unless @course
+    redirect_to coursesurveys_path, alert: "Error: That course does not exist." and return unless @course
     if @course.update_attribute(:course_guide, params[:course_guide])
-      flash[:notice] = "Successfully updated the course guide for #{@course.course_abbr}."
+      redirect_to courseguide_show_path, notice: "Successfully updated the course guide for #{@course.course_abbr}."
     else
-      flash[:alert] = "Error updating the entry: #{@course.errors.inspect}"
+      redirect_to courseguide_edit_path, alert: "Error updating the entry: #{@course.errors.inspect}"
     end
-
-    redirect_to courseguide_show_path
   end
 
   def set_course

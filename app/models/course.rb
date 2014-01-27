@@ -21,8 +21,7 @@ class Course < ActiveRecord::Base
   has_many :course_surveys, through: :course_offerings
   has_many :course_staff_members, through: :course_offerings
 
-  validates :department, presence: true
-  validates :course_name, presence: true
+  validates_presence_of :department, :course_name
 
   def add_offering(course_semester)
     course_offerings.create!(course_semester_id: course_semester.id)

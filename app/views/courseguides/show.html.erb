@@ -21,10 +21,9 @@
     <%= @course.name %>
     <%= "(#{pluralize(@course.units, "Unit")})" %>
   </h1>
-  <% if !@course.course_guide.blank? %>
-      
-    <%= Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@course.course_guide).html_safe %>
-  <% else %>
+  <% if @course.course_guide.blank? %>
     <p>We're still building the guide for this course, please check back later!</p>
+  <% else %>
+    <%= Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@course.course_guide).html_safe %>
   <% end %>
 </div>
