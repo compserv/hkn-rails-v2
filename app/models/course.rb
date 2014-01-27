@@ -2,13 +2,15 @@
 #
 # Table name: courses
 #
-#  id          :integer          not null, primary key
-#  department  :string(255)
-#  course_name :string(255)
-#  units       :integer
-#  created_at  :datetime
-#  updated_at  :datetime
-#  exams_count :integer          default(0)
+#  id           :integer          not null, primary key
+#  department   :string(255)
+#  course_name  :string(255)
+#  units        :integer
+#  created_at   :datetime
+#  updated_at   :datetime
+#  exams_count  :integer          default(0)
+#  course_guide :text
+#  name         :string(255)
 #
 
 class Course < ActiveRecord::Base

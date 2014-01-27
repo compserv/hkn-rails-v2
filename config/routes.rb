@@ -2,7 +2,7 @@ HknRails::Application.routes.draw do
 
   match "courseguides", to: "courseguides#index", via: :get, as: "courseguides"
   match "courseguides/:dept/:name", to: "courseguides#show", via: :get, as: "courseguide_show"
-  match "courseguides/edit/:dept/:name", to: "courseguides#edit", via: :get, as: "courseguides_edit"
+  match "courseguides/edit/:dept/:name", to: "courseguides#edit", via: :get, as: "courseguide_edit"
   match "courseguides/edit/:dept/:name", to: "courseguides#update", via: :post, as: "courseguides_update"
 
   root to: "pages#home"

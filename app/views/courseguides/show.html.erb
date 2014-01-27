@@ -1,2 +1,30 @@
-<h1>Courseguides#show</h1>
-<p>Find me in app/views/courseguides/show.html.erb</p>
+<div class="trans-bg" id="sidebar">
+  <h1>Quicklinks</h1>
+  <ul class="plain">
+    <li>
+      <%= link_to "Course Surveys", coursesurveys_course_path(@course.department, @course.course_name) %>
+    </li>
+    <li>
+      <%= link_to "Exam Archive", exams_course_path(@course.department, @course.course_name) %>
+    </li>
+    <% if authorize(:tutoring) %>
+      <li>
+        <%= link_to "Edit this page", courseguide_edit_path(@course.department, @course.course_name) %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+<div id="main">
+  <h1>
+    <%= @course.department + @course.course_name %>
+    <%= " &mdash; ".html_safe %>
+    <%= @course.name %>
+    <%= "(#{pluralize(@course.units, "Unit")})" %>
+  </h1>
+  <% if !@course.course_guide.blank? %>
+      
+    <%= Redcarpet::Markdown.new(Redcarpet::Render::HTML).render(@course.course_guide).html_safe %>
+  <% else %>
+    <p>We're still building the guide for this course, please check back later!</p>
+  <% end %>
+</div>

@@ -5,9 +5,8 @@ class CourseguidesController < ApplicationController
   end
 
   def show
-    @course = Course.find_by_short_name(params[:dept_abbr], params[:course_number])
-    @can_edit = authorize(:tutoring)
-    return redirect_to coursesurveys_search_path("#{params[:dept_abbr]} #{params[:course_number]}") unless @course
+    @course = Course.find_by_department_and_course_name(params[:dept], params[:name])
+    return redirect_to coursesurveys_search_path("#{params[:dept]} #{params[:course]}") unless @course
   end
 
   def edit
