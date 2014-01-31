@@ -94,8 +94,8 @@ class Course
   attr_reader :name, :section, :prof_list, :time, :place
   attr_accessor :ta_list, :enrollment
 
-  def initialize(row)
-    @ccn, @name, @section, _, @title, @prof_list, @time, @place = *row
+  def initialize(row) # blank is type: e.g. lab/lec
+    @ccn, @name, @section, _, @title, @prof_list, @time, @place, @units = *row
     @ta_list = Set.new
     @enrollment = 'UNKNOWN'
 
@@ -114,7 +114,7 @@ class Course
   end
 
   def to_a
-    [@name, @section, @enrollment, *@prof_list, @time, @place, *@ta_list]
+    [@name, @section, @enrollment, *@prof_list, @time, @place, *@ta_list, @title, @units]
   end
 end
 
@@ -181,7 +181,7 @@ def main
   osoc_errors = update_enrollment(courses)
 
   date = Time.now.strftime('%Y%m%d')
-  head = [%w(Course Sec Enrolled Instructor(1) Instructor(2) Time Place TA's)]
+  head = [%w(Course Sec Enrolled Instructor(1) Instructor(2) Time Place TA's Title Units)]
   write_course_info(head + courses.values, date)
   write_crosslists(courses.values, date)
   puts "Written to course_info_#{date}.csv and crosslists_#{date}.txt."

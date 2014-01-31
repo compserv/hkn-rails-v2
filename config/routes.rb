@@ -1,4 +1,10 @@
 HknRails::Application.routes.draw do
+
+  match "courseguides", to: "courseguides#index", via: :get, as: "courseguides"
+  match "courseguides/:dept/:name", to: "courseguides#show", via: :get, as: "courseguide_show"
+  match "courseguides/edit/:dept/:name", to: "courseguides#edit", via: :get, as: "courseguide_edit"
+  match "courseguides/edit/:dept/:name", to: "courseguides#update", via: :post, as: "courseguides_update"
+
   root to: "pages#home"
 
   devise_for :users, controllers: { registrations: "registrations" }
@@ -29,12 +35,15 @@ HknRails::Application.routes.draw do
 
   match 'autocomplete_course_names', to: 'courses#autocomplete_course_names', via: :get, as: :autocomplete_course_name
 
+  match "coursesurveys/course/:dept/:name", to: "coursesurveys#show", via: :get, :as => :coursesurveys_course
+
   resources :alum
   resources :announcements
   resources :challenges, only: [:create, :update, :index]
   resources :companies
   resources :contacts
   resources :courses
+  resources :coursesurveys
   resources :dept_tours
   resources :exams
   resources :indrel_event_types
@@ -110,7 +119,7 @@ HknRails::Application.routes.draw do
       match "manage_candidates", to: "csec#manage_candidates", via: :get, as: :csec_manage_candidates
       match "upload_surveys", to: "csec#upload_surveys", via: :get, as: :csec_upload_surveys
       match "upload_surveys", to: "csec#upload_surveys_post", via: :post, as: :csec_upload_surveys_post
-      match  'coursesurveys/:id', to: 'csec#coursesurvey_show', via: :get, as: :csec_coursesurvey
+      match 'coursesurveys/:id', to: 'csec#coursesurvey_show', via: :get, as: :csec_coursesurvey
       match 'coursesurveys/:coursesurvey_id/remove/:user_id', to: 'csec#coursesurvey_remove', via: :delete, as: :csec_coursesurvey_remove
     end
     scope "vp" do
