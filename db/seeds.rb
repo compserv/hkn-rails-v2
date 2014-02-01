@@ -238,7 +238,7 @@ if File.exists?(path_to_courses)
   cs188_spring_2014 = Course.find_by_department_and_course_name('CS', '188').course_offerings.last
   cs61c_spring_2014 = Course.find_by_department_and_course_name('CS', '61C').course_offerings.last
   cs9a_spring_2014 = Course.find_by_department_and_course_name('CS', '9A').course_offerings.last
-  StaffMember.find_by_first_name('John').course_staff_members.where(staff_role: 'ta', course_offering: cs61a_spring_2014).first_or_create
+  StaffMember.find_by_first_name('John').course_staff_members.where(staff_role: 'prof', course_offering: cs61a_spring_2014).first_or_create
   CourseStaffMember.first.survey_question_responses.where(survey_question: prof_eff, rating: 7, number_responses: 9000).first_or_create
   StaffMember.find_by_first_name('John').course_staff_members.where(staff_role: 'prof', course_offering: cs188_spring_2014).first_or_create
   CourseStaffMember.last.survey_question_responses.where(survey_question: prof_eff, rating: 1, number_responses: 5000).first_or_create

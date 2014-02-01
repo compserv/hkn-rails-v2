@@ -36,6 +36,7 @@ HknRails::Application.routes.draw do
   match 'autocomplete_course_names', to: 'courses#autocomplete_course_names', via: :get, as: :autocomplete_course_name
 
   match "coursesurveys/course/:dept/:name", to: "coursesurveys#show", via: :get, :as => :coursesurveys_course
+  match "coursesurveys/course/:dept", to: "coursesurveys#department", via: :get, :as => :coursesurveys_department
 
   match 'staff_members/staff/:instructors', to: 'staff_members#instructors', via: :get, as: :staff_member_instructors
 

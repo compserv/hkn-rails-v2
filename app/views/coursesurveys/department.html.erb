@@ -1,0 +1,45 @@
+<h1><%= @department %> Courses</h1>
+
+<%- if @semester -%>
+  Showing ratings for <%= Property.pretty_semester @semester -%>. See also <%= link_to "all courses", :full_list => 'true' %>, or <%= link_to "past 4 years", coursesurveys_department_path %>.
+<%- elsif @full_list -%>
+  Showing all courses. See also <%= link_to "past 4 years", coursesurveys_department_path %>, or <%= link_to "by semester", '#', :id => 'by-semester-link' %>.
+<%- else # past 4 years -%>
+  This list contains only courses which have been taught within the past 4 years. See also <%= link_to "all courses", "?full_list=true" %>, or <%= link_to "by semester", '#', :id => 'by-semester-link' %>.
+<%- end -%>
+<div>
+  <!-- select course semester form here -->
+</div>
+
+<table id="ratings" class="table">
+  <%- [ [@lower_div, 'Lower-Division'],
+        [@upper_div, 'Upper-Division'],
+        [@grad,      'Graduate'      ]   ].each do |courses, course_type|
+  -%>
+    <tr>
+      <th><%= course_type %></th>
+      <th>Instructors</th>
+      <th>Rating<%= " for #{@semester.name}" if @semester %></th>
+      <th><%= @semester ? "" : "Last Taught" %></th>
+    </tr>
+
+    <%- courses.each do |c| -%>
+      <%# Course name %>
+      <td><%= link_to "#{c[:course].course_abbr} #{c[:course].name}",
+                      coursesurveys_course_path(c[:course].department, c[:course].course_number)
+           %></td>
+
+      <%# Instructors %>
+      <td><%= raw c[:instructors].collect {|i| link_to i.last_name, 'surveys_instructor_path(i)'} .join(', ') %></td>
+
+      <%# Rating %>
+      <td><%= rating_and_bar c[:mean], @prof_eff_q.max %></td>
+
+      <%# Latest klass %>
+      <td><%= link_to c[:klass].course_semester.name, 'surveys_klass_path(c[:klass])' %></td>
+
+    </tr>
+    <%- end -%>
+
+  <%- end -%>
+</table>

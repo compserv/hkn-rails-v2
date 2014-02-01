@@ -55,7 +55,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'rspec-rails', '2.13.1'
+  #gem 'rspec-rails', '2.13.1'
   gem 'factory_girl_rails', '4.2.0'
   gem 'selenium-webdriver', '~> 2.35.1'
   gem 'capybara', '2.1.0'
