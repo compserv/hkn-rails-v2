@@ -9,10 +9,9 @@
 <%- end -%>
 <div>
   <%= form_for coursesurveys_department_path, :method => :get, :html => {:id => 'by-semester-form'} do -%>
-    <%- first_year = (CourseSemester.exists? ? CourseSemester.order(:year).limit(1).first.year : Time.now.year) -%>
     <%= label_tag :label, 'View data from' -%>
-    <%= select_tag :semester, options_for_select(CourseSemester.pluck(:season), @semester) -%>
-    <%= select_tag :year, options_for_select(CourseSemester.pluck(:year), @semester) -%>
+    <%= select_tag :semester, options_for_select(CourseSemester.pluck(:season).uniq, @semester ? @semester.year : nil) -%>
+    <%= select_tag :year, options_for_select(CourseSemester.pluck(:year).uniq, @semester ? @semester.season : nil) -%>
     <%= submit_tag 'Go', :name => '' -%>
   <%- end -%>
 </div>
