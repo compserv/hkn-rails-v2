@@ -13,7 +13,7 @@ class CoursesurveysController < ApplicationController
     @upper_div   = []
     @grad        = []
     @full_list   = params[:full_list].present?
-    #@semester    = Property.make_semester(:year => params[:year], :semester => params[:semester]) if params[:year].present? and params[:semester].present?
+    @semester    = params[:semester] && params[:year] ? CourseSemester.where(season: params[:semester], year: params[:year]).first : nil
     # Error checking
     return redirect_to coursesurveys_search_path("#{params[:dept_abbr]} #{params[:short_name]}") unless @department
 
