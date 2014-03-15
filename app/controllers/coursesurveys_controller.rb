@@ -12,7 +12,7 @@ class CoursesurveysController < ApplicationController
     @lower_div   = []
     @upper_div   = []
     @grad        = []
-    @full_list   = params[:full_list].present?
+    @full_list   = params[:full_list].present? # this needs to be taken into account later
     @semester    = params[:semester] && params[:year] ? CourseSemester.where(season: params[:semester], year: params[:year]).first : nil
     # Error checking
     return redirect_to coursesurveys_search_path("#{params[:dept_abbr]} #{params[:short_name]}") unless @department
@@ -26,25 +26,23 @@ class CoursesurveysController < ApplicationController
       next if course.invalid?
 
       # Find only the most recent course, optionally with a lower bound on semester
-      first_klass = course.course_offerings
-      #first_klass = first_klass.where(:semester => Property.make_semester(:year=>4.years.ago.year)..Property.make_semester) unless @full_list
-      #first_klass = first_klass.where(:semester => @semester) if @semester
-      first_klass = first_klass.first
-      #first_klass = first_klass.find(:first, :include => {:instructorships => :instructor} )
+      first_course = course.course_offerings
+      #first_course = first_course.where(:semester => Property.make_semester(:year=>4.years.ago.year)..Property.make_semester) unless @full_list
+      #first_course = first_course.where(:semester => @semester) if @semester
+      first_course = first_course.first
+      #first_course = first_course.find(:first, :include => {:instructorships => :instructor} )
 
-      # Sometimes the latest klass is really old, and not included in these results
-      next unless first_klass.present?
+      # Sometimes the latest course is really old, and not included in these results
+      next unless first_course.present?
 
       next unless avg_rating = course.survey_question_responses.average(:rating)
 
       # Generate row
-      # Sort by descending instructorship count
-      #                            [    only instrctrs  ]         [ histogram  ]        [  ascending    ] [up to last 4][one of each]
       instructors = course.staff_members
       result = { :course      => course,
                  :instructors => instructors,
                  :mean        => avg_rating,
-                 :klass       => first_klass  }
+                 :klass       => first_course  }
 
       # Append course to correct list
       case course.course_number.to_i
