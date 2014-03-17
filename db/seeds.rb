@@ -222,6 +222,32 @@ if File.exists?(path_to_courses)
     puts "Summoned a final exam for #{exam_info[:course_offering].course.course_abbr} #{exam_info.except(:course_offering).to_s}"
   end
 
+  SurveyQuestion.where(keyword: :ta_eff, question_text: 'How effective was this TA', max: 7).first_or_create
+  prof_eff = SurveyQuestion.where(keyword: :prof_eff, question_text: 'How effective was this Professor', max: 7).first_or_create
+
+  staff_members = [
+    {first_name: 'John', last_name: 'Denero', release_surveys: true},
+    {first_name: 'Paul', last_name: 'Hilfinger', release_surveys: true},
+    {first_name: 'Randy', last_name: 'Katz', release_surveys: true},
+  ]
+  staff_members.each do |staff_member|
+    StaffMember.where(staff_member).first_or_create
+  end
+
+  cs61a_spring_2014 = Course.find_by_department_and_course_name('CS', '61A').course_offerings.last
+  cs188_spring_2014 = Course.find_by_department_and_course_name('CS', '188').course_offerings.last
+  cs61c_spring_2014 = Course.find_by_department_and_course_name('CS', '61C').course_offerings.last
+  cs9a_spring_2014 = Course.find_by_department_and_course_name('CS', '9A').course_offerings.last
+  StaffMember.find_by_first_name('John').course_staff_members.where(staff_role: 'prof', course_offering: cs61a_spring_2014).first_or_create
+  CourseStaffMember.first.survey_question_responses.where(survey_question: prof_eff, rating: 7, number_responses: 9000).first_or_create
+  StaffMember.find_by_first_name('John').course_staff_members.where(staff_role: 'prof', course_offering: cs188_spring_2014).first_or_create
+  CourseStaffMember.last.survey_question_responses.where(survey_question: prof_eff, rating: 1, number_responses: 5000).first_or_create
+  StaffMember.find_by_first_name('Randy').course_staff_members.where(staff_role: 'prof', course_offering: cs61c_spring_2014).first_or_create
+  CourseStaffMember.last.survey_question_responses.where(survey_question: prof_eff, rating: 4, number_responses: 500).first_or_create
+  StaffMember.find_by_first_name('Randy').course_staff_members.where(staff_role: 'prof', course_offering: cs9a_spring_2014).first_or_create
+  CourseStaffMember.last.survey_question_responses.where(survey_question: prof_eff, rating: 1, number_responses: 400).first_or_create
+
 else
   puts "please run 'ruby script/csec/scrape.rb' to generate course info from today"
 end
+

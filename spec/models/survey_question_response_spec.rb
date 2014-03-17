@@ -2,12 +2,13 @@
 #
 # Table name: survey_question_responses
 #
-#  id                 :integer          not null, primary key
-#  survey_question_id :integer
-#  rating             :integer
-#  created_at         :datetime
-#  updated_at         :datetime
-#  number_responses   :integer
+#  id                     :integer          not null, primary key
+#  survey_question_id     :integer
+#  rating                 :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  number_responses       :integer
+#  course_staff_member_id :integer
 #
 
 require 'spec_helper'

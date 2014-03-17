@@ -114,7 +114,7 @@ class Course
   end
 
   def to_a
-    [@name, @section, @enrollment, *@prof_list, @time, @place, *@ta_list, @title, @units]
+    [@name, @title, @section, @enrollment, *@prof_list, @time, @place, @units, *@ta_list]
   end
 end
 
@@ -181,7 +181,7 @@ def main
   osoc_errors = update_enrollment(courses)
 
   date = Time.now.strftime('%Y%m%d')
-  head = [%w(Course Sec Enrolled Instructor(1) Instructor(2) Time Place TA's Title Units)]
+  head = [%w(Course Title Sec Enrolled Instructor(1) Instructor(2) Time Place Units TA's)]
   write_course_info(head + courses.values, date)
   write_crosslists(courses.values, date)
   puts "Written to course_info_#{date}.csv and crosslists_#{date}.txt."

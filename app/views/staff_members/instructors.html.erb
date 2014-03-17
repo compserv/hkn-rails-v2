@@ -1,0 +1,29 @@
+<h1>
+  <%= @category == :prof ? 'Instructors' : 'TAs' %>
+</h1>
+<table class="table" id="ratings">
+  <tr>
+    <th>Name</th>
+    <th>Recent Courses</th>
+    <th>Rating</th>
+  </tr>
+  <% @staff.each do |staff| %>
+    <tr>
+      <td>
+        <%= link_to staff.full_name_r, 'surveys_instructor_path(staff)' %>
+      </td>
+      <td>
+        <%= staff.courses.collect { |course| link_to course.course_abbr, 'surveys_course_path(course)' }.join(', ').html_safe %>
+      </td>
+      <td>
+        <% if staff.release_surveys %>
+          <% rating = staff.survey_question_responses.average(:rating) %>
+          <div><%= "#{sprintf "%.1f", rating} / #{@eff_q.max.to_f}" %></div>
+          <%= rating_bar(rating/@eff_q.max) %>
+        <% else %>
+          [private]
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
