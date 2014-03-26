@@ -4,6 +4,53 @@ class CoursesurveysController < ApplicationController
 
   def show
     @course = Course.find_by_department_and_course_name(params[:dept], params[:name])
+
+    # Try searching if no course was found
+    return redirect_to coursesurveys_search_path("#{params[:dept_abbr]} #{params[:course_number]}") unless @course
+
+    # eager-load all necessary data. wasteful course reload, but can't get around the _short_name helper.
+    @course = Course.find(@course.id)
+
+    effective_q  = SurveyQuestion.find_by_keyword(:prof_eff)
+    worthwhile_q = SurveyQuestion.find_by_keyword(:worthwhile)
+
+    @results = []
+    @overall = { :effectiveness  => {:max=>effective_q.max },
+                 :worthwhile     => {:max=>worthwhile_q.max}
+               }
+
+    @course.course_offerings.each do |klass|
+      next unless klass.survey_question_responses.exists?
+      result = { klass: klass, ratings: [] }
+
+      klass.instructors.sort{|x,y| x.last_name <=> y.last_name}.each do |instructor|
+        rating = { instructor: instructor }
+
+        catch :nil_answer do
+          # Some heavier computations
+          [ [:effectiveness, effective_q ],
+            [:worthwhile,    worthwhile_q]
+          ].each do |qname, q|
+            answer = klass.survey_question_responses.where(survey_question_id: q.id, :course_staff_member_id => instructor.id).first
+            if answer.nil?
+              logger.warn "coursesurveys#course: nil score for #{klass.to_s} question #{q.question_text}"
+              throw :nil_answer
+            else
+              rating[qname] = answer.rating
+            end
+          end
+          result[:ratings] << rating
+        end
+      end
+
+      @results << result
+    end # @course.klasses
+
+    [ :effectiveness, :worthwhile ].each do |qname|
+      @overall[qname][:score] = @results.collect do |result|
+        result[:ratings].map{|r| r[qname]}.sum.to_f/result[:ratings].size
+      end.sum / @results.size.to_f
+    end
   end
 
   def department

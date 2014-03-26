@@ -20,6 +20,7 @@ class CourseOffering < ActiveRecord::Base
   has_one :course_survey
   has_many :exams
   has_many :course_staff_members
+  has_many :survey_question_responses, through: :course_staff_members
   has_many :staff_members, through: :course_staff_members
 
   validates :course_id, presence: true
@@ -39,7 +40,7 @@ class CourseOffering < ActiveRecord::Base
   end
 
   def instructors
-    course_staff_members.where('staff_role = ?', 'Prof')
+    course_staff_members.where('staff_role = ?', 'prof')
   end
 
 end

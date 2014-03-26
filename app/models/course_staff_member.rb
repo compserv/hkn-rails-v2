@@ -26,4 +26,5 @@ class CourseStaffMember < ActiveRecord::Base
                           course_id: course_id,
                           course_semester_id: course_semester_id)
   end
+
 end

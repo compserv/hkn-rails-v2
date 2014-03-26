@@ -224,6 +224,7 @@ if File.exists?(path_to_courses)
 
   SurveyQuestion.where(keyword: :ta_eff, question_text: 'How effective was this TA', max: 7).first_or_create
   prof_eff = SurveyQuestion.where(keyword: :prof_eff, question_text: 'How effective was this Professor', max: 7).first_or_create
+  worthwhile = SurveyQuestion.where(keyword: :worthwhile, question_text: 'How worthwhile was this course', max: 7).first_or_create
 
   staff_members = [
     {first_name: 'John', last_name: 'Denero', release_surveys: true},
@@ -246,6 +247,7 @@ if File.exists?(path_to_courses)
   CourseStaffMember.last.survey_question_responses.where(survey_question: prof_eff, rating: 4, number_responses: 500).first_or_create
   StaffMember.find_by_first_name('Randy').course_staff_members.where(staff_role: 'prof', course_offering: cs9a_spring_2014).first_or_create
   CourseStaffMember.last.survey_question_responses.where(survey_question: prof_eff, rating: 1, number_responses: 400).first_or_create
+  CourseStaffMember.last.survey_question_responses.where(survey_question: worthwhile, rating: 3, number_responses: 600).first_or_create
 
 else
   puts "please run 'ruby script/csec/scrape.rb' to generate course info from today"

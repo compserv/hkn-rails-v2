@@ -58,7 +58,7 @@
     <% end %>
   </table>
 </div>
-<% if true#@course.course_offerings.blank? %>
+<% if @course.course_offerings.blank? %>
   <p>No survey data available for this course.</p>
 <% else %>
   <div id="chart_div"></div>
@@ -74,16 +74,16 @@
         <% klass, ratings = result[:klass], result[:ratings] %>
         <% ratings.each do |rating| %>
           <% instructor, effectiveness, worthwhileness = rating[:instructor], rating[:effectiveness], rating[:worthwhile] %>
-          <tr>:class => @results.index(result) % 2 == 0 ? "even" : "odd"
+          <tr class=<%= @results.index(result) % 2 == 0 ? "even" : "odd" %>>
             <% if rating == ratings.first %>
               <td rowspan="<%= ratings.size %>">
                 <span class="semester">
-                  <%= link_to klass.proper_semester, surveys_klass_path(klass) %>
+                  <%= link_to klass.course_semester.name, 'surveys_klass_path(klass)' %>
                 </span>
               </td>
             <% end %>
             <td>
-              <%= link_to instructor.full_name, surveys_instructor_path(instructor) %>
+              <%= link_to instructor.staff_member.full_name, 'surveys_instructor_path(instructor)' %>
             </td>
             <% [ :effectiveness, :worthwhile ].each do |qname| %>
               <td>
@@ -112,5 +112,5 @@
 <div class="clear"></div>
 <div style="text-align: center; padding-top: 1em;">
   <%= render :partial => 'emailhkn' %> |
-  <%= link_to "[Info about this page]", 'coursesurveys_how_to_path' %>
+  <%= link_to "[Info about this page]", coursesurveys_how_to_path %>
 </div>

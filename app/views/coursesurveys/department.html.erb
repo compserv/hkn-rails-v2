@@ -31,7 +31,7 @@
     <%- courses.each do |c| -%>
       <%# Course name %>
       <td><%= link_to "#{c[:course].course_abbr} #{c[:course].name}",
-                      coursesurveys_course_path(c[:course].department, c[:course].course_number)
+                      coursesurveys_course_path(c[:course].department, c[:course].course_name)
            %></td>
 
       <%# Instructors %>
