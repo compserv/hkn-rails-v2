@@ -19,6 +19,13 @@ class CourseSemester < ActiveRecord::Base
       message: "%{value} is not a valid semester" }
   validates :year, presence: true
 
+  class << self
+    def current
+      # TODO(mark): This isn't always the case, but works for now.
+      last
+    end
+  end
+
   def name
     "#{season} #{year}"
   end

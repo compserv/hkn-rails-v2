@@ -20,6 +20,8 @@ class Course < ActiveRecord::Base
   has_many :course_semesters, through: :course_offerings
   has_many :course_surveys, through: :course_offerings
   has_many :course_staff_members, through: :course_offerings
+  has_many :survey_question_responses, through: :course_staff_members
+  has_many :staff_members, through: :course_staff_members
 
   validates_presence_of :department, :course_name
 
@@ -40,9 +42,15 @@ class Course < ActiveRecord::Base
     # e.g. EE20N
     course_name.gsub(/\D/, '').to_i
   end
+
   def course_suffix
     # e.g. EE20N
     course_name.gsub(/\d/, '')
+  end
+
+  def invalid?
+    # Some courses are invalid, and shouldn't be listed.
+    !!(name =~ /INVALID/)
   end
 
 end

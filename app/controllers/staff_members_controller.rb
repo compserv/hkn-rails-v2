@@ -1,6 +1,17 @@
 class StaffMembersController < ApplicationController
   before_action :set_staff_member, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_csec!, except: [:show]
+  before_filter :authenticate_csec!, except: [:show, :instructors]
+
+  def instructors
+    @category = params["instructors"].to_sym
+    @eff_q = SurveyQuestion.find_by_keyword "#{@category.to_s}_eff".to_sym
+    return redirect_to coursesurveys_path, notice: "Invalid category" unless @category && @eff_q
+
+    @staff = StaffMember.includes(:courses, :survey_question_responses).
+      where('course_staff_members.staff_role = ?', @category).references(:course_staff_members).
+      where('survey_question_responses.survey_question_id = ?', @eff_q.id).references(:survey_question_responses).
+      order(:last_name, :first_name)
+  end
 
   # GET /staff_members
   def index

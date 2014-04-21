@@ -8,6 +8,7 @@
 #  mean_score    :float
 #  created_at    :datetime
 #  updated_at    :datetime
+#  max           :integer
 #
 
 require 'spec_helper'
