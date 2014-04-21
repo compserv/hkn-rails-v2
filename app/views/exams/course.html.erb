@@ -2,14 +2,16 @@
 
 <div id="table">
   <table id="exams" class="table">
-    <tr>
-      <th>Semester</th>
-      <th>Instructor</th>
-      <th>Midterm 1</th>
-      <th>Midterm 2</th>
-      <th>Midterm 3</th>
-      <th>Final</th>
-    </tr>
+    <thead>
+      <tr>
+        <th>Semester</th>
+        <th>Instructor</th>
+        <th>Midterm 1</th>
+        <th>Midterm 2</th>
+        <th>Midterm 3</th>
+        <th>Final</th>
+      </tr>
+    </thead>
   <%- @results.each do |semester, instructor, exams, solutions| -%>
     <tr>
       <td>

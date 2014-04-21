@@ -12,6 +12,12 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-tablesorter
 //= require turbolinks
 //= require_tree .
 //= require jquery.ui.all
+
+
+$(document).ready(function() {
+	$("#exams").tablesorter();
+});
