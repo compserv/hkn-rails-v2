@@ -28,9 +28,47 @@ class IndrelController < ApplicationController
   def resume_books_order
     @paypal = paypal_encrypted(resume_books_paypal_success_url)
   end
+ 
 
+ 
   def resume_books_transaction_id
     redirect_to resume_books_paypal_success_path(:tx => params[:transaction_id])
+  end
+
+
+  def resume_books_order_email
+    @fields = {}
+  end
+
+  def resume_books_order_email_post
+    @fields = params
+    required_fields = %w[
+      company_name
+      address1
+      city
+      state
+      zip_code
+      name
+      phone
+      email
+    ]
+
+    @errors = []
+    required_fields.each do |field|
+      if params[field].blank?
+        @errors << "#{field.capitalize.gsub(/_/, ' ')} cannot be blank."
+      end
+    end
+
+    @errors << "Phone is not well-formatted." if params['phone'].match(/[a-zA-Z]/)
+    @errors << "Email is not well-formatted." unless params['email'].match(/.*@.*\..*/)
+    # @errors << "Captcha validation failed." unless verify_recaptcha
+
+    unless @errors.empty?
+      render :action => :resume_books_order_email and return
+    end
+
+    IndrelMailer.resume_books_order(@fields, request.host).deliver
   end
 
   def resume_books_order_paypal_success
