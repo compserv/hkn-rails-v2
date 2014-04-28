@@ -95,7 +95,9 @@ HknRails::Application.routes.draw do
     match "resume_books/order", to: "indrel#resume_books_order", via: :get, :as => "resume_books_order"
     match "resume_books/order", to: "indrel#resume_books_transaction_id", via: :post, :as => "resume_books_transaction_id"
     match "resume_books/success", to: "indrel#resume_books_order_paypal_success", via: :get, :as => "resume_books_paypal_success"
-
+    match "resume_books/order_email", to: "indrel#resume_books_order_email", via: :get, :as => "resume_books_order_email"
+    match "resume_books/order_email", to: "indrel#resume_books_order_email_post", via: :post, :as => "resume_books_order_email_post"
+    # post  "resume-books/order_email"        => "indrel#resume_book_order_post",        :as => "resume_book_order_post"
     scope "infosessions" do
       match "/", to: "infosession_requests#about", via: :get, as: "infosessions"
       match "registration", to: "infosession_requests#new", via: :get, as: "new_infosession_request"
