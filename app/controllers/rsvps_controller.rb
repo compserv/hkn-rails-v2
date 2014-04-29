@@ -54,6 +54,7 @@ class RsvpsController < ApplicationController
 
     respond_to do |format|
       if @rsvp.save
+        RSVPMailer.rsvp_email(current_user, @rsvp.event).deliver
         format.html { redirect_to(@event, :notice => 'Thanks for RSVPing! See you there!') }
         format.xml  { render :xml => @rsvp, :status => :created, :location => @rsvp }
       else
